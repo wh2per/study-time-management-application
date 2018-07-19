@@ -1,9 +1,14 @@
 package com.example.ready.studytimemanagement;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -29,6 +34,18 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.kakao.auth.ISessionCallback;
+import com.kakao.auth.Session;
+import com.kakao.network.ErrorResult;
+import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.callback.MeResponseCallback;
+import com.kakao.usermgmt.response.model.UserProfile;
+import com.kakao.util.exception.KakaoException;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import static com.kakao.util.helper.Utility.getPackageInfo;
 
 
 public class MainActivity extends BaseActivity implements View.OnClickListener{
@@ -47,10 +64,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     // 페이스북용 콜백매니져
     private CallbackManager mCallbackManager;
 
+    //카카오용 콜백
+    private SessionCallback callback;
+    private com.kakao.usermgmt.LoginButton btnKakao;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.i("Hash:",getKeyHash(this));
 
         // Views
         mStatusTextView = findViewById(R.id.status);
@@ -104,7 +126,30 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             }
         });
         // [END initialize_fblogin]
+
+        callback = new SessionCallback();
+        Session.getCurrentSession().addCallback(callback);
+        Session.getCurrentSession().checkAndImplicitOpen();
+        btnKakao = findViewById(R.id.ksign_in_button);
     }
+
+    public static String getKeyHash(final Context context) {
+        PackageInfo packageInfo = getPackageInfo(context, PackageManager.GET_SIGNATURES);
+        if (packageInfo == null)
+            return null;
+
+        for (Signature signature : packageInfo.signatures) {
+            try {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                return Base64.encodeToString(md.digest(), Base64.NO_WRAP);
+            } catch (NoSuchAlgorithmException e) {
+                Log.w(TAG, "Unable to get MessageDigest. signature=" + signature, e);
+            }
+        }
+        return null;
+    }
+
 
     // [START on_start_check_user]
     @Override
@@ -223,6 +268,73 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     }
     // [END auth_with_facebook]
 
+    public class SessionCallback implements ISessionCallback {
+        // 로그인에 성공한 상태
+        @Override
+        public void onSessionOpened() {
+            requestMe();
+        }
+
+        // 로그인에 실패한 상태
+        @Override
+        public void onSessionOpenFailed(KakaoException exception) {
+            Log.e("SessionCallback :: ", "onSessionOpenFailed : " + exception.getMessage());
+        }
+
+        // 사용자 정보 요청
+        public void requestMe() {
+            // 사용자정보 요청 결과에 대한 Callback
+            UserManagement.getInstance().requestMe(new MeResponseCallback() {
+                // 세션 오픈 실패. 세션이 삭제된 경우,
+                @Override
+                public void onSessionClosed(ErrorResult errorResult) {
+                    Log.e("SessionCallback :: ", "onSessionClosed : " + errorResult.getErrorMessage());
+                }
+
+                // 회원이 아닌 경우,
+                @Override
+                public void onNotSignedUp() {
+                    Log.e("SessionCallback :: ", "onNotSignedUp");
+                }
+
+                // 사용자정보 요청에 성공한 경우,
+                @Override
+                public void onSuccess(UserProfile userProfile) {
+                    /*
+                    Log.e("SessionCallback :: ", "onSuccess");
+                    String nickname = userProfile.getNickname();
+                    String email = userProfile.getEmail();
+                    String profileImagePath = userProfile.getProfileImagePath();
+                    String thumnailPath = userProfile.getThumbnailImagePath();
+                    String UUID = userProfile.getUUID();
+                    long id = userProfile.getId();
+
+                    Log.e("Profile : ", nickname + "");
+                    Log.e("Profile : ", email + "");
+                    Log.e("Profile : ", profileImagePath  + "");
+                    Log.e("Profile : ", thumnailPath + "");
+                    Log.e("Profile : ", UUID + "");
+                    Log.e("Profile : ", id + "");
+                    */
+
+                    // 다음화면으로 이름과 이메일을 넘기고 화면을 띄운다
+                    String ID = userProfile.getNickname();
+                    String EMAIL = userProfile.getEmail();
+                    Intent intent = new Intent(getApplicationContext(),checkActivity.class);
+                    intent.putExtra("ID", ID);
+                    intent.putExtra("EMAIL",EMAIL);
+                    startActivity(intent);
+                }
+
+                // 사용자 정보 요청 실패
+                @Override
+                public void onFailure(ErrorResult errorResult) {
+                    Log.e("SessionCallback :: ", "onFailure : " + errorResult.getErrorMessage());
+                }
+            });
+        }
+    }
+
 
     // [START signin]
     private void gsignIn() {
@@ -283,6 +395,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             //findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
         }
     }
+
+
 
 
     @Override
