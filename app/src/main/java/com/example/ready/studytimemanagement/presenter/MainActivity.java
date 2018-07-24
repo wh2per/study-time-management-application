@@ -1,4 +1,4 @@
-package com.example.ready.studytimemanagement;
+package com.example.ready.studytimemanagement.presenter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+<<<<<<< HEAD:app/src/main/java/com/example/ready/studytimemanagement/MainActivity.java
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -68,6 +69,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     //카카오용 콜백
     private SessionCallback callback;
     private com.kakao.usermgmt.LoginButton btnKakao;
+=======
+import com.example.ready.studytimemanagement.R;
+
+public class MainActivity extends AppCompatActivity {
+>>>>>>> origin/develop:app/src/main/java/com/example/ready/studytimemanagement/presenter/MainActivity.java
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
