@@ -38,6 +38,7 @@ import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.kakao.usermgmt.callback.MeResponseCallback;
 import com.kakao.usermgmt.response.model.UserProfile;
 import com.kakao.util.exception.KakaoException;
@@ -82,6 +83,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         findViewById(R.id.gsign_in_button).setOnClickListener(this);
         findViewById(R.id.gsign_out_button).setOnClickListener(this);
         findViewById(R.id.gdisconnect_button).setOnClickListener(this);
+        findViewById(R.id.ksign_out_button).setOnClickListener(this);
 
         // [START config_signin]
         // Configure Google Sign In
@@ -136,6 +138,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     public static String getKeyHash(final Context context) {
         PackageInfo packageInfo = getPackageInfo(context, PackageManager.GET_SIGNATURES);
         if (packageInfo == null)
+
             return null;
 
         for (Signature signature : packageInfo.signatures) {
@@ -245,7 +248,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
 
-                            // 다음화면으로 이름과 이메일을 넘기고 화면을 띄운다
                             String ID = mAuth.getCurrentUser().getDisplayName();
                             String EMAIL = mAuth.getCurrentUser().getEmail();
                             Intent intent = new Intent(getApplicationContext(),checkActivity.class);
@@ -364,6 +366,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         updateUI(null);
     }
 
+    protected void redirectLoginActivity() {
+        final Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+        finish();
+    }
+
+    private void ksignout() {
+        UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
+            @Override
+            public void onCompleteLogout() {
+                redirectLoginActivity();
+            }
+        });
+    }
+
     private void grevokeAccess() {
         // Firebase sign out
         mAuth.signOut();
@@ -387,6 +405,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
             findViewById(R.id.gsign_in_button).setVisibility(View.GONE);
             //findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
+
+            // 다음화면으로 이름과 이메일을 넘기고 화면을 띄운다
+            String ID = user.getDisplayName();
+            String EMAIL = user.getEmail();
+            Intent intent = new Intent(getApplicationContext(),checkActivity.class);
+            intent.putExtra("ID", ID);
+            intent.putExtra("EMAIL",EMAIL);
+            startActivity(intent);
         } else {                // 로그인이 안 되어있을 때
             mStatusTextView.setText(R.string.signed_out);
             mDetailTextView.setText(null);
@@ -396,21 +422,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         }
     }
 
-
-
-
     @Override
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.gsign_in_button) {
             gsignIn();
-            // test();
         } else if (i == R.id.gsign_out_button) {
             gsignOut();
         } else if (i == R.id.gdisconnect_button) {
             grevokeAccess();
         } else if(i == R.id.fsign_out_button){
             fsignOut();
+        } else if(i == R.id.ksign_out_button){
+            ksignout();
         }
     }
 }
