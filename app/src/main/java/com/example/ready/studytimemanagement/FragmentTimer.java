@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 public class FragmentTimer extends Fragment{
     TextView targetTview, totalTview;
-    Button startBtn;
+    Button startBtn, plusHourBtn, plusMinBtn, plusSecBtn, minusHourBtn, minusMinBtn, minusSecBtn;
     private BasicTimer bt;
     private boolean timerOn;
 
@@ -24,7 +24,15 @@ public class FragmentTimer extends Fragment{
         totalTview = (TextView)rootView.findViewById(R.id.TotalTimeText);
         startBtn = (Button)rootView.findViewById(R.id.StartBtn);
 
-        bt = new BasicTimer(10000, targetTview, totalTview);
+        plusHourBtn = (Button)rootView.findViewById(R.id.hourPlusBtn);
+        plusMinBtn = (Button)rootView.findViewById(R.id.minPlusBtn);
+        plusSecBtn = (Button)rootView.findViewById(R.id.secPlusBtn);
+
+        minusHourBtn = (Button)rootView.findViewById(R.id.hourMinusBtn);
+        minusMinBtn = (Button)rootView.findViewById(R.id.minMinusBtn);
+        minusSecBtn = (Button)rootView.findViewById(R.id.secMinusBtn);
+
+        bt = new BasicTimer(30000, targetTview, totalTview);
         timerOn = false;
 
         startBtn.setOnClickListener(new Button.OnClickListener() {
@@ -41,7 +49,54 @@ public class FragmentTimer extends Fragment{
                 }
             }
         });
-
+        plusHourBtn.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                if(!timerOn){
+                    bt.hourUp();
+                }
+            }
+        });
+        plusMinBtn.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                if(!timerOn){
+                    bt.minUp();
+                }
+            }
+        });
+        plusSecBtn.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                if(!timerOn){
+                    bt.secUp();
+                }
+            }
+        });
+        minusHourBtn.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                if(!timerOn){
+                    bt.hourDown();
+                }
+            }
+        });
+        minusMinBtn.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                if(!timerOn){
+                    bt.minDown();
+                }
+            }
+        });
+        minusSecBtn.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                if(!timerOn){
+                    bt.secDown();
+                }
+            }
+        });
         return rootView;
     }
 }

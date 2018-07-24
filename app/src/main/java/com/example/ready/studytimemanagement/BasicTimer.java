@@ -30,7 +30,42 @@ public class BasicTimer {
         String time = String.format("%02d:%02d:%02d", hour, minute, second);
         return time;
     }
-
+    public void hourUp(){
+        targetTime = targetTime+3600000;
+        targetView.setText(makeToTimeFormat(targetTime));
+    }
+    public void minUp(){
+        targetTime = targetTime+600000;
+        targetView.setText(makeToTimeFormat(targetTime));
+    }
+    public void secUp(){
+        targetTime = targetTime+30000;
+        targetView.setText(makeToTimeFormat(targetTime));
+    }
+    public void hourDown(){
+        if(targetTime-3600000>0){
+            targetTime = targetTime-3600000;
+        }else{
+            targetTime = 0;
+        }
+        targetView.setText(makeToTimeFormat(targetTime));
+    }
+    public void minDown(){
+        if(targetTime-600000>0){
+            targetTime = targetTime-600000;
+        }else{
+            targetTime = 0;
+        }
+        targetView.setText(makeToTimeFormat(targetTime));
+    }
+    public void secDown(){
+        if(targetTime-30000>0){
+            targetTime = targetTime-30000;
+        }else{
+            targetTime = 0;
+        }
+        targetView.setText(makeToTimeFormat(targetTime));
+    }
     public void timerStart(){
         onoff = true;
         startTime = SystemClock.uptimeMillis();
