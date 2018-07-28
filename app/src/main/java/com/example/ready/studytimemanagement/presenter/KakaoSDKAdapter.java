@@ -1,4 +1,4 @@
-package com.example.ready.studytimemanagement;
+package com.example.ready.studytimemanagement.presenter;
 
 import android.content.Context;
 

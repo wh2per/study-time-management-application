@@ -1,16 +1,16 @@
-package com.example.ready.studytimemanagement;
+package com.example.ready.studytimemanagement.presenter;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.example.ready.studytimemanagement.R;
+
 public class BaseActivity extends AppCompatActivity{
 
-    @VisibleForTesting
-    public ProgressDialog mProgressDialog;
+    public static ProgressDialog mProgressDialog;
 
     public void showProgressDialog() {
         if (mProgressDialog == null) {
@@ -22,7 +22,7 @@ public class BaseActivity extends AppCompatActivity{
         mProgressDialog.show();
     }
 
-    public void hideProgressDialog() {
+    public static void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }

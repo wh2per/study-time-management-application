@@ -1,6 +1,6 @@
 package com.example.ready.studytimemanagement.model;
 
-public class Data {
+public class  Data {
     String category;
     String date;
     String amount;
