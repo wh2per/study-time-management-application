@@ -45,35 +45,37 @@ public class ReadJSON {
         return user;
     }
 
-    public List<Data> readJsonTime(InputStream in) throws IOException {
+    public ArrayList<Data> readJsonTime(InputStream in) throws IOException {
         JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
         try {
+            Log.d("get_time", "readJSONTime()");
             return readTimeArray(reader);
         } finally {
             reader.close();
         }
+
     }
 
-    public List<Data> readTimeArray(JsonReader reader) throws IOException {
-        List<Data> time_list = new ArrayList<Data>();
-
-        reader.beginObject();
+    public ArrayList<Data> readTimeArray(JsonReader reader) throws IOException {
+        ArrayList<Data> time_list = new ArrayList<Data>();
+        reader.beginArray();
         while (reader.hasNext()) {
             time_list.add(readTime(reader));
         }
         reader.endArray();
+        Log.d("get_time", "readTimeArray()");
+
         return time_list;
     }
 
     public Data readTime(JsonReader reader) throws IOException {
         Data time = new Data();
-
         reader.beginObject();
         while (reader.hasNext()) {
             String name = reader.nextName();
             if (name.equals("category")) {
                 time.setCategory(reader.nextString());
-            } else if (name.equals("date")) {
+            } else if (name.equals("regdate")) {
                 time.setDate(reader.nextString());
             } else if (name.equals("amount")) {
                 time.setAmount(reader.nextString());
@@ -82,7 +84,7 @@ public class ReadJSON {
             }
         }
         reader.endObject();
-        Log.d("json time category", time.getCategory());
+        Log.d("get_time", "readTime()");
         return time;
     }
 }
