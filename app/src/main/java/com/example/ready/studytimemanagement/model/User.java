@@ -1,5 +1,8 @@
 package com.example.ready.studytimemanagement.model;
 
+/**
+ * @brief Model Class with user data
+ */
 public class User {
     String id;
     String nickname;
@@ -8,6 +11,13 @@ public class User {
 
     public User() {}
 
+    /**
+     * @biref Constructor
+     * @param id
+     * @param nickname
+     * @param age
+     * @param job
+     */
     public User(String id, String nickname, int age, String job) {
         this.id = id;
         this.nickname = nickname;

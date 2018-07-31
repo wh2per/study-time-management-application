@@ -10,7 +10,6 @@ import com.example.ready.studytimemanagement.model.User;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -20,10 +19,47 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
+/**
+ * @brief Class to communicate android with server
+ */
 public class RequestHttpConnection {
-    private String server_address = "http://172.30.1.4:5000";
+    private String server_address = "http://192.168.25.49:5000";
     private InputStream is = null;
 
+    /**
+     * @brief method to connect to the server
+     * @param url the url you want to communicate with
+     * @return Connected HttpURLConnection Object
+     */
+    private HttpURLConnection connectHTTP(String url) {
+        HttpURLConnection httpCon;
+        try {
+            URL urlCon = new URL(this.server_address + url);
+            httpCon = (HttpURLConnection) urlCon.openConnection();
+            httpCon.setRequestMethod("POST");
+            httpCon.setRequestProperty("Accept", "application/json");
+            httpCon.setRequestProperty("Content-type", "application/json");
+            // OutputStream으로 POST 데이터를 넘겨주겠다는 옵션.
+            httpCon.setDoOutput(true);
+            // InputStream으로 서버로 부터 응답을 받겠다는 옵션.
+            httpCon.setDoInput(true);
+            return httpCon;
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * @brief method to get user data from server with specific id
+     * @param url
+     * @param id
+     * @return User Object received from server
+     */
     public User getUser(String url, String id){
         InputStream is = null;
         String result = "";
@@ -72,6 +108,12 @@ public class RequestHttpConnection {
         return user;
     }
 
+    /**
+     * @brief method to register user data to server
+     * @param url
+     * @param user
+     * @return 'complete' if successful, 'fail' if not
+     */
     public String registerUser(String url, User user){
         InputStream is = null;
         String result = "";
@@ -127,6 +169,12 @@ public class RequestHttpConnection {
         return result;
     }
 
+    /**
+     * @brief method to get user data from server with specific id
+     * @param url
+     * @param id
+     * @return Time Object received from server
+     */
     public Time getAllTime(String url, String id){
         InputStream is = null;
         String result = "";
@@ -177,6 +225,13 @@ public class RequestHttpConnection {
         return time_list;
     }
 
+    /**
+     * @brief method to register time data to server
+     * @param url
+     * @param id
+     * @param time
+     * @return 'complete' if successful, 'fail' if not
+     */
     public String registerTime(String url, String id, Data time){
         String result = "";
         try {
@@ -226,29 +281,12 @@ public class RequestHttpConnection {
         return result;
     }
 
-    private HttpURLConnection connectHTTP(String url) {
-        HttpURLConnection httpCon;
-        try {
-            URL urlCon = new URL(this.server_address + url);
-            httpCon = (HttpURLConnection) urlCon.openConnection();
-            httpCon.setRequestMethod("POST");
-            httpCon.setRequestProperty("Accept", "application/json");
-            httpCon.setRequestProperty("Content-type", "application/json");
-            // OutputStream으로 POST 데이터를 넘겨주겠다는 옵션.
-            httpCon.setDoOutput(true);
-            // InputStream으로 서버로 부터 응답을 받겠다는 옵션.
-            httpCon.setDoInput(true);
-            return httpCon;
-        } catch (ProtocolException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
+    /**
+     * @brief method to convert data of Inputstream type to data of String type
+     * @param inputStream
+     * @return converted String data
+     * @throws IOException
+     */
     private String convertInputStreamToString(InputStream inputStream) throws IOException{
         BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
         String line = "";

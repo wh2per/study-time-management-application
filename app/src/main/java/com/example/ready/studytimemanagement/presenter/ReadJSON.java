@@ -10,9 +10,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.List;
 
+/**
+ * @biref Class to exchange JSON data with server
+ */
 public class ReadJSON {
+
+    /**
+     * @biref method to call private method named readUser.
+     * to be used from RequestHttpConnection Class
+     * @param in Inputstream object
+     * @return User object received from server
+     * @throws IOException
+     */
     public User readJsonUser(InputStream in) throws IOException {
         JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
         try {
@@ -22,7 +32,13 @@ public class ReadJSON {
         }
     }
 
-    public User readUser(JsonReader reader) throws IOException {
+    /**
+     * @biref receive user data of JSON type from server and parse it.
+     * @param reader JsonReader Object
+     * @return User received data from server
+     * @throws IOException
+     */
+    private User readUser(JsonReader reader) throws IOException {
         User user = new User();
 
         reader.beginObject();
@@ -45,6 +61,13 @@ public class ReadJSON {
         return user;
     }
 
+    /**
+     * @brief  method to call private method named readTimeArray.
+     * to be used from RequestHttpConnection Class
+     * @param in InputStream Object
+     * @return ArrayList<Data>
+     * @throws IOException
+     */
     public ArrayList<Data> readJsonTime(InputStream in) throws IOException {
         JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
         try {
@@ -56,7 +79,13 @@ public class ReadJSON {
 
     }
 
-    public ArrayList<Data> readTimeArray(JsonReader reader) throws IOException {
+    /**
+     * @brief  method to call private method named readTime.
+     * @param reader JsonRead Object
+     * @return ArrayList<Data> data list received from server
+     * @throws IOException
+     */
+    private ArrayList<Data> readTimeArray(JsonReader reader) throws IOException {
         ArrayList<Data> time_list = new ArrayList<Data>();
         reader.beginArray();
         while (reader.hasNext()) {
@@ -68,7 +97,13 @@ public class ReadJSON {
         return time_list;
     }
 
-    public Data readTime(JsonReader reader) throws IOException {
+    /**
+     * @biref receive time data of JSON type from server and parse it.
+     * @param reader JsonReader Object
+     * @return Data data received from server
+     * @throws IOException
+     */
+    private Data readTime(JsonReader reader) throws IOException {
         Data time = new Data();
         reader.beginObject();
         while (reader.hasNext()) {

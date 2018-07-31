@@ -2,10 +2,16 @@ package com.example.ready.studytimemanagement.model;
 
 import java.util.ArrayList;
 
+/**
+ * @brief Model Class with list of Data class and total time
+ */
 public class Time {
     ArrayList<Data> data_list;
     String total_time;
 
+    /**
+     * @brief Constructor
+     */
     public Time() {
         data_list = new ArrayList<Data>();
     }
