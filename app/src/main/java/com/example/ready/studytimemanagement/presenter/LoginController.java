@@ -37,14 +37,14 @@ import com.kakao.util.exception.KakaoException;
 import java.io.File;
 import java.util.StringTokenizer;
 
-public class LoginController extends LogController{
+public class LoginController extends LogfileController {
 
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
 
-    final static String foldername = Environment.getExternalStorageDirectory().getAbsolutePath()+"/Log";
-    final static String filename = "userlog.txt";
-    final static String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/Log/userlog.txt";
+    final String foldername = Environment.getExternalStorageDirectory().getAbsolutePath()+"/Log";
+    final String filename = "userlog.txt";
+    final String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/Log/userlog.txt";
 
 
     // [START declare_auth]
@@ -63,7 +63,7 @@ public class LoginController extends LogController{
     public boolean isExistUserLog(){
         File file = new File(filePath);
         if(file.exists()){
-            String line = ReadTextFile(filePath);
+            String line = ReadLogFile(filePath);
             StringTokenizer tokens = new StringTokenizer(line);
             String ID = tokens.nextToken(",");
             String EMAIL = tokens.nextToken(",");
@@ -191,7 +191,7 @@ public class LoginController extends LogController{
 
                             // 로그파일 생성
                             String content = ID + ","+EMAIL;
-                            WriteTextFile(foldername,filename,content,false);
+                            WriteLogFile(foldername,filename,content,false);
 
                             Intent intent = new Intent(getApplicationContext(),CheckActivity.class);
                             intent.putExtra("ID", ID);
@@ -235,7 +235,7 @@ public class LoginController extends LogController{
 
                             // 로그파일 생성
                             String content = ID + ","+EMAIL;
-                            WriteTextFile(foldername,filename,content,false);
+                            WriteLogFile(foldername,filename,content,false);
 
                             Intent intent = new Intent(getApplicationContext(),CheckActivity.class);
                             intent.putExtra("ID", ID);
@@ -312,7 +312,7 @@ public class LoginController extends LogController{
 
                     // 로그파일 생성
                     String content = ID + ","+EMAIL;
-                    WriteTextFile(foldername,filename,content,false);
+                    WriteLogFile(foldername,filename,content,false);
 
                     Intent intent = new Intent(getApplicationContext(),CheckActivity.class);
                     intent.putExtra("ID", ID);

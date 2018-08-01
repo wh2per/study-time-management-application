@@ -12,9 +12,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-public class LogController extends BaseActivity {
+public class LogfileController extends BaseActivity {
     //텍스트내용을 경로의 텍스트 파일에 쓰기
-    public void WriteTextFile(String foldername, String filename, String contents, boolean del){
+    public void WriteLogFile(String foldername, String filename, String contents, boolean del){
         try{
             File dir = new File (foldername);
             //디렉토리 폴더가 없으면 생성함
@@ -36,7 +36,7 @@ public class LogController extends BaseActivity {
     }
 
     //경로의 텍스트 파일읽기
-    public String ReadTextFile(String path){
+    public String ReadLogFile(String path){
         StringBuffer strBuffer = new StringBuffer();
         try{
             InputStream is = new FileInputStream(path);
