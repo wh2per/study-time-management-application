@@ -1,4 +1,4 @@
-package com.example.ready.studytimemanagement.presenter;
+package com.example.ready.studytimemanagement.control;
 
 import android.util.JsonReader;
 import android.util.Log;

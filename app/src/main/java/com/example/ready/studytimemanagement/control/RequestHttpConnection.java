@@ -1,4 +1,4 @@
-package com.example.ready.studytimemanagement.presenter;
+package com.example.ready.studytimemanagement.control;
 
 import android.util.JsonReader;
 import android.util.Log;
@@ -23,7 +23,7 @@ import java.net.URL;
  * @brief Class to communicate android with server
  */
 public class RequestHttpConnection {
-    private String server_address = "http://192.168.25.49:5000";
+    private String server_address = "http://192.168.0.9:5000";
     private InputStream is = null;
 
     /**
