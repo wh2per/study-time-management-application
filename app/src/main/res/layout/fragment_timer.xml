@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="152dp"
+        android:layout_marginTop="127dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/StartBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-20dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/hourPlusBtn"
+                android:layout_width="78dp"
+                android:layout_height="30dp"
+                android:text="+"
+                android:textColor="#469096"
+                android:background="@drawable/btn_stroke"
+                style="?android:attr/borderlessButtonStyle"
+                app:layout_constraintBottom_toTopOf="@+id/TargetTimeText" />
+
+            <Button
+                android:id="@+id/minPlusBtn"
+                android:layout_width="78dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="18dp"
+                android:layout_marginRight="16dp"
+                android:text="+"
+                android:textColor="#469096"
+                android:background="@drawable/btn_stroke"
+                style="?android:attr/borderlessButtonStyle"
+                app:layout_constraintBottom_toTopOf="@+id/TargetTimeText" />
+
+            <Button
+                android:id="@+id/secPlusBtn"
+                android:layout_width="78dp"
+                android:layout_height="30dp"
+                android:text="+"
+                android:textColor="#469096"
+                android:background="@drawable/btn_stroke"
+                style="?android:attr/borderlessButtonStyle"
+                app:layout_constraintBottom_toTopOf="@+id/TargetTimeText" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/TargetTimeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="00:00:00"
+            android:textColor="#469096"
+            android:textSize="72dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-16dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/hourMinusBtn"
+                android:layout_width="78dp"
+                android:layout_height="30dp"
+                android:text="-"
+                android:textColor="#469096"
+                android:background="@drawable/btn_stroke"
+                style="?android:attr/borderlessButtonStyle"
+                app:layout_constraintBottom_toTopOf="@+id/TargetTimeText" />
+
+            <Button
+                android:id="@+id/minMinusBtn"
+                android:layout_width="78dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="18dp"
+                android:layout_marginRight="16dp"
+                android:text="-"
+                android:textColor="#469096"
+                android:background="@drawable/btn_stroke"
+                style="?android:attr/borderlessButtonStyle"
+                app:layout_constraintBottom_toTopOf="@+id/TargetTimeText" />
+
+            <Button
+                android:id="@+id/secMinusBtn"
+                android:layout_width="78dp"
+                android:layout_height="30dp"
+                android:text="-"
+                android:textColor="#469096"
+                android:background="@drawable/btn_stroke"
+                style="?android:attr/borderlessButtonStyle"
+                app:layout_constraintBottom_toTopOf="@+id/TargetTimeText" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/TotalTimeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="00:00:00"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="24dp" />
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/StartBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="73dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="146dp"
+        android:background="#469096"
+        android:text="시작"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+
+</android.support.constraint.ConstraintLayout>

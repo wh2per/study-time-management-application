@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    >
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:textSize="30dp"
+        android:textColor="#000"
+        android:text="집중 완료"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"/>
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="30dp"
+        android:textSize="15dp"
+        android:textColor="#000"
+        android:text="카테고리 입력"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"/>
+    <EditText
+        android:id="@+id/categoryText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:backgroundTint="#469096"
+        android:text="기본 공부"/>
+    <Button
+        android:id="@+id/saveBtn"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:textSize="18dp"
+        android:textColor="#fff"
+        android:background="#469096"
+        android:text="저장"/>
+</LinearLayout>
