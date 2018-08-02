@@ -3,8 +3,8 @@
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
+/.git/.gitignore
 .DS_Store
 /build
 /captures
 .externalNativeBuild
-.idea/caches/

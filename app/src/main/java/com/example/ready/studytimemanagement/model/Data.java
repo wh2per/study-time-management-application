@@ -1,6 +1,9 @@
 package com.example.ready.studytimemanagement.model;
 
-public class  Data {
+/**
+ * @brief Model Class with time data
+ */
+public class Data {
     String category;
     String date;
     String amount;
@@ -8,6 +11,13 @@ public class  Data {
 
     public Data() {}
 
+    /**
+     * @brief Constructor
+     * @param category
+     * @param date
+     * @param amount
+     * @param target_time
+     */
     public Data(String category, String date, String amount, String target_time) {
         this.category = category;
         this.date = date;
