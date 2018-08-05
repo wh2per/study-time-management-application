@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "370791207905",
+    "firebase_url": "https://studytimemanagement-dda9b.firebaseio.com",
+    "project_id": "studytimemanagement-dda9b",
+    "storage_bucket": "studytimemanagement-dda9b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:370791207905:android:bf863a2fdc5cfca3",
+        "android_client_info": {
+          "package_name": "com.example.ready.studytimemanagement"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "370791207905-qig4qm9jbrjf5a0gj7ntp8bnrimqd1lp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ready.studytimemanagement",
+            "certificate_hash": "0601f1a45f68abccaccc564084cc24758a1e04e5"
+          }
+        },
+        {
+          "client_id": "370791207905-vgvng0qhujv8ipisru3mpf2u80561qgj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZ0VXreTmTzt_bdr-SECeUN2KsscGEpDg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "370791207905-vgvng0qhujv8ipisru3mpf2u80561qgj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
