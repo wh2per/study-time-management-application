@@ -18,12 +18,14 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.HashMap;
 
 /**
  * @brief Class to communicate android with server
  */
 public class RequestHttpConnection {
-    private String server_address = "http://192.168.0.9:5000";
+    private static final String SERVER_ADDR = "http://192.168.25.45:";
+    private static final String SERVER_PORT = "5000";
     private InputStream is = null;
 
     /**
@@ -34,7 +36,7 @@ public class RequestHttpConnection {
     private HttpURLConnection connectHTTP(String url) {
         HttpURLConnection httpCon;
         try {
-            URL urlCon = new URL(this.server_address + url);
+            URL urlCon = new URL(SERVER_ADDR + SERVER_PORT + url);
             httpCon = (HttpURLConnection) urlCon.openConnection();
             httpCon.setRequestMethod("POST");
             httpCon.setRequestProperty("Accept", "application/json");
@@ -175,10 +177,9 @@ public class RequestHttpConnection {
      * @param id
      * @return Time Object received from server
      */
-    public Time getAllTime(String url, String id){
+    public HashMap<String, Long> getClassfiedTime(String url, String id){
         InputStream is = null;
-        String result = "";
-        Time time_list = new Time();
+        HashMap<String, Long> recv_data = null;
         try {
             HttpURLConnection httpCon = connectHTTP(url);
             String json = "";
@@ -198,15 +199,16 @@ public class RequestHttpConnection {
 
             is = httpCon.getInputStream();
             ReadJSON readJson = new ReadJSON();
+
             try {
                 // convert inputstream to string
                 if(is != null) {
                     Log.d("get_time", "read start");
-                    time_list.setData_list(readJson.readJsonTime(is));
+                    recv_data = readJson.readJsonTime(is);
                     Log.d("get_time", "read end");
-                    Log.d("get_time", time_list.getData_list().get(0).getCategory());
+                    Log.d("get_time", Integer.toString(recv_data.size()));
                 } else
-                    time_list = null;
+                    recv_data = null;
             }
             catch (Exception e) {
                 e.printStackTrace();
@@ -222,7 +224,7 @@ public class RequestHttpConnection {
         catch (Exception e) {
             Log.e("InputStream", e.getLocalizedMessage());
         }
-        return time_list;
+        return recv_data;
     }
 
     /**

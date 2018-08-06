@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * @biref Class to exchange JSON data with server
@@ -68,10 +70,10 @@ public class ReadJSON {
      * @return ArrayList<Data>
      * @throws IOException
      */
-    public ArrayList<Data> readJsonTime(InputStream in) throws IOException {
+    public HashMap<String, Long> readJsonTime(InputStream in) throws IOException {
         JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
         try {
-            Log.d("get_time", "readJSONTime()");
+            Log.d("classify", "readJSONTime()");
             return readTimeArray(reader);
         } finally {
             reader.close();
@@ -85,16 +87,16 @@ public class ReadJSON {
      * @return ArrayList<Data> data list received from server
      * @throws IOException
      */
-    private ArrayList<Data> readTimeArray(JsonReader reader) throws IOException {
-        ArrayList<Data> time_list = new ArrayList<Data>();
+    private HashMap<String, Long> readTimeArray(JsonReader reader) throws IOException {
+        HashMap<String, Long> classfied_data = new HashMap<>();
         reader.beginArray();
         while (reader.hasNext()) {
-            time_list.add(readTime(reader));
+            classfied_data.putAll(readTime(reader));
         }
         reader.endArray();
-        Log.d("get_time", "readTimeArray()");
+        Log.d("classify", "readTimeArray()");
 
-        return time_list;
+        return classfied_data;
     }
 
     /**
@@ -103,23 +105,26 @@ public class ReadJSON {
      * @return Data data received from server
      * @throws IOException
      */
-    private Data readTime(JsonReader reader) throws IOException {
-        Data time = new Data();
+    private HashMap<String, Long> readTime(JsonReader reader) throws IOException {
+        HashMap<String, Long> data = new HashMap<>();
         reader.beginObject();
+        String key = "";
+        long val = 0;
         while (reader.hasNext()) {
             String name = reader.nextName();
-            if (name.equals("category")) {
-                time.setCategory(reader.nextString());
-            } else if (name.equals("regdate")) {
-                time.setDate(reader.nextString());
+            if (name.equals("name")) {
+                key = reader.nextString();
             } else if (name.equals("amount")) {
-                time.setAmount(reader.nextString());
+                String amount = reader.nextString();
+                if(amount.equals("None"))   val = 0;
+                else                        val = Long.parseLong(amount);
             } else {
                 reader.skipValue();
             }
         }
+        data.put(key, val);
         reader.endObject();
-        Log.d("get_time", "readTime()");
-        return time;
+        Log.d("classify", "readTime()");
+        return data;
     }
 }
