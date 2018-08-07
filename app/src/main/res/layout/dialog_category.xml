@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
-        android:backgroundTint="#469096"
+        android:backgroundTint="@color/colorPrimary"
         android:text="기본 공부"/>
     <Button
         android:id="@+id/saveBtn"
@@ -39,6 +39,6 @@
         android:layout_marginBottom="20dp"
         android:textSize="18dp"
         android:textColor="#fff"
-        android:background="#469096"
+        android:background="@color/colorPrimary"
         android:text="저장"/>
 </LinearLayout>
