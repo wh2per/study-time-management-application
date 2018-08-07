@@ -1,5 +1,6 @@
 package com.example.ready.studytimemanagement.presenter;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,10 +21,7 @@ import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import java.io.File;
 import java.util.ArrayList;
 
-import static com.example.ready.studytimemanagement.presenter.LoginController.mAuth;
-import static com.example.ready.studytimemanagement.presenter.LoginController.mGoogleSignInClient;
-
-public class CheckActivity extends LogfileController implements View.OnClickListener{
+public class CheckActivity extends LoginController implements View.OnClickListener{
 
     final static String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/DataLog/datalog.txt";
     final static String foldername = Environment.getExternalStorageDirectory().getAbsolutePath()+"/DataLog";
@@ -32,11 +30,18 @@ public class CheckActivity extends LogfileController implements View.OnClickList
     private EditText category;
     private EditText date;
     private EditText time;
+    private EditText appname;
     private TextView readcategory;
     private TextView readdate;
     private TextView readtime;
 
     ArrayList<Data> mData;
+
+    LogfileController lfc;
+    AppLockController alc;
+
+    Thread th;
+    Activity act;
 
     @Override
     protected void onCreate(Bundle bundle){
@@ -44,6 +49,7 @@ public class CheckActivity extends LogfileController implements View.OnClickList
         setContentView(R.layout.activity_check);
 
         findViewById(R.id.logout).setOnClickListener(this);
+
         TextView nameText = (TextView)findViewById(R.id.name);
         TextView emailText = (TextView)findViewById(R.id.email);
         Intent intent = getIntent();
@@ -53,6 +59,7 @@ public class CheckActivity extends LogfileController implements View.OnClickList
         category = (EditText)findViewById(R.id.category);
         date = (EditText)findViewById(R.id.date);
         time = (EditText)findViewById(R.id.time);
+        appname = (EditText)findViewById(R.id.appname);
 
         readcategory = (TextView)findViewById(R.id.readcategory);
         readdate = (TextView)findViewById(R.id.readdate);
@@ -62,6 +69,30 @@ public class CheckActivity extends LogfileController implements View.OnClickList
 
         findViewById(R.id.save).setOnClickListener(this);
         findViewById(R.id.load).setOnClickListener(this);
+
+        findViewById(R.id.applist).setOnClickListener(this);
+
+        findViewById(R.id.lock).setOnClickListener(this);
+
+        lfc = new LogfileController();
+        alc = new AppLockController();
+
+        act = this;
+        th  = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int num = 1;
+                while(true) {
+                    alc.CheckRunningApp(act);
+                    Log.d("Thread", "" + num++);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -105,10 +136,10 @@ public class CheckActivity extends LogfileController implements View.OnClickList
             String content = "#####\r\n";
             content = content+"#CATEGORY=="+category_s+"\r\n"+"#DATE=="+date_s+"\r\n"+"#TIME=="+time_s+"\r\n";
 
-            WriteLogFile(foldername,filename,content,true);
+            lfc.WriteLogFile(foldername,filename,content,true);
             Log.d("datalog","write complete!!");
         }else if(i==R.id.load){
-            String line = ReadLogFile(filePath);
+            String line = lfc.ReadLogFile(filePath);
 
             String[] dataSet = line.split("#####");
             for(int j=1; j<dataSet.length; j++){
@@ -127,6 +158,13 @@ public class CheckActivity extends LogfileController implements View.OnClickList
             readcategory.setText(mData.get(2).getCategory());
             readdate.setText(mData.get(2).getDate());
             readtime.setText(mData.get(2).getAmount());
+        }else if(i==R.id.applist){
+            alc.LoadAppList(this);
+            th.start();
+        }else if(i==R.id.lock){
+            String app = appname.getText().toString();
+            alc.AppLock.add(app);
+            Log.d("Add Lock APP",app);
         }
     }
 }
