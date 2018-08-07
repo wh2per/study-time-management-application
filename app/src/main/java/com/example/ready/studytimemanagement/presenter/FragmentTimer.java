@@ -1,31 +1,37 @@
 package com.example.ready.studytimemanagement.presenter;
 
 import android.app.AlertDialog;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ScaleDrawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ready.studytimemanagement.R;
 import com.example.ready.studytimemanagement.model.Data;
+import com.triggertrap.seekarc.SeekArc;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class FragmentTimer extends Fragment{
-    TextView targetView, totalView;
-    Button startBtn, plusHourBtn, plusMinBtn, plusSecBtn, minusHourBtn, minusMinBtn, minusSecBtn;
-    private long targetTime = 30000;
+    private TextView targetView, totalView;
+    private  Button startBtn, plusHourBtn, plusMinBtn, plusSecBtn, minusHourBtn, minusMinBtn, minusSecBtn;
+    private long targetTime = 0;
     private BasicTimer bt;
     private boolean timerOn;
     private Data tempData;
-
+    private SeekArc seekBar;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -33,14 +39,8 @@ public class FragmentTimer extends Fragment{
         targetView = (TextView)rootView.findViewById(R.id.TargetTimeText);
         totalView = (TextView)rootView.findViewById(R.id.TotalTimeText);
         startBtn = (Button)rootView.findViewById(R.id.StartBtn);
+        seekBar = rootView.findViewById(R.id.seekArc);
 
-        plusHourBtn = (Button)rootView.findViewById(R.id.hourPlusBtn);
-        plusMinBtn = (Button)rootView.findViewById(R.id.minPlusBtn);
-        plusSecBtn = (Button)rootView.findViewById(R.id.secPlusBtn);
-
-        minusHourBtn = (Button)rootView.findViewById(R.id.hourMinusBtn);
-        minusMinBtn = (Button)rootView.findViewById(R.id.minMinusBtn);
-        minusSecBtn = (Button)rootView.findViewById(R.id.secMinusBtn);
 
         bt = new BasicTimer(targetTime, targetView, totalView);
         tempData = new Data();
@@ -53,11 +53,12 @@ public class FragmentTimer extends Fragment{
             @Override
             public void onClick(View view){
                 if(timerOn){
-                    startBtn.setText("시작");
+                    //startBtn.setText("시작");
+                    startBtn.setBackgroundResource(R.drawable.lock_icon_grey);
                     timerOn = false;
                     bt.timerStop();
-                    tempData.setTarget_time(String.valueOf(targetTime));
-                    tempData.setAmount(String.valueOf(bt.getTotalTime()));
+                    tempData.setTarget_time(String.valueOf(bt.makeToTimeFormat(targetTime)));
+                    tempData.setAmount(String.valueOf(bt.makeToTimeFormat(bt.getTotalTime())));
 
                     showNoticeDialog(tempData);
 
@@ -65,94 +66,70 @@ public class FragmentTimer extends Fragment{
                     SimpleDateFormat time = new SimpleDateFormat("hh:mm:ss");
                     tempData.setDate(time.format(currentTime));
 
+                    setTargetTime(0);
+                    seekBar.setProgress(0);
+                    updateTextview();
+
+                    seekBar.setEnabled(true);
                     //Log.v("tag",tempData.getCategory());
                     //Log.v("tag",tempData.getDate());
                 }else{
-                    startBtn.setText("정지");
+                    //startBtn.setText("정지");
+                    startBtn.setBackgroundResource(R.drawable.lock_icon_color);
                     timerOn = true;
                     bt.timerStart();
+                    seekBar.setEnabled(false);
                 }
             }
         });
-        /*
-         * @brief listeners for add/subtract the timer time
-         * @deprecated all listeners -> going to change some awesome ui
-         * */
-        plusHourBtn.setOnClickListener(new Button.OnClickListener(){
+
+
+        seekBar.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
             @Override
-            public void onClick(View view) {
-                if(!timerOn){
-                    targetTime = targetTime+3600000;
+            public void onProgressChanged(SeekArc seekArc, int i, boolean b) {
+                if(targetTime == 0){
+                    targetTime = 1;
+                }else{
+                    Log.v("angle", String.valueOf(seekBar.getProgress()));
+                    int progress = seekBar.getProgress();
+                    targetTime = progress*300000;
                     bt.setTargetTime(targetTime);
                     updateTextview();
                 }
+
+                /*
+                if(progress < 25){
+                    targetTime = progress*60000;
+                }else if(progress >= 25 && progress<=50){
+                    targetTime = (progress/2)*1200000;
+                }else if(progress>50 && progress<=75){
+                    targetTime = (progress/2)*1800000;
+                }else{
+                    targetTime = (progress/2)*3200000;
+                }*/
             }
-        });
-        plusMinBtn.setOnClickListener(new Button.OnClickListener(){
+
             @Override
-            public void onClick(View view) {
-                if(!timerOn){
-                    targetTime = targetTime+600000;
-                    bt.setTargetTime(targetTime);
-                    updateTextview();
-                }
+            public void onStartTrackingTouch(SeekArc seekArc) {
+
             }
-        });
-        plusSecBtn.setOnClickListener(new Button.OnClickListener(){
+
             @Override
-            public void onClick(View view) {
-                if(!timerOn){
-                    targetTime = targetTime+30000;
-                    bt.setTargetTime(targetTime);
-                    updateTextview();
-                }
-            }
-        });
-        minusHourBtn.setOnClickListener(new Button.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                if(!timerOn){
-                    if(targetTime-3600000>0){
-                        targetTime = targetTime-3600000;
-                    }else{
-                        targetTime = 0;
-                    }
-                    bt.setTargetTime(targetTime);
-                    updateTextview();
-                }
-            }
-        });
-        minusMinBtn.setOnClickListener(new Button.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                if(!timerOn){
-                    if(targetTime-600000>0){
-                        targetTime = targetTime-600000;
-                    }else{
-                        targetTime = 0;
-                    }
-                    bt.setTargetTime(targetTime);
-                    updateTextview();
-                }
-            }
-        });
-        minusSecBtn.setOnClickListener(new Button.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                if(!timerOn){
-                    if(targetTime-30000>0){
-                        targetTime = targetTime-30000;
-                    }else{
-                        targetTime = 0;
-                    }
-                    bt.setTargetTime(targetTime);
-                    updateTextview();
-                }
+            public void onStopTrackingTouch(SeekArc seekArc) {
+
             }
         });
         return rootView;
     }
+    public long getTargetTime(){
+        return this.targetTime;
+    }
+    public void setTargetTime(long l){
+        this.targetTime = l;
+    }
     private void updateTextview(){
+       // Log.v("tatag", String.valueOf(targetTime));
+
         targetView.setText(bt.makeToTimeFormat(targetTime));
         totalView.setText(bt.makeToTimeFormat(0));
     }
@@ -177,7 +154,9 @@ public class FragmentTimer extends Fragment{
             public void onClick(View view) {
                 d.setCategory(String.valueOf(ed.getText()));
                 dialog.dismiss();
-                //Log.v("tag",d.getCategory());
+                String toastMsg = d.getCategory()+" "+d.getAmount()+" 저장됐습니다";
+                Toast.makeText(getContext(),toastMsg,Toast.LENGTH_LONG).show();
+
             }
         });
     }
