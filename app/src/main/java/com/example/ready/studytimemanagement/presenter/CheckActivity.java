@@ -40,8 +40,25 @@ public class CheckActivity extends LoginController implements View.OnClickListen
     LogfileController lfc;
     AppLockController alc;
 
-    Thread th;
+    checkThread th;
     Activity act;
+
+    boolean checkFlag;
+
+    private class checkThread extends Thread{
+        public void run() {
+            int num = 1;
+            while(checkFlag) {
+                alc.CheckRunningApp(act);
+                Log.d("Thread", "" + num++);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle bundle){
@@ -78,21 +95,8 @@ public class CheckActivity extends LoginController implements View.OnClickListen
         alc = new AppLockController();
 
         act = this;
-        th  = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                int num = 1;
-                while(true) {
-                    alc.CheckRunningApp(act);
-                    Log.d("Thread", "" + num++);
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
+        checkFlag = false;
+
     }
 
     @Override
@@ -155,12 +159,20 @@ public class CheckActivity extends LoginController implements View.OnClickListen
                 mData.add(d);
             }
 
-            readcategory.setText(mData.get(2).getCategory());
-            readdate.setText(mData.get(2).getDate());
-            readtime.setText(mData.get(2).getAmount());
+            readcategory.setText(mData.get(mData.size()-1).getCategory());
+            readdate.setText(mData.get(mData.size()-1).getDate());
+            readtime.setText(mData.get(mData.size()-1).getAmount());
         }else if(i==R.id.applist){
             alc.LoadAppList(this);
-            th.start();
+            if(checkFlag==false) {
+                th = new checkThread();
+                th.start();
+            }else {
+                th = null;
+
+                Log.d("Thread", "쓰레드 뿌셔");
+            }
+            checkFlag = !checkFlag;
         }else if(i==R.id.lock){
             String app = appname.getText().toString();
             alc.AppLock.add(app);
