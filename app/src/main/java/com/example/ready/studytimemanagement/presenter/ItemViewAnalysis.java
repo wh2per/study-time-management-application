@@ -2,6 +2,7 @@ package com.example.ready.studytimemanagement.presenter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -9,15 +10,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.ready.studytimemanagement.R;
-import com.example.ready.studytimemanagement.model.Data;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,9 +80,14 @@ public class ItemViewAnalysis extends LinearLayout {
             entries.add(new BarEntry(i,i*10));
         }
         BarDataSet dataSet = new BarDataSet(entries,"label");
-        dataSet.setColor(Color.rgb(70,144,150));
+        dataSet.setColor(Color.rgb(133,204,159));
 
         BarData barData = new BarData(dataSet);
+       // barChart.setScaleX(10);
+        barChart.setDoubleTapToZoomEnabled(false);
+        barChart.getXAxis().setGranularity(1f);
+        barChart.getDescription().setText("");
+        barChart.setPinchZoom(false);
         barChart.setData(barData);
         barChart.invalidate();
     }
