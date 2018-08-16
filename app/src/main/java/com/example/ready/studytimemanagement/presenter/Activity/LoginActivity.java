@@ -1,4 +1,4 @@
-package com.example.ready.studytimemanagement.presenter;
+package com.example.ready.studytimemanagement.presenter.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,9 +6,10 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.ready.studytimemanagement.R;
+import com.example.ready.studytimemanagement.presenter.LoginController;
 import com.kakao.usermgmt.LoginButton;
 
-public class LoginActivity extends LoginController{
+public class LoginActivity extends LoginController {
     private Button kakaoBtn, facebookBtn, googleBtn, noMemberBtn;
 
     @Override

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.ready.studytimemanagement.R;
+import com.example.ready.studytimemanagement.presenter.Activity.LogfileController;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;

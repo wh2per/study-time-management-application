@@ -1,4 +1,4 @@
-package com.example.ready.studytimemanagement.presenter;
+package com.example.ready.studytimemanagement.presenter.Item;
 
 import com.example.ready.studytimemanagement.model.Data;
 

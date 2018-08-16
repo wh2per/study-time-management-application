@@ -1,12 +1,15 @@
-package com.example.ready.studytimemanagement.presenter;
+package com.example.ready.studytimemanagement.presenter.Activity;
 
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.ready.studytimemanagement.R;
+import com.example.ready.studytimemanagement.presenter.Adapter.MainPagerAdapter;
+import com.example.ready.studytimemanagement.presenter.Fragment.FragmentAnalysis;
+import com.example.ready.studytimemanagement.presenter.Fragment.FragmentSetting;
+import com.example.ready.studytimemanagement.presenter.Fragment.FragmentTimer;
 
 public class MainActivity extends AppCompatActivity {
 

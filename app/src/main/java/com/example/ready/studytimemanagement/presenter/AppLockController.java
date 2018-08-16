@@ -8,26 +8,31 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.util.Log;
 
+import com.example.ready.studytimemanagement.presenter.Activity.BaseActivity;
+import com.example.ready.studytimemanagement.presenter.Adapter.AdapterApplock;
+import com.example.ready.studytimemanagement.presenter.Item.ItemApplock;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class AppLockController extends BaseActivity{
+public class AppLockController extends BaseActivity {
     ArrayList<String> AppLock;
 
     public AppLockController(){
         AppLock = new ArrayList<String>();
     }
 
-    public void LoadAppList(Activity act){
+    public void LoadAppList(Activity act, AdapterApplock adapterApplock){
         PackageManager pkgm = act.getPackageManager();
         Intent intent = new Intent(Intent.ACTION_MAIN, null);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         List<ResolveInfo> AppInfos = pkgm.queryIntentActivities(intent, 0);
         for (ResolveInfo info : AppInfos) {
             ActivityInfo ai = info.activityInfo;
-            Log.d("APP TITLE", ai.loadLabel(pkgm).toString());
-            Log.d("APP Package Name", ai.packageName);
-            Log.d("APP Class Name", ai.name);
+            adapterApplock.addItem(new ItemApplock(ai.loadLabel(pkgm).toString(),ai.loadIcon(pkgm)));
+            //Log.d("APP TITLE", ai.loadLabel(pkgm).toString());
+            //Log.d("APP Package Name", ai.packageName);
+            //Log.d("APP Class Name", ai.name);
         }
     }
 

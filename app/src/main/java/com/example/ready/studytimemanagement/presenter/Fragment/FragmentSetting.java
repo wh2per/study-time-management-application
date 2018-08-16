@@ -1,4 +1,4 @@
-package com.example.ready.studytimemanagement.presenter;
+package com.example.ready.studytimemanagement.presenter.Fragment;
 
 import android.content.Intent;
 import android.support.v4.app.Fragment;
@@ -12,6 +12,9 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.ready.studytimemanagement.R;
+import com.example.ready.studytimemanagement.presenter.Adapter.AdapterSetting;
+import com.example.ready.studytimemanagement.presenter.Item.ItemSetting;
+import com.example.ready.studytimemanagement.presenter.Activity.LoginActivity;
 
 public class FragmentSetting extends Fragment{
     Button testSignin;

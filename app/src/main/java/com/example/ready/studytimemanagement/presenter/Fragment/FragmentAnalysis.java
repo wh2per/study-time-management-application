@@ -1,4 +1,4 @@
-package com.example.ready.studytimemanagement.presenter;
+package com.example.ready.studytimemanagement.presenter.Fragment;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.ready.studytimemanagement.R;
+import com.example.ready.studytimemanagement.presenter.Adapter.AdapterAnalysis;
+import com.example.ready.studytimemanagement.presenter.Item.ItemAnalysis;
 
 public class FragmentAnalysis extends Fragment{
     @Nullable

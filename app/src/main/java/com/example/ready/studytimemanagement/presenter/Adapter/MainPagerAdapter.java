@@ -1,4 +1,4 @@
-package com.example.ready.studytimemanagement.presenter;
+package com.example.ready.studytimemanagement.presenter.Adapter;
 
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
