@@ -2,12 +2,15 @@ package com.example.ready.studytimemanagement.presenter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ready.studytimemanagement.R;
@@ -31,6 +34,8 @@ public class CheckActivity extends LoginController implements View.OnClickListen
     private EditText date;
     private EditText time;
     private EditText appname;
+    private TextView installname;
+    private ImageView appicon;
     private TextView readcategory;
     private TextView readdate;
     private TextView readtime;
@@ -49,7 +54,12 @@ public class CheckActivity extends LoginController implements View.OnClickListen
         public void run() {
             int num = 1;
             while(checkFlag) {
-                alc.CheckRunningApp(act);
+                if(alc.CheckRunningApp(act)) {
+                    Intent intent = new Intent(getApplicationContext(),LockActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    //finish();
+                }
                 Log.d("Thread", "" + num++);
                 try {
                     Thread.sleep(1000);
@@ -78,9 +88,12 @@ public class CheckActivity extends LoginController implements View.OnClickListen
         time = (EditText)findViewById(R.id.time);
         appname = (EditText)findViewById(R.id.appname);
 
+        installname = (TextView)findViewById(R.id.installname);
         readcategory = (TextView)findViewById(R.id.readcategory);
         readdate = (TextView)findViewById(R.id.readdate);
         readtime = (TextView)findViewById(R.id.readtime);
+
+        appicon = (ImageView)findViewById(R.id.appicon);
 
         mData = new ArrayList<Data>();
 
@@ -89,6 +102,7 @@ public class CheckActivity extends LoginController implements View.OnClickListen
 
         findViewById(R.id.applist).setOnClickListener(this);
 
+        findViewById(R.id.lockSetting).setOnClickListener(this);
         findViewById(R.id.lock).setOnClickListener(this);
 
         lfc = new LogfileController();
@@ -164,19 +178,34 @@ public class CheckActivity extends LoginController implements View.OnClickListen
             readtime.setText(mData.get(mData.size()-1).getAmount());
         }else if(i==R.id.applist){
             alc.LoadAppList(this);
+
+            //test용-------------------------------
+            ResolveInfo info = alc.AppInfos.get(15);
+            ActivityInfo ai = info.activityInfo;
+            installname.setText(ai.loadLabel(alc.pkgm).toString());
+
+            appicon.setImageDrawable(ai.loadIcon(alc.pkgm));
+
+
+        }else if(i==R.id.lockSetting){
+            String app = appname.getText().toString();
+            alc.AppLock.add(app);
+            Log.d("Add Lock APP",app);
+
+        }else if(i==R.id.lock){
+           // Intent intent = new Intent(getApplicationContext(),AppLockService.class); // 이동할 컴포넌트
+          //  startService(intent); // 서비스 시작
+
+            //------------------------------------
             if(checkFlag==false) {
                 th = new checkThread();
                 th.start();
             }else {
                 th = null;
-
                 Log.d("Thread", "쓰레드 뿌셔");
             }
             checkFlag = !checkFlag;
-        }else if(i==R.id.lock){
-            String app = appname.getText().toString();
-            alc.AppLock.add(app);
-            Log.d("Add Lock APP",app);
+
         }
     }
 }

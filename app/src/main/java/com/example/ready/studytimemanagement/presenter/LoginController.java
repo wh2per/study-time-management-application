@@ -72,6 +72,7 @@ public class LoginController extends LogfileController {
             intent.putExtra("ID", ID);
             intent.putExtra("EMAIL",EMAIL);
             startActivity(intent);
+            //finish();
 
             return true;
         }else{
@@ -197,6 +198,7 @@ public class LoginController extends LogfileController {
                             intent.putExtra("ID", ID);
                             intent.putExtra("EMAIL",EMAIL);
                             startActivity(intent);
+                            //finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -241,6 +243,7 @@ public class LoginController extends LogfileController {
                             intent.putExtra("ID", ID);
                             intent.putExtra("EMAIL",EMAIL);
                             startActivity(intent);
+                            //finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -318,6 +321,7 @@ public class LoginController extends LogfileController {
                     intent.putExtra("ID", ID);
                     intent.putExtra("EMAIL",EMAIL);
                     startActivity(intent);
+                    //finish();
                 }
 
                 // 사용자 정보 요청 실패
