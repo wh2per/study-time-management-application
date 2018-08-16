@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         final MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager());
         final FragmentAnalysis fragmentAnalysis = new FragmentAnalysis();
         final FragmentTimer fragmentTimer = new FragmentTimer();
+        fragmentTimer.mainActivity = this;
         final FragmentSetting fragmentSetting = new FragmentSetting();
 
         adapter.addItem(fragmentAnalysis);
