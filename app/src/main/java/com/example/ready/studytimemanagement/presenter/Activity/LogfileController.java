@@ -1,6 +1,8 @@
-package com.example.ready.studytimemanagement.presenter;
+package com.example.ready.studytimemanagement.presenter.Activity;
 
 import android.util.Log;
+
+import com.example.ready.studytimemanagement.presenter.Activity.BaseActivity;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

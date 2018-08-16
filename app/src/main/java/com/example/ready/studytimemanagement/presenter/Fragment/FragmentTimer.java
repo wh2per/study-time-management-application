@@ -1,8 +1,8 @@
-package com.example.ready.studytimemanagement.presenter;
+package com.example.ready.studytimemanagement.presenter.Fragment;
 
 import android.app.AlertDialog;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ScaleDrawable;
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,12 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ready.studytimemanagement.R;
 import com.example.ready.studytimemanagement.model.Data;
+import com.example.ready.studytimemanagement.presenter.Activity.AppLockActivity;
+import com.example.ready.studytimemanagement.presenter.BasicTimer;
 import com.triggertrap.seekarc.SeekArc;
 
 import java.text.SimpleDateFormat;
@@ -26,7 +27,8 @@ import java.util.Date;
 
 public class FragmentTimer extends Fragment{
     private TextView targetView, totalView;
-    private  Button startBtn, plusHourBtn, plusMinBtn, plusSecBtn, minusHourBtn, minusMinBtn, minusSecBtn;
+    private Button appListBtn;
+    private Button startBtn;
     private long targetTime = 0;
     private BasicTimer bt;
     private boolean timerOn;
@@ -38,9 +40,9 @@ public class FragmentTimer extends Fragment{
         final ViewGroup rootView =(ViewGroup) inflater.inflate(R.layout.fragment_timer, container,false);
         targetView = (TextView)rootView.findViewById(R.id.TargetTimeText);
         totalView = (TextView)rootView.findViewById(R.id.TotalTimeText);
-        startBtn = (Button)rootView.findViewById(R.id.StartBtn);
+        startBtn = rootView.findViewById(R.id.StartBtn);
         seekBar = rootView.findViewById(R.id.seekArc);
-
+        appListBtn = rootView.findViewById(R.id.appListBtn);
 
         bt = new BasicTimer(targetTime, targetView, totalView);
         tempData = new Data();
@@ -49,7 +51,7 @@ public class FragmentTimer extends Fragment{
         /*
          * @brief timer btn listener, make the timer stop/start & load pop dialog
          * */
-        startBtn.setOnClickListener(new Button.OnClickListener() {
+        startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
                 if(timerOn){
@@ -90,7 +92,7 @@ public class FragmentTimer extends Fragment{
                 if(targetTime == 0){
                     targetTime = 1;
                 }else{
-                    Log.v("angle", String.valueOf(seekBar.getProgress()));
+                    //Log.v("angle", String.valueOf(seekBar.getProgress()));
                     int progress = seekBar.getProgress();
                     targetTime = progress*300000;
                     bt.setTargetTime(targetTime);
@@ -119,8 +121,17 @@ public class FragmentTimer extends Fragment{
 
             }
         });
+
+        appListBtn.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(),AppLockActivity.class);
+                startActivity(intent);
+            }
+        });
         return rootView;
     }
+
     public long getTargetTime(){
         return this.targetTime;
     }
@@ -140,9 +151,9 @@ public class FragmentTimer extends Fragment{
      * */
     public void showNoticeDialog(final Data d) {
         // Create an instance of the dialog fragment and show it
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
         // Get the layout inflater
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        LayoutInflater inflater = this.getActivity().getLayoutInflater();
         builder.setView(inflater.inflate(R.layout.dialog_category, null));
 
         final AlertDialog dialog = builder.create();

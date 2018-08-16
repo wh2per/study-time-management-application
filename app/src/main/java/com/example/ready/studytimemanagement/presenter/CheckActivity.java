@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.example.ready.studytimemanagement.R;
 import com.example.ready.studytimemanagement.model.Data;
+import com.example.ready.studytimemanagement.presenter.Activity.LogfileController;
+import com.example.ready.studytimemanagement.presenter.Activity.LoginActivity;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -159,7 +161,7 @@ public class CheckActivity extends LoginController implements View.OnClickListen
             readdate.setText(mData.get(2).getDate());
             readtime.setText(mData.get(2).getAmount());
         }else if(i==R.id.applist){
-            alc.LoadAppList(this);
+            //alc.LoadAppList(this);
             th.start();
         }else if(i==R.id.lock){
             String app = appname.getText().toString();

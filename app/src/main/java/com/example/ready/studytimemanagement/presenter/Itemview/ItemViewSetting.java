@@ -1,4 +1,4 @@
-package com.example.ready.studytimemanagement.presenter;
+package com.example.ready.studytimemanagement.presenter.Itemview;
 
 import android.content.Context;
 import android.support.annotation.Nullable;

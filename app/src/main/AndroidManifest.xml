@@ -12,15 +12,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity android:name=".presenter.MainActivity">
+        <activity android:name=".presenter.Activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presenter.LoginActivity">
+        <activity android:name=".presenter.Activity.LoginActivity">
         </activity>
         <activity android:name=".presenter.CheckActivity">
+        </activity>
+        <activity android:name=".presenter.Activity.AppLockActivity">
         </activity>
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>

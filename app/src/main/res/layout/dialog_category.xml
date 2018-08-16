@@ -18,7 +18,7 @@
     <TextView
         android:layout_width="300dp"
         android:layout_height="30dp"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:textColor="#000"
         android:text="카테고리 입력"
         android:layout_marginBottom="8dp"
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:textSize="18dp"
+        android:textSize="18sp"
         android:textColor="#fff"
         android:background="@color/colorPrimary"
         android:text="저장"/>

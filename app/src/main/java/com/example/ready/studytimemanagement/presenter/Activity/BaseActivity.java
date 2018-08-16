@@ -1,4 +1,4 @@
-package com.example.ready.studytimemanagement.presenter;
+package com.example.ready.studytimemanagement.presenter.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
