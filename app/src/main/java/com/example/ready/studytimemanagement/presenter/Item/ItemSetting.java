@@ -1,4 +1,4 @@
-package com.example.ready.studytimemanagement.presenter;
+package com.example.ready.studytimemanagement.presenter.Item;
 
 public class ItemSetting {
     String menuTitle;

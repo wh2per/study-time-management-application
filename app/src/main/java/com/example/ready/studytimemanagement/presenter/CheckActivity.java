@@ -1,8 +1,11 @@
 package com.example.ready.studytimemanagement.presenter;
 
 import android.app.Activity;
+import android.app.AppOpsManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,6 +18,8 @@ import android.widget.TextView;
 
 import com.example.ready.studytimemanagement.R;
 import com.example.ready.studytimemanagement.model.Data;
+import com.example.ready.studytimemanagement.presenter.Activity.LogfileController;
+import com.example.ready.studytimemanagement.presenter.Activity.LoginActivity;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -53,6 +58,27 @@ public class CheckActivity extends LoginController implements View.OnClickListen
     private class checkThread extends Thread{
         public void run() {
             int num = 1;
+
+            // GET_USAGE_STATS 권한 확인
+            boolean granted = false;
+            AppOpsManager appOps = (AppOpsManager) act.getSystemService(Context.APP_OPS_SERVICE);
+            int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,android.os.Process.myUid(), act.getPackageName());
+
+            if (mode == AppOpsManager.MODE_DEFAULT) {
+                granted = (act.checkCallingOrSelfPermission(android.Manifest.permission.PACKAGE_USAGE_STATS) == PackageManager.PERMISSION_GRANTED);
+            } else {
+                granted = (mode == AppOpsManager.MODE_ALLOWED);
+            }
+
+            Log.d("isRooting granted = " , String.valueOf(granted));
+
+            if (granted == false)
+            {
+                // 권한이 없을 경우 권한 요구 페이지 이동
+                Intent intent = new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS);
+                act.startActivity(intent);
+            }
+
             while(checkFlag) {
                 if(alc.CheckRunningApp(act)) {
                     Intent intent = new Intent(getApplicationContext(),LockActivity.class);
@@ -62,7 +88,7 @@ public class CheckActivity extends LoginController implements View.OnClickListen
                 }
                 Log.d("Thread", "" + num++);
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(1000 );
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -177,7 +203,7 @@ public class CheckActivity extends LoginController implements View.OnClickListen
             readdate.setText(mData.get(mData.size()-1).getDate());
             readtime.setText(mData.get(mData.size()-1).getAmount());
         }else if(i==R.id.applist){
-            alc.LoadAppList(this);
+            //alc.LoadAppList(this);
 
             //test용-------------------------------
             ResolveInfo info = alc.AppInfos.get(15);
@@ -195,6 +221,8 @@ public class CheckActivity extends LoginController implements View.OnClickListen
         }else if(i==R.id.lock){
            // Intent intent = new Intent(getApplicationContext(),AppLockService.class); // 이동할 컴포넌트
           //  startService(intent); // 서비스 시작
+
+
 
             //------------------------------------
             if(checkFlag==false) {
