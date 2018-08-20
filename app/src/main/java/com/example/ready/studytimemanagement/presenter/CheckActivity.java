@@ -46,7 +46,7 @@ public class CheckActivity extends LoginController implements View.OnClickListen
     LogfileController lfc;
     AppLockController alc;
 
-    ArrayList<String> AppLock;
+    ArrayList<AppLockList> AppLock;
 
     @Override
     protected void onCreate(Bundle bundle){
@@ -86,7 +86,7 @@ public class CheckActivity extends LoginController implements View.OnClickListen
         lfc = new LogfileController();
         alc = new AppLockController();
 
-        AppLock = new ArrayList<String>();
+        AppLock = new ArrayList<AppLockList>();
     }
 
     @Override
@@ -165,11 +165,11 @@ public class CheckActivity extends LoginController implements View.OnClickListen
 
         }else if(i==R.id.lockSetting){
             String app = appname.getText().toString();
-            AppLock.add(app);
+            AppLock.add(new AppLockList(app,false));
             Log.d("Add Lock APP",app);
-
         }else if(i==R.id.lock){
             Intent intent = new Intent(getApplicationContext(),AppLockService.class); // 이동할 컴포넌트
+            intent.putExtra("AppLock",AppLock);
             startService(intent); // 서비스 시작
         }
     }

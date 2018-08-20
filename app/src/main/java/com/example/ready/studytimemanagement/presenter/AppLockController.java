@@ -14,6 +14,7 @@ import com.example.ready.studytimemanagement.presenter.Activity.BaseActivity;
 import com.example.ready.studytimemanagement.presenter.Adapter.AdapterApplock;
 import com.example.ready.studytimemanagement.presenter.Item.ItemApplock;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -36,7 +37,7 @@ public class AppLockController extends BaseActivity {
         }
     }
 
-    public boolean CheckRunningApp(Context context) {
+    public boolean CheckRunningApp(Context context, ArrayList<AppLockList> AppLock) {
         Log.d("App Lock : ","체크함수 시작!");
 
         // 기타 프로세스 목록 확인
@@ -51,12 +52,20 @@ public class AppLockController extends BaseActivity {
                 //Log.d("packageName = " ,usageStats.getPackageName());
             }
             Log.d("CurrentApp = " ,runningTask.get(runningTask.lastKey()).getPackageName());
+
+            for(int i=0; i<AppLock.size(); i++){
+                if (AppLock.get(i).getAppName().equals(runningTask.get(runningTask.lastKey()).getPackageName()) && AppLock.get(i).getLockFlag()==false){
+                    Log.d("Catch ForeGround App : ", AppLock.get(i).getAppName());
+                    AppLock.get(i).setLockFlag(true);
+                    return true;
+                }
+            }
         }
         else
         {
             Log.d("isRooting stats is NULL","");
         }
-        return true;
+        return false;
 
         /*
         ActivityManager am = (ActivityManager) act.getApplicationContext().getSystemService(ACTIVITY_SERVICE);
