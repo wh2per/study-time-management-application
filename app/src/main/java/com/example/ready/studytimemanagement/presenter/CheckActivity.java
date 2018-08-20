@@ -1,11 +1,7 @@
 package com.example.ready.studytimemanagement.presenter;
 
-import android.app.Activity;
-import android.app.AppOpsManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.os.Environment;
@@ -50,51 +46,7 @@ public class CheckActivity extends LoginController implements View.OnClickListen
     LogfileController lfc;
     AppLockController alc;
 
-    checkThread th;
-    Activity act;
-
-    boolean checkFlag;
-
-    private class checkThread extends Thread{
-        public void run() {
-            int num = 1;
-
-            // GET_USAGE_STATS 권한 확인
-            boolean granted = false;
-            AppOpsManager appOps = (AppOpsManager) act.getSystemService(Context.APP_OPS_SERVICE);
-            int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,android.os.Process.myUid(), act.getPackageName());
-
-            if (mode == AppOpsManager.MODE_DEFAULT) {
-                granted = (act.checkCallingOrSelfPermission(android.Manifest.permission.PACKAGE_USAGE_STATS) == PackageManager.PERMISSION_GRANTED);
-            } else {
-                granted = (mode == AppOpsManager.MODE_ALLOWED);
-            }
-
-            Log.d("isRooting granted = " , String.valueOf(granted));
-
-            if (granted == false)
-            {
-                // 권한이 없을 경우 권한 요구 페이지 이동
-                Intent intent = new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS);
-                act.startActivity(intent);
-            }
-
-            while(checkFlag) {
-                if(alc.CheckRunningApp(act)) {
-                    Intent intent = new Intent(getApplicationContext(),LockActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    //finish();
-                }
-                Log.d("Thread", "" + num++);
-                try {
-                    Thread.sleep(1000 );
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
+    ArrayList<String> AppLock;
 
     @Override
     protected void onCreate(Bundle bundle){
@@ -134,9 +86,7 @@ public class CheckActivity extends LoginController implements View.OnClickListen
         lfc = new LogfileController();
         alc = new AppLockController();
 
-        act = this;
-        checkFlag = false;
-
+        AppLock = new ArrayList<String>();
     }
 
     @Override
@@ -215,25 +165,12 @@ public class CheckActivity extends LoginController implements View.OnClickListen
 
         }else if(i==R.id.lockSetting){
             String app = appname.getText().toString();
-            alc.AppLock.add(app);
+            AppLock.add(app);
             Log.d("Add Lock APP",app);
 
         }else if(i==R.id.lock){
-           // Intent intent = new Intent(getApplicationContext(),AppLockService.class); // 이동할 컴포넌트
-          //  startService(intent); // 서비스 시작
-
-
-
-            //------------------------------------
-            if(checkFlag==false) {
-                th = new checkThread();
-                th.start();
-            }else {
-                th = null;
-                Log.d("Thread", "쓰레드 뿌셔");
-            }
-            checkFlag = !checkFlag;
-
+            Intent intent = new Intent(getApplicationContext(),AppLockService.class); // 이동할 컴포넌트
+            startService(intent); // 서비스 시작
         }
     }
 }

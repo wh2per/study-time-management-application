@@ -1,41 +1,26 @@
 package com.example.ready.studytimemanagement.presenter;
 
 import android.app.Activity;
-import android.app.ActivityManager;
-import android.app.AppOpsManager;
-import android.app.Service;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.example.ready.studytimemanagement.presenter.Activity.BaseActivity;
 import com.example.ready.studytimemanagement.presenter.Adapter.AdapterApplock;
 import com.example.ready.studytimemanagement.presenter.Item.ItemApplock;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 public class AppLockController extends BaseActivity {
-    ArrayList<String> AppLock;
-
     PackageManager pkgm;
     List<ResolveInfo> AppInfos;
-    ResolveInfo info;
-    String n;
-
-    public AppLockController(){
-        AppLock = new ArrayList<String>();
-    }
 
     public void LoadAppList(Activity act, AdapterApplock adapterApplock){
         pkgm = act.getPackageManager();
@@ -46,13 +31,33 @@ public class AppLockController extends BaseActivity {
             ActivityInfo ai = info.activityInfo;
             Log.d("APP TITLE", ai.loadLabel(pkgm).toString());
             adapterApplock.addItem(new ItemApplock(ai.loadLabel(pkgm).toString(),ai.loadIcon(pkgm)));
-            //n = ai.loadLabel(pkgm).toString();
             Log.d("APP Package Name", ai.packageName);
             Log.d("APP Class Name", ai.name);
         }
     }
 
-    public boolean CheckRunningApp(Activity act) {
+    public boolean CheckRunningApp(Context context) {
+        Log.d("App Lock : ","체크함수 시작!");
+
+        // 기타 프로세스 목록 확인
+        UsageStatsManager usage = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
+        long time = System.currentTimeMillis();
+        List<UsageStats> stats = usage.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, 0, time);
+        if (stats != null)
+        {
+            SortedMap<Long, UsageStats> runningTask = new TreeMap<Long,UsageStats>();
+            for (UsageStats usageStats : stats) {
+                runningTask.put(usageStats.getLastTimeUsed(), usageStats);
+                //Log.d("packageName = " ,usageStats.getPackageName());
+            }
+            Log.d("CurrentApp = " ,runningTask.get(runningTask.lastKey()).getPackageName());
+        }
+        else
+        {
+            Log.d("isRooting stats is NULL","");
+        }
+        return true;
+
         /*
         ActivityManager am = (ActivityManager) act.getApplicationContext().getSystemService(ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> list = am.getRunningAppProcesses();
@@ -97,25 +102,5 @@ public class AppLockController extends BaseActivity {
         return false;
         */
 
-        Log.d("App Lock : ","체크함수 시작!");
-
-        // 기타 프로세스 목록 확인
-        UsageStatsManager usage = (UsageStatsManager) act.getSystemService(Context.USAGE_STATS_SERVICE);
-        long time = System.currentTimeMillis();
-        List<UsageStats> stats = usage.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, 0, time);
-        if (stats != null)
-        {
-            SortedMap<Long, UsageStats> runningTask = new TreeMap<Long,UsageStats>();
-            for (UsageStats usageStats : stats) {
-                runningTask.put(usageStats.getLastTimeUsed(), usageStats);
-                //Log.d("packageName = " ,usageStats.getPackageName());
-            }
-            Log.d("CurrentApp = " ,runningTask.get(runningTask.lastKey()).getPackageName());
-            }
-        else
-        {
-            Log.d("isRooting stats is NULL","");
-        }
-        return false;
     }
 }
