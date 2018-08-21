@@ -7,11 +7,11 @@ import java.util.HashMap;
  * @brief Model Class with data analysis
  */
 public class AnalysisData {
-    HashMap<String, Long> analysis_category;
-    HashMap<String, Long> analysis_week;
-    HashMap<String, Long> analysis_weekday;
-    long time_data;
-    float achievement_rate;
+    private HashMap<String, Long> analysis_category;
+    private HashMap<String, Long> analysis_week;
+    private HashMap<String, Long> analysis_weekday;
+    private long time_data;
+    private float achievement_rate;
 
     /**
      * @brief Constructor
