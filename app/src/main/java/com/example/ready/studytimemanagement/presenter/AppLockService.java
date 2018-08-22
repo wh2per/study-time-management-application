@@ -80,14 +80,15 @@ public class AppLockService extends Service {
         alc = new AppLockController();
         checkFlag = false;
         context = getApplicationContext();
+        AppLock = new ArrayList<AppLockList>();
     }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // 서비스가 호출될 때마다 실행
         Log.d("Service : ", "서비스의 onStartCommand - "+flags+"번 서비스");
 
-        AppLock = (ArrayList<AppLockList>) intent.getSerializableExtra("AppLock");
-
+        //AppLock = (ArrayList<AppLockList>) intent.getSerializableExtra("AppLock");
+        AppLock.add(new AppLockList("com.kakao.talk",false));
         if(checkFlag==false) {
             th = new checkThread();
             th.start();
@@ -95,6 +96,7 @@ public class AppLockService extends Service {
             stopSelf();
         }
         checkFlag = !checkFlag;
+        //Notification notification = new Notification(R.drawable.ic_launcher, "서비스 실행됨", System.currentTimeMillis());
         startForeground(1,new Notification());
         return super.onStartCommand(intent, flags, startId);
     }
@@ -105,8 +107,6 @@ public class AppLockService extends Service {
         th = null;
         Log.d("Thread", "쓰레드 뿌셔");
         // 서비스가 종료될 때 실행
-
-        Log.d("Service : ", "서비스의 onDestroy");
     }
 
 }

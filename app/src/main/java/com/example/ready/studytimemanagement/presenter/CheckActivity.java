@@ -163,7 +163,7 @@ public class CheckActivity extends LoginController implements View.OnClickListen
             Log.d("Add Lock APP",app);
         }else if(i==R.id.lock){
             Intent intent = new Intent(getApplicationContext(),AppLockService.class); // 이동할 컴포넌트
-            intent.putExtra("AppLock",AppLock);
+            //intent.putExtra("AppLock",AppLock);
             startService(intent); // 서비스 시작
         }
     }
