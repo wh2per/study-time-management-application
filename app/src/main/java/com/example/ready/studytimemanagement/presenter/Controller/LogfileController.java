@@ -1,4 +1,4 @@
-package com.example.ready.studytimemanagement.presenter.Activity;
+package com.example.ready.studytimemanagement.presenter.Controller;
 
 import android.util.Log;
 
