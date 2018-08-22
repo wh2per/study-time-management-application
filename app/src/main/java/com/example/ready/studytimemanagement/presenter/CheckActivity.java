@@ -12,8 +12,10 @@ import android.widget.TextView;
 
 import com.example.ready.studytimemanagement.R;
 import com.example.ready.studytimemanagement.model.Data;
-import com.example.ready.studytimemanagement.presenter.Activity.LogfileController;
+import com.example.ready.studytimemanagement.presenter.Controller.AppLockController;
+import com.example.ready.studytimemanagement.presenter.Controller.LogfileController;
 import com.example.ready.studytimemanagement.presenter.Activity.LoginActivity;
+import com.example.ready.studytimemanagement.presenter.Controller.LoginController;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -99,6 +101,7 @@ public class CheckActivity extends LoginController implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
+        /*
         int i = v.getId();
         if (i == R.id.logout) {
             //구글 로그아웃
@@ -167,6 +170,6 @@ public class CheckActivity extends LoginController implements View.OnClickListen
             String app = appname.getText().toString();
             alc.AppLock.add(app);
             Log.d("Add Lock APP",app);
-        }
+        }*/
     }
 }

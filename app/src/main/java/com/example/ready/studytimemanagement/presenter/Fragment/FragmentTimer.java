@@ -1,7 +1,14 @@
 package com.example.ready.studytimemanagement.presenter.Fragment;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.content.Context;
 import android.hardware.Sensor;
@@ -27,6 +34,7 @@ import com.example.ready.studytimemanagement.model.Data;
 import com.example.ready.studytimemanagement.presenter.Activity.AppLockActivity;
 import com.example.ready.studytimemanagement.presenter.Activity.MainActivity;
 import com.example.ready.studytimemanagement.presenter.BasicTimer;
+import com.example.ready.studytimemanagement.presenter.Service.TimerService;
 import com.triggertrap.seekarc.SeekArc;
 
 import java.text.SimpleDateFormat;
@@ -35,13 +43,15 @@ import java.util.Date;
 public class FragmentTimer extends Fragment{
     private TextView targetView, totalView;
     private Button appListBtn;
-    private Button startBtn;
+    private Button startBtn, plusMinBtn, minusMinBtn;
     private long targetTime = 0;
-    private BasicTimer bt;
+    public static BasicTimer bt;
     private boolean timerOn;
     private Data tempData;
     private SeekArc seekBar;
 
+    //private TimerService timerService;
+    //private Intent tService;
     //Using the Accelometer & Gyroscoper
     private SensorManager mSensorManager = null;
 
@@ -62,10 +72,28 @@ public class FragmentTimer extends Fragment{
         startBtn = rootView.findViewById(R.id.StartBtn);
         seekBar = rootView.findViewById(R.id.seekArc);
         appListBtn = rootView.findViewById(R.id.appListBtn);
+        plusMinBtn = rootView.findViewById(R.id.plusMinBtn);
+        minusMinBtn = rootView.findViewById(R.id.minusMinBtn);
 
-        bt = new BasicTimer(targetTime, targetView, totalView);
+        bt = new BasicTimer(targetTime);
+        targetView.setText(bt.makeToTimeFormat(this.targetTime));
+        totalView.setText(bt.makeToTimeFormat(0));
         timerOn = false;
+
         tempData = new Data();
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("TIMER_BROAD_CAST_ACK");
+        getActivity().registerReceiver(br,intentFilter);
+        final Intent sendIntent = new Intent("TIMER_BROAD_CAST_REQ");
+        getActivity().sendBroadcast(sendIntent);
+
+        /*
+        //send timer object to
+        tService = new Intent(getActivity(), TimerService.class);
+        getActivity().bindService(tService, mConnection, Context.BIND_AUTO_CREATE);
+*/
+
         //Using the Gyroscope & Accelometer
         mSensorManager = (SensorManager) mainActivity.getSystemService(Context.SENSOR_SERVICE);
 
@@ -83,14 +111,29 @@ public class FragmentTimer extends Fragment{
             @Override
             public void onClick(View view){
                 if(timerOn){
+                    // timer stop!!
                     //startBtn.setText("시작");
                     startBtn.setBackgroundResource(R.drawable.lock_icon_grey);
                     timerOn = false;
                     bt.timerStop();
-                    tempData.setTarget_time(String.valueOf(bt.makeToTimeFormat(targetTime)));
-                    tempData.setAmount(String.valueOf(bt.makeToTimeFormat(bt.getTotalTime())));
+                    /*
+                    //send broadcast msg
+                    getActivity().sendBroadcast(sendIntent);
 
+                    Intent timerService = new Intent(mainActivity,TimerService.class);
+                    mainActivity.stopService(timerService);
+*/
                     showNoticeDialog(tempData);
+
+                    // need delay to get broadcast msg
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            tempData.setTarget_time(String.valueOf(bt.makeToTimeFormat(targetTime)));
+                            tempData.setAmount(String.valueOf(bt.makeToTimeFormat(bt.getTotalTime())));
+                            Log.v("saved",String.valueOf(bt.makeToTimeFormat(bt.getTotalTime())));
+                        }
+                    },1000);
 
                     Date currentTime = new Date();
                     SimpleDateFormat time = new SimpleDateFormat("hh:mm:ss");
@@ -98,21 +141,45 @@ public class FragmentTimer extends Fragment{
 
                     setTargetTime(0);
                     seekBar.setProgress(0);
-                    updateTextview();
 
+                    updateTextview();
                     seekBar.setEnabled(true);
                     //Log.v("tag",tempData.getCategory());
                     //Log.v("tag",tempData.getDate());
                 }else{
+                    /// timer start!
                     //startBtn.setText("정지");
                     startBtn.setBackgroundResource(R.drawable.lock_icon_color);
                     timerOn = true;
-                    bt.timerStart();
+                    bt.timerStart();;
+                    /*
+                    Intent timerService = new Intent(mainActivity,TimerService.class);
+                    timerService.putExtra("timer",bt);
+                    mainActivity.startService(timerService);
+                    */
                     seekBar.setEnabled(false);
+
+                    //timerService.setTimer(bt);
+                    //mainActivity.startService(tService);
+
+                    //timer text change
+                    final Handler timerViewHandler = new Handler();
+                    timerViewHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            targetView.setText(bt.makeToTimeFormat(bt.getTempTarget()));
+                            totalView.setText(bt.makeToTimeFormat(bt.getTotalTime()+1000));
+                            timerViewHandler.postDelayed(this,0);
+
+                            if(!bt.getOnoff()){
+                                timerViewHandler.removeMessages(0);
+                                updateTextview();
+                            }
+                        }
+                    });
                 }
             }
         });
-
 
         seekBar.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
             @Override
@@ -122,7 +189,7 @@ public class FragmentTimer extends Fragment{
                 }else{
                     //Log.v("angle", String.valueOf(seekBar.getProgress()));
                     int progress = seekBar.getProgress();
-                    targetTime = progress*300000;
+                    targetTime = progress*10000;
                     bt.setTargetTime(targetTime);
                     updateTextview();
                 }
@@ -157,8 +224,69 @@ public class FragmentTimer extends Fragment{
                 startActivity(intent);
             }
         });
+
+
+        plusMinBtn.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                targetTime = targetTime + 300000;
+                bt.setTargetTime(targetTime);
+                updateTextview();
+            }
+        });
+        minusMinBtn.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(targetTime-300000<=0){
+                    targetTime = 0;
+                }else{
+                    targetTime = targetTime - 300000;
+                }
+                bt.setTargetTime(targetTime);
+                updateTextview();
+            }
+        });
+
+
         return rootView;
     }
+    /*
+    * @brief boardcast receiver for timer service
+    * */
+    BroadcastReceiver br = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            bt = intent.getParcelableExtra("timer");
+            Log.v("actREC",bt.makeToTimeFormat(bt.getTotalTime()));
+        }
+    };
+    /*
+    // service connection definition
+    private ServiceConnection mConnection = new ServiceConnection() {
+
+        // Called when the connection with the service is established
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            TimerService.BindServiceBinder binder = (TimerService.BindServiceBinder) service;
+            timerService = binder.getService(); // get service.
+            timerService.registerCallback(mCallback); // callback registration
+            //Log.v("noooo","noooso");
+        }
+        // Called when the connection with the service disconnects unexpectedly
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            timerService = null;
+            //Log.v("noooo","noooo");
+        }
+    };
+
+    // call below callback in service. it is running in Activity.
+    private TimerService.ICallback mCallback = new TimerService.ICallback() {
+        @Override
+        public void remoteCall() {
+            Log.d("MainActivity","called by service");
+        }
+    };*/
 
     public long getTargetTime(){
         return this.targetTime;
@@ -172,6 +300,8 @@ public class FragmentTimer extends Fragment{
         targetView.setText(bt.makeToTimeFormat(targetTime));
         totalView.setText(bt.makeToTimeFormat(0));
     }
+
+
 
     /*
      * @brief dialog message with edittext for save category
@@ -199,6 +329,11 @@ public class FragmentTimer extends Fragment{
             }
         });
     }
+
+    /*
+     * @brief GyroSenSensor
+     * for a gyrosensor timer run by service
+     */
     private class GyroscopeListener implements SensorEventListener {
         //Roll and Pitch
         private double pitch;
@@ -243,7 +378,13 @@ public class FragmentTimer extends Fragment{
                         TimerOn = true;
                         isFirst = true;
                         startBtn.setBackgroundResource(R.drawable.lock_icon_color);
-                        bt.timerStart();
+                        //bt.timerStart();
+                        seekBar.setEnabled(false);
+
+                        // timer service start
+                        Intent timerService = new Intent(mainActivity,TimerService.class);
+                        timerService.putExtra("timer",bt);
+                        mainActivity.startService(timerService);
                         seekBar.setEnabled(false);
                     }
                 } else {
@@ -251,13 +392,32 @@ public class FragmentTimer extends Fragment{
                         TimerOn = false;
                         isFirst = false;
                         startBtn.setBackgroundResource(R.drawable.lock_icon_grey);
-                        bt.timerStop();
+                        //bt.timerStop();
 
+                        //send broadcast msg
+                        Intent sendIntent = new Intent("TIMER_BROAD_CAST_REQ");
+                        getActivity().sendBroadcast(sendIntent);
+
+                        Intent timerService = new Intent(mainActivity,TimerService.class);
+                        mainActivity.stopService(timerService);
+
+                        showNoticeDialog(tempData);
+
+                        // need delay to get broadcast msg
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                tempData.setTarget_time(String.valueOf(bt.makeToTimeFormat(targetTime)));
+                                tempData.setAmount(String.valueOf(bt.makeToTimeFormat(bt.getTotalTime())));
+                                Log.v("saved",String.valueOf(bt.makeToTimeFormat(bt.getTotalTime())));
+                            }
+                        },1000);
+                        /*
                         tempData.setTarget_time(String.valueOf(bt.makeToTimeFormat(targetTime)));
                         tempData.setAmount(String.valueOf(bt.makeToTimeFormat(bt.getTotalTime())));
 
                         fragmentTimer.showNoticeDialog(tempData);
-
+*/
                         Date currentTime = new Date();
                         SimpleDateFormat time = new SimpleDateFormat("hh:mm:ss");
                         tempData.setDate(time.format(currentTime));
