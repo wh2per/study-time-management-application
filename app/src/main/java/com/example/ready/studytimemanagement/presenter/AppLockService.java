@@ -1,6 +1,7 @@
 package com.example.ready.studytimemanagement.presenter;
 
 import android.app.AppOpsManager;
+import android.app.Notification;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -92,7 +93,7 @@ public class AppLockService extends Service {
             stopSelf();
         }
         checkFlag = !checkFlag;
-
+        startForeground(1,new Notification());
         return super.onStartCommand(intent, flags, startId);
     }
 

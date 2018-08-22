@@ -73,7 +73,7 @@ public class LoginController extends LogfileController {
             intent.putExtra("ID", ID);
             intent.putExtra("EMAIL",EMAIL);
             startActivity(intent);
-            //finish();
+            finish();
 
             return true;
         }else{

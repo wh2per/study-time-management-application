@@ -31,9 +31,9 @@ public class AppLockController extends BaseActivity {
         for (ResolveInfo info : AppInfos) {
             ActivityInfo ai = info.activityInfo;
             Log.d("APP TITLE", ai.loadLabel(pkgm).toString());
-            adapterApplock.addItem(new ItemApplock(ai.loadLabel(pkgm).toString(),ai.loadIcon(pkgm)));
             Log.d("APP Package Name", ai.packageName);
-            Log.d("APP Class Name", ai.name);
+            //Log.d("APP Class Name", ai.name);
+            adapterApplock.addItem(new ItemApplock(ai.loadLabel(pkgm).toString(),ai.loadIcon(pkgm)));
         }
     }
 
@@ -56,7 +56,7 @@ public class AppLockController extends BaseActivity {
             for(int i=0; i<AppLock.size(); i++){
                 if (AppLock.get(i).getAppName().equals(runningTask.get(runningTask.lastKey()).getPackageName()) && AppLock.get(i).getLockFlag()==false){
                     Log.d("Catch ForeGround App : ", AppLock.get(i).getAppName());
-                    AppLock.get(i).setLockFlag(true);
+                    //AppLock.get(i).setLockFlag(true);
                     return true;
                 }
             }
