@@ -1,4 +1,4 @@
-package com.example.ready.studytimemanagement.presenter;
+package com.example.ready.studytimemanagement.presenter.Controller;
 
 import android.app.Activity;
 import android.app.usage.UsageStats;
@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.example.ready.studytimemanagement.presenter.Activity.BaseActivity;
 import com.example.ready.studytimemanagement.presenter.Adapter.AdapterApplock;
+import com.example.ready.studytimemanagement.presenter.AppLockList;
 import com.example.ready.studytimemanagement.presenter.Item.ItemApplock;
 
 import java.util.ArrayList;

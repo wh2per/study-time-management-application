@@ -2,20 +2,26 @@ package com.example.ready.studytimemanagement.presenter.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 
 import com.example.ready.studytimemanagement.R;
-import com.example.ready.studytimemanagement.presenter.LoginController;
-import com.kakao.usermgmt.LoginButton;
+import com.example.ready.studytimemanagement.presenter.Controller.LoginController;
 
-public class LoginActivity extends LoginController {
-    private Button kakaoBtn, facebookBtn, googleBtn, noMemberBtn;
+public class LoginActivity extends LoginController{
+    private LoginController lgc;
+    private FrameLayout kakaoBtn, facebookBtn, googleBtn;
+    private Button noMemberBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
+
+        lgc = new LoginController();
 
         googleBtn = findViewById(R.id.googleBtn);
         kakaoBtn = findViewById(R.id.kakaoBtn);
@@ -55,9 +61,10 @@ public class LoginActivity extends LoginController {
             }
         });
 
+
         //이전에 로그인한 기록이 있는지 검사
         if(isExistUserLog()){   //기록이 있음
-
+            //startLogin();
         }else{      //기록이 없음
             GoogleCreate();
             FacebookCreate();
@@ -71,7 +78,6 @@ public class LoginActivity extends LoginController {
     @Override
     public void onStart() {
         super.onStart();
-        //startLogin();
     }
     // [END on_start_check_user]
 

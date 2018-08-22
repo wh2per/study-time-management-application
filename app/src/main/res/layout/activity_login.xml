@@ -5,50 +5,106 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/imageView2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_height="100dp"
+        android:layout_marginBottom="50dp"
         android:layout_marginLeft="28dp"
         android:layout_marginRight="28dp"
-        android:layout_marginBottom="50dp"
-        android:layout_marginTop="50dp"
-        android:gravity="bottom">
+        android:layout_marginTop="150dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/signin_title" />
 
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginRight="28dp"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2">
+
+
+        <FrameLayout
+            android:id="@+id/googleBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:background="@drawable/btn_stroke">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/googleg_standard_color_18"
+                android:elevation="0dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:elevation="1dp"
+                android:text="구글로 로그인"/>
+        </FrameLayout>
         <com.kakao.usermgmt.LoginButton
             android:id="@+id/kakao"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
-            android:visibility="gone"/>
+            android:visibility="gone" />
+
         <com.facebook.login.widget.LoginButton
             android:id="@+id/facebook"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
-            android:visibility="gone"/>
-        <Button
-            android:id="@+id/googleBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_stroke"
-            android:textColor="#757575"
-            android:text="구글"/>
-        <Button
+            android:visibility="gone" />
+
+        <FrameLayout
             android:id="@+id/kakaoBtn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="0dp"
+            android:layout_height="40dp"
+            android:padding="12dp"
             android:background="#ffeb00"
-            android:textColor="#3c1e1e"
-            android:text="카카오"/>
-        <Button
+            android:textColor="#3c1e1e" >
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/kakao_account_logo"
+                android:elevation="0dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:elevation="1dp"
+                android:text="카카오로 로그인"/>
+        </FrameLayout>
+        <FrameLayout
             android:id="@+id/facebookBtn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#345bbc"
-            android:textColor="#FFF"
-            android:text="페이스북"/>
+            android:layout_height="40dp"
+            android:padding="12dp"
+            android:background="@drawable/com_facebook_button_login_background">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/com_facebook_button_icon_white"
+                android:elevation="0dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:elevation="1dp"
+                android:textColor="#FFF"
+                android:text="페이스북으로 로그인"/>
+        </FrameLayout>
+
         <Button
             android:id="@+id/noMemberBtn"
             android:layout_width="match_parent"

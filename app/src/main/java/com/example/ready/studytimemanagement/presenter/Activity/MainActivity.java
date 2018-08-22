@@ -1,5 +1,6 @@
 package com.example.ready.studytimemanagement.presenter.Activity;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,13 @@ public class MainActivity extends AppCompatActivity {
         final ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setOffscreenPageLimit(3);
 
+        Intent intent = new Intent(this,LoginActivity.class);
+        startActivity(intent);
+    /*
+        Intent intent = new Intent(this.getIntent());
+        String id = intent.getStringExtra("ID");
+        String email = intent.getStringExtra("EMAIL");
+*/
 
         final MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager());
         final FragmentAnalysis fragmentAnalysis = new FragmentAnalysis();

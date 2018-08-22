@@ -1,8 +1,6 @@
 package com.example.ready.studytimemanagement.presenter;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -14,8 +12,10 @@ import android.widget.TextView;
 
 import com.example.ready.studytimemanagement.R;
 import com.example.ready.studytimemanagement.model.Data;
-import com.example.ready.studytimemanagement.presenter.Activity.LogfileController;
 import com.example.ready.studytimemanagement.presenter.Activity.LoginActivity;
+import com.example.ready.studytimemanagement.presenter.Controller.AppLockController;
+import com.example.ready.studytimemanagement.presenter.Controller.LogfileController;
+import com.example.ready.studytimemanagement.presenter.Controller.LoginController;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -155,12 +155,6 @@ public class CheckActivity extends LoginController implements View.OnClickListen
         }else if(i==R.id.applist){
             //alc.LoadAppList(this);
 
-            //test용-------------------------------
-            ResolveInfo info = alc.AppInfos.get(15);
-            ActivityInfo ai = info.activityInfo;
-            installname.setText(ai.loadLabel(alc.pkgm).toString());
-
-            appicon.setImageDrawable(ai.loadIcon(alc.pkgm));
 
 
         }else if(i==R.id.lockSetting){

@@ -1,4 +1,4 @@
-package com.example.ready.studytimemanagement.presenter;
+package com.example.ready.studytimemanagement.presenter.Controller;
 
 import android.content.Intent;
 import android.os.Environment;
@@ -7,7 +7,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.ready.studytimemanagement.R;
-import com.example.ready.studytimemanagement.presenter.Activity.LogfileController;
+import com.example.ready.studytimemanagement.presenter.Activity.MainActivity;
+import com.example.ready.studytimemanagement.presenter.CheckActivity;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -42,7 +43,6 @@ public class LoginController extends LogfileController {
 
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
-
     final String foldername = Environment.getExternalStorageDirectory().getAbsolutePath()+"/Log";
     final String filename = "userlog.txt";
     final String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/Log/userlog.txt";
@@ -134,7 +134,6 @@ public class LoginController extends LogfileController {
         callback = new SessionCallback();
         Session.getCurrentSession().addCallback(callback);
         Session.getCurrentSession().checkAndImplicitOpen();
-        btnKakao = findViewById(R.id.kakao);
     }
 
     public void startLogin(){
