@@ -24,7 +24,7 @@ public class LogfileController extends BaseActivity {
                 dir.mkdir();
             }
             //파일 output stream 생성
-            FileOutputStream fos = new FileOutputStream(foldername+"/"+filename, del);
+            FileOutputStream fos = new FileOutputStream(foldername+"/"+filename, del);      //del이 true면 이어서 저장
             //파일쓰기
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(fos));
             writer.write(contents);
@@ -56,6 +56,4 @@ public class LogfileController extends BaseActivity {
         }
         return strBuffer.toString();
     }
-
-
 }

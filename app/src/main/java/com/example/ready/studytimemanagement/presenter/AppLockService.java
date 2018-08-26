@@ -6,20 +6,24 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Environment;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.example.ready.studytimemanagement.presenter.Controller.AppLockController;
+import com.example.ready.studytimemanagement.presenter.Controller.LogfileController;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 public class AppLockService extends Service {
 
+    LogfileController lfc;
     AppLockController alc;
     checkThread th;
     private Context context = null;
-
+    final static String sfilePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/ServiceLog/applock.txt";
     boolean checkFlag;
 
     private ArrayList<AppLockList> AppLock;
@@ -78,6 +82,7 @@ public class AppLockService extends Service {
         Log.d("Service : ", "서비스의 onCreate");
 
         alc = new AppLockController();
+        lfc = new LogfileController();
         checkFlag = false;
         context = getApplicationContext();
         AppLock = new ArrayList<AppLockList>();
@@ -87,8 +92,18 @@ public class AppLockService extends Service {
         // 서비스가 호출될 때마다 실행
         Log.d("Service : ", "서비스의 onStartCommand - "+flags+"번 서비스");
 
+        AppLock.clear();
+        String line = lfc.ReadLogFile(sfilePath);
+        StringTokenizer tokens = new StringTokenizer(line);
+
+        Log.d("tokens : ",""+tokens.countTokens());
+
+        while(tokens.hasMoreTokens()) {
+            AppLock.add(new AppLockList(tokens.nextToken(","),false));
+        }
+
         //AppLock = (ArrayList<AppLockList>) intent.getSerializableExtra("AppLock");
-        AppLock.add(new AppLockList("com.kakao.talk",false));
+
         if(checkFlag==false) {
             th = new checkThread();
             th.start();

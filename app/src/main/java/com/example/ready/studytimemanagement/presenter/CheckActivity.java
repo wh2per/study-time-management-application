@@ -31,6 +31,10 @@ public class CheckActivity extends LoginController implements View.OnClickListen
     final static String foldername = Environment.getExternalStorageDirectory().getAbsolutePath()+"/DataLog";
     final static String filename = "datalog.txt";
 
+    final static String sfilePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/ServiceLog/applock.txt";
+    final static String sfoldername = Environment.getExternalStorageDirectory().getAbsolutePath()+"/ServiceLog";
+    final static String sfilename = "applock.txt";
+
     private EditText category;
     private EditText date;
     private EditText time;
@@ -153,12 +157,10 @@ public class CheckActivity extends LoginController implements View.OnClickListen
             readdate.setText(mData.get(mData.size()-1).getDate());
             readtime.setText(mData.get(mData.size()-1).getAmount());
         }else if(i==R.id.applist){
-            //alc.LoadAppList(this);
-
-
 
         }else if(i==R.id.lockSetting){
             String app = appname.getText().toString();
+            lfc.WriteLogFile(sfoldername,sfilename,app+",",true);
             AppLock.add(new AppLockList(app,false));
             Log.d("Add Lock APP",app);
         }else if(i==R.id.lock){

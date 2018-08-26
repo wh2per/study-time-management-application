@@ -77,7 +77,7 @@ public class LoginController extends LogfileController {
 
             return true;
         }else{
-            Log.d("userloig", "유저정보가 읍따");
+            Log.d("userlog", "유저정보가 읍따");
             return false;
         }
     }
