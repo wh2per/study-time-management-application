@@ -221,6 +221,7 @@ public class FragmentTimer extends Fragment{
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(),AppLockActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
             }
         });
