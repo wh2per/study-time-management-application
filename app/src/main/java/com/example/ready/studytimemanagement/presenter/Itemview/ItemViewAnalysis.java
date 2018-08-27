@@ -161,6 +161,9 @@ public class ItemViewAnalysis extends LinearLayout {
         xaxis = new ArrayList<String>();
         User temp_user = new User("jorku@konkuk.ac.kr", "readyKim", 25, "student");
         NetworkTask asyncNetwork;
+        Iterator<String> keys;
+        HashMap<String, Long> temp = new HashMap<>();
+        String key;
         try {
             switch (index) {
                 case 0:
@@ -168,38 +171,38 @@ public class ItemViewAnalysis extends LinearLayout {
                     asyncNetwork.execute().get(1000, TimeUnit.MILLISECONDS);
                     analysisData = asyncNetwork.getAnalysisData().getAnalysis_category();
                     Log.e("category size", Integer.toString(analysisData.size()));
+                    keys = analysisData.keySet().iterator();
+                    while(keys.hasNext()) {
+                        xaxis.add(keys.next());
+                    }
                     break;
                 case 1:
                     asyncNetwork = new NetworkTask("/classify-weekday", temp_user, null);
                     asyncNetwork.execute().get(1000, TimeUnit.MILLISECONDS);
                     analysisData = asyncNetwork.getAnalysisData().getAnalysis_weekday();
                     Log.e("weekday size", Integer.toString(analysisData.size()));
+                    keys = analysisData.keySet().iterator();
+                    while(keys.hasNext()) {
+                        key = keys.next();
+                        Log.e("keys test", key);
+                        xaxis.add(weekdays[Integer.parseInt(key)]);
+                        temp.put(weekdays[Integer.parseInt(key)], analysisData.get(key));
+                        Log.e("add weekday", weekdays[Integer.parseInt(key)]);
+                    }
+                    analysisData = temp;
                     break;
                 case 2:
                     asyncNetwork = new NetworkTask("/classify-week", temp_user, null);
                     asyncNetwork.execute().get(1000, TimeUnit.MILLISECONDS);
                     analysisData = asyncNetwork.getAnalysisData().getAnalysis_week();
                     Log.e("week size", Integer.toString(analysisData.size()));
+                    keys = analysisData.keySet().iterator();
+                    while(keys.hasNext()) {
+                        xaxis.add(keys.next());
+                    }
                     break;
                 default:
                     return "switch fail";
-            }
-
-            Iterator<String> keys = analysisData.keySet().iterator();
-            HashMap<String, Long> temp = new HashMap<>();
-            String key;
-            if(index==1) {
-                while(keys.hasNext()) {
-                    key = keys.next();
-                    Log.e("keys test", key);
-                    xaxis.add(weekdays[Integer.parseInt(key)]);
-                    analysisData.put(weekdays[Integer.parseInt(key)], analysisData.get(key));
-                    Log.e("add weekday", weekdays[Integer.parseInt(key)]);
-                }
-            } else {
-                while(keys.hasNext()) {
-                    xaxis.add(keys.next());
-                }
             }
             xaxis.add(0, "");
             xaxis.add("");
