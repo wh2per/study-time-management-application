@@ -20,9 +20,12 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
 public class AdapterAnalysis extends BaseAdapter{
@@ -32,15 +35,11 @@ public class AdapterAnalysis extends BaseAdapter{
     private HashMap<String, Long>[] analysisData = new HashMap[GRAPH_COUNT];
     private String[] weekdays = {"월", "화", "수", "목", "금", "토", "일"};
     private ArrayList<String>[] xaxis = new ArrayList[GRAPH_COUNT];
-    private CombinedData[] combinedData = new CombinedData[GRAPH_COUNT];
 
     public AdapterAnalysis(Context c){
         this.context = c;
         for(int i = 0; i < GRAPH_COUNT; i++) {
             setFormattedData(i);
-            combinedData[i] = new CombinedData();
-            combinedData[i].setData(generateLineData(i));
-            combinedData[i].setData(generateBarData(i));
         }
     }
     public void addItem(ItemAnalysis item){
@@ -67,46 +66,10 @@ public class AdapterAnalysis extends BaseAdapter{
         ItemAnalysis item = items.get(i);
         v.setTitleText(item.getTitle());
         v.setSubText(item.getSubTitle());
-        v.setCombinedChart(i, combinedData[i], xaxis[i]);
+        v.setCombinedChart(i, analysisData[i], xaxis[i]);
        // v.setBarChart();
         //v.setLineChart();
         return v;
-    }
-    public LineData generateLineData(int index){
-        List<Entry> entries = new ArrayList<Entry>();
-        int sum = 0;
-        for(int i = 1; i < xaxis[index].size()-1; i++) {
-            sum += (int) (analysisData[index].get(xaxis[index].get(i)) / 60);
-        }
-        int avg = 40;
-        if(xaxis[index].size()-2 > 0)
-            avg = sum / (xaxis[index].size()-2);
-        for(int i =0; i<xaxis[index].size(); i++){
-            entries.add(new Entry(i, avg));
-        }
-        LineDataSet dataSet = new LineDataSet(entries,"label");
-        dataSet.setColor(Color.rgb(33,33,33));
-        dataSet.setLineWidth(1f);
-        //dataSet.setValueTextColor(000);
-        dataSet.setDrawCircles(false);
-        LineData lineData = new LineData(dataSet);
-        lineData.setDrawValues(false);
-        return lineData;
-    }
-    public BarData generateBarData(int index){
-        List<BarEntry> entries = new ArrayList<BarEntry>();
-
-        for(int i = 1; i<xaxis[index].size()-1; i++){
-            entries.add(new BarEntry(i, (int) (analysisData[index].get(xaxis[index].get(i)) / 60)));
-        }
-        entries.add(new BarEntry(xaxis[index].size()-1,0));
-
-        BarDataSet dataSet = new BarDataSet(entries,"label");
-        dataSet.setColor(Color.rgb(133,204,159));
-
-        BarData barData = new BarData(dataSet);
-        barData.setDrawValues(false);
-        return barData;
     }
 
     private String setFormattedData(int index) {
@@ -115,7 +78,7 @@ public class AdapterAnalysis extends BaseAdapter{
         NetworkTask asyncNetwork;
         Iterator<String> keys;
         HashMap<String, Long> temp = new HashMap<>();
-        String key;
+        String key, temp_x;
         try {
             switch (index) {
                 case 0:
@@ -148,10 +111,15 @@ public class AdapterAnalysis extends BaseAdapter{
                     asyncNetwork.execute().get(1000, TimeUnit.MILLISECONDS);
                     analysisData[index] = asyncNetwork.getAnalysisData().getAnalysis_week();
                     Log.e("week size", Integer.toString(analysisData[index].size()));
-                    keys = analysisData[index].keySet().iterator();
-                    while(keys.hasNext()) {
-                        xaxis[index].add(keys.next());
+                    List sortedKeys = new ArrayList(analysisData[index].keySet());
+                    Collections.sort(sortedKeys);
+                    for(int i = 0; i < sortedKeys.size(); i++) {
+                        temp_x = "~"+sortedKeys.get(i);
+                        Log.e("keys test", temp_x);
+                        xaxis[index].add(temp_x);
+                        temp.put(temp_x, analysisData[index].get(sortedKeys.get(i)));
                     }
+                    analysisData[index] = temp;
                     break;
                 default:
                     return "switch fail";

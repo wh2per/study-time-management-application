@@ -43,6 +43,7 @@ import java.util.concurrent.TimeUnit;
 public class ItemViewAnalysis extends LinearLayout {
     private TextView titleText, subText;
     private LineChart chart;
+    private HashMap<String, Long> analysisData;
     private ArrayList<String> xaxis;
 
     public ItemViewAnalysis(Context context) {
@@ -70,8 +71,9 @@ public class ItemViewAnalysis extends LinearLayout {
     public void setSubText(String s) {
         subText.setText(s);
     }
-    public void setCombinedChart(int index, CombinedData combinedData, ArrayList<String> _xaxis){
+    public void setCombinedChart(int index, HashMap<String, Long> _analysisData, ArrayList<String> _xaxis){
         this.xaxis = _xaxis;
+        this.analysisData = _analysisData;
         CombinedChart combinedChart = findViewById(R.id.combinedChart);
         combinedChart.getDescription().setEnabled(false);
         combinedChart.setDrawGridBackground(false);
@@ -109,10 +111,49 @@ public class ItemViewAnalysis extends LinearLayout {
             }
         });
 
+        CombinedData combinedData = new CombinedData();
+        combinedData.setData(generateLineData());
+        combinedData.setData(generateBarData());
         combinedChart.setPinchZoom(false);
         combinedChart.setDoubleTapToZoomEnabled(false);
         combinedChart.setData(combinedData);
         combinedChart.invalidate();
+    }
+    public LineData generateLineData(){
+        List<Entry> entries = new ArrayList<Entry>();
+        int sum = 0;
+        for(int i = 1; i < xaxis.size()-1; i++) {
+            sum += (int) (analysisData.get(xaxis.get(i)) / 60);
+        }
+        int avg = 40;
+        if(xaxis.size()-2 > 0)
+            avg = sum / (xaxis.size()-2);
+        for(int i =0; i<xaxis.size(); i++){
+            entries.add(new Entry(i, avg));
+        }
+        LineDataSet dataSet = new LineDataSet(entries,"label");
+        dataSet.setColor(Color.rgb(33,33,33));
+        dataSet.setLineWidth(1f);
+        //dataSet.setValueTextColor(000);
+        dataSet.setDrawCircles(false);
+        LineData lineData = new LineData(dataSet);
+        lineData.setDrawValues(false);
+        return lineData;
+    }
+    public BarData generateBarData(){
+        List<BarEntry> entries = new ArrayList<BarEntry>();
+
+        for(int i = 1; i<xaxis.size()-1; i++){
+            entries.add(new BarEntry(i, (int) (analysisData.get(xaxis.get(i)) / 60)));
+        }
+        entries.add(new BarEntry(xaxis.size()-1,0));
+
+        BarDataSet dataSet = new BarDataSet(entries,"label");
+        dataSet.setColor(Color.rgb(133,204,159));
+
+        BarData barData = new BarData(dataSet);
+        barData.setDrawValues(false);
+        return barData;
     }
 
     /*
