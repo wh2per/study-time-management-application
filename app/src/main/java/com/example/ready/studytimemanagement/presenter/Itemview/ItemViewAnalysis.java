@@ -44,8 +44,6 @@ public class ItemViewAnalysis extends LinearLayout {
     private TextView titleText, subText;
     private LineChart chart;
     private ArrayList<String> xaxis;
-    private HashMap<String, Long> analysisData;
-    private String[] weekdays = {"월", "화", "수", "목", "금", "토", "일"};
 
     public ItemViewAnalysis(Context context) {
         super(context);
@@ -72,9 +70,8 @@ public class ItemViewAnalysis extends LinearLayout {
     public void setSubText(String s) {
         subText.setText(s);
     }
-    public void setCombinedChart(int index){
-        String debug = setFormattedData(index);
-        Log.d("debug", debug);
+    public void setCombinedChart(int index, CombinedData combinedData, ArrayList<String> _xaxis){
+        this.xaxis = _xaxis;
         CombinedChart combinedChart = findViewById(R.id.combinedChart);
         combinedChart.getDescription().setEnabled(false);
         combinedChart.setDrawGridBackground(false);
@@ -112,105 +109,10 @@ public class ItemViewAnalysis extends LinearLayout {
             }
         });
 
-        CombinedData combinedData = new CombinedData();
-        combinedData.setData(generateLineData());
-        combinedData.setData(generateBarData());
         combinedChart.setPinchZoom(false);
         combinedChart.setDoubleTapToZoomEnabled(false);
         combinedChart.setData(combinedData);
         combinedChart.invalidate();
-    }
-    public LineData generateLineData(){
-        List<Entry> entries = new ArrayList<Entry>();
-        int sum = 0;
-        for(int i = 1; i < xaxis.size()-1; i++) {
-            sum += (int) (analysisData.get(xaxis.get(i)) / 60);
-        }
-        int avg = 40;
-        if(xaxis.size()-2 > 0)
-            avg = sum / (xaxis.size()-2);
-        for(int i =0; i<xaxis.size(); i++){
-            entries.add(new Entry(i, avg));
-        }
-        LineDataSet dataSet = new LineDataSet(entries,"label");
-        dataSet.setColor(Color.rgb(33,33,33));
-        dataSet.setLineWidth(1f);
-        //dataSet.setValueTextColor(000);
-        dataSet.setDrawCircles(false);
-        LineData lineData = new LineData(dataSet);
-        lineData.setDrawValues(false);
-        return lineData;
-    }
-    public BarData generateBarData(){
-        List<BarEntry> entries = new ArrayList<BarEntry>();
-
-        for(int i = 1; i<xaxis.size()-1; i++){
-            entries.add(new BarEntry(i, (int) (analysisData.get(xaxis.get(i)) / 60)));
-        }
-        entries.add(new BarEntry(xaxis.size()-1,0));
-
-        BarDataSet dataSet = new BarDataSet(entries,"label");
-        dataSet.setColor(Color.rgb(133,204,159));
-
-        BarData barData = new BarData(dataSet);
-        barData.setDrawValues(false);
-        return barData;
-    }
-
-    private String setFormattedData(int index) {
-        xaxis = new ArrayList<String>();
-        User temp_user = new User("jorku@konkuk.ac.kr", "readyKim", 25, "student");
-        NetworkTask asyncNetwork;
-        Iterator<String> keys;
-        HashMap<String, Long> temp = new HashMap<>();
-        String key;
-        try {
-            switch (index) {
-                case 0:
-                    asyncNetwork = new NetworkTask("/classify-category", temp_user, null);
-                    asyncNetwork.execute().get(1000, TimeUnit.MILLISECONDS);
-                    analysisData = asyncNetwork.getAnalysisData().getAnalysis_category();
-                    Log.e("category size", Integer.toString(analysisData.size()));
-                    keys = analysisData.keySet().iterator();
-                    while(keys.hasNext()) {
-                        xaxis.add(keys.next());
-                    }
-                    break;
-                case 1:
-                    asyncNetwork = new NetworkTask("/classify-weekday", temp_user, null);
-                    asyncNetwork.execute().get(1000, TimeUnit.MILLISECONDS);
-                    analysisData = asyncNetwork.getAnalysisData().getAnalysis_weekday();
-                    Log.e("weekday size", Integer.toString(analysisData.size()));
-                    keys = analysisData.keySet().iterator();
-                    while(keys.hasNext()) {
-                        key = keys.next();
-                        Log.e("keys test", key);
-                        xaxis.add(weekdays[Integer.parseInt(key)]);
-                        temp.put(weekdays[Integer.parseInt(key)], analysisData.get(key));
-                        Log.e("add weekday", weekdays[Integer.parseInt(key)]);
-                    }
-                    analysisData = temp;
-                    break;
-                case 2:
-                    asyncNetwork = new NetworkTask("/classify-week", temp_user, null);
-                    asyncNetwork.execute().get(1000, TimeUnit.MILLISECONDS);
-                    analysisData = asyncNetwork.getAnalysisData().getAnalysis_week();
-                    Log.e("week size", Integer.toString(analysisData.size()));
-                    keys = analysisData.keySet().iterator();
-                    while(keys.hasNext()) {
-                        xaxis.add(keys.next());
-                    }
-                    break;
-                default:
-                    return "switch fail";
-            }
-            xaxis.add(0, "");
-            xaxis.add("");
-
-        } catch(Exception e) {
-            return e.toString();
-        }
-        return "Success";
     }
 
     /*
