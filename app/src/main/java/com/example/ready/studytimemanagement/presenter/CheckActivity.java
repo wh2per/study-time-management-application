@@ -1,5 +1,6 @@
 package com.example.ready.studytimemanagement.presenter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -52,6 +53,8 @@ public class CheckActivity extends LoginController implements View.OnClickListen
 
     ArrayList<AppLockList> AppLock;
 
+    Context cont;
+
     @Override
     protected void onCreate(Bundle bundle){
         super.onCreate(bundle);
@@ -91,6 +94,8 @@ public class CheckActivity extends LoginController implements View.OnClickListen
         alc = new AppLockController();
 
         AppLock = new ArrayList<AppLockList>();
+
+        cont = getApplicationContext();
     }
 
     @Override
@@ -134,33 +139,33 @@ public class CheckActivity extends LoginController implements View.OnClickListen
             String content = "#####\r\n";
             content = content+"#CATEGORY=="+category_s+"\r\n"+"#DATE=="+date_s+"\r\n"+"#TIME=="+time_s+"\r\n";
 
-            lfc.WriteLogFile(foldername,filename,content,true);
+            lfc.WriteLogFile(cont,filename,content);
             Log.d("datalog","write complete!!");
         }else if(i==R.id.load){
-            String line = lfc.ReadLogFile(filePath);
-
-            String[] dataSet = line.split("#####");
-            for(int j=1; j<dataSet.length; j++){
-                String[] data = dataSet[j].split("#");
-                for(int k=1; k<data.length; k++){               // category -> date -> time
-                    data[k] = data[k].substring(data[k].indexOf("==")+2);
-                }
-                Data d = new Data();
-                d.setCategory(data[1]);
-                d.setDate(data[2]);
-                d.setAmount(data[3]);
-                d.setTarget_time("7");
-                mData.add(d);
-            }
-
-            readcategory.setText(mData.get(mData.size()-1).getCategory());
-            readdate.setText(mData.get(mData.size()-1).getDate());
-            readtime.setText(mData.get(mData.size()-1).getAmount());
+//            String line = lfc.ReadLogFile(filePath);
+//
+//            String[] dataSet = line.split("#####");
+//            for(int j=1; j<dataSet.length; j++){
+//                String[] data = dataSet[j].split("#");
+//                for(int k=1; k<data.length; k++){               // category -> date -> time
+//                    data[k] = data[k].substring(data[k].indexOf("==")+2);
+//                }
+//                Data d = new Data();
+//                d.setCategory(data[1]);
+//                d.setDate(data[2]);
+//                d.setAmount(data[3]);
+//                d.setTarget_time("7");
+//                mData.add(d);
+//            }
+//
+//            readcategory.setText(mData.get(mData.size()-1).getCategory());
+//            readdate.setText(mData.get(mData.size()-1).getDate());
+//            readtime.setText(mData.get(mData.size()-1).getAmount());
         }else if(i==R.id.applist){
 
         }else if(i==R.id.lockSetting){
             String app = appname.getText().toString();
-            lfc.WriteLogFile(sfoldername,sfilename,app+",",true);
+            lfc.WriteLogFile(cont,sfilename,app+",");
             AppLock.add(new AppLockList(app,false));
             Log.d("Add Lock APP",app);
         }else if(i==R.id.lock){

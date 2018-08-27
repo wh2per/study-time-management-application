@@ -10,6 +10,8 @@ import android.widget.FrameLayout;
 import com.example.ready.studytimemanagement.R;
 import com.example.ready.studytimemanagement.presenter.Controller.LoginController;
 
+import java.io.FileOutputStream;
+
 public class LoginActivity extends LoginController{
     private LoginController lgc;
     private FrameLayout kakaoBtn, facebookBtn, googleBtn;

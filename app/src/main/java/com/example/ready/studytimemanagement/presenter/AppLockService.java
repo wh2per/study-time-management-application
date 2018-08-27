@@ -23,7 +23,7 @@ public class AppLockService extends Service {
     AppLockController alc;
     checkThread th;
     private Context context = null;
-    final static String sfilePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/ServiceLog/applock.txt";
+    final static String sfilename= "applock.txt";
     boolean checkFlag;
     boolean grantFlag;
 
@@ -87,7 +87,7 @@ public class AppLockService extends Service {
         Log.d("Service : ", "서비스의 onStartCommand - "+flags+"번 서비스");
 
         AppLock.clear();
-        String line = lfc.ReadLogFile(sfilePath);
+        String line = lfc.ReadLogFile(context,sfilename);
         StringTokenizer tokens = new StringTokenizer(line);
 
         Log.d("tokens : ",""+tokens.countTokens());

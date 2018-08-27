@@ -13,6 +13,8 @@ import com.example.ready.studytimemanagement.presenter.Fragment.FragmentAnalysis
 import com.example.ready.studytimemanagement.presenter.Fragment.FragmentSetting;
 import com.example.ready.studytimemanagement.presenter.Fragment.FragmentTimer;
 
+import java.io.FileOutputStream;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -36,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
         final FragmentTimer fragmentTimer = new FragmentTimer();
         fragmentTimer.mainActivity = this;
         final FragmentSetting fragmentSetting = new FragmentSetting();
-
         adapter.addItem(fragmentAnalysis);
         adapter.addItem(fragmentTimer);
         adapter.addItem(fragmentSetting);
