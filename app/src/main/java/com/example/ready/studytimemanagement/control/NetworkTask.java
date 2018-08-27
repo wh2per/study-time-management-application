@@ -29,9 +29,6 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
     @Override
     protected String doInBackground(Void... params) {
         requestHttpConnection = new RequestHttpConnection();
-        HashMap<String, Long> temp;
-        Iterator<String> keys;
-        HashMap<String, Long> analysis;
         String result = "";
         switch(url) {
             case "/register-user":
@@ -56,14 +53,6 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
                 analysisData.setAnalysis_week(requestHttpConnection.getClassfiedTime(url, user.getId()));
                 break;
             case "/classify-weekday":
-//                temp = requestHttpConnection.getClassfiedTime(url, user.getId());
-//                keys = temp.keySet().iterator();
-//                analysis = new HashMap<>();
-//                while(keys.hasNext()) {
-//                    String key = keys.next();
-//                    analysis.put(weekdays[Integer.parseInt(key)], temp.get(key));
-//                }
-//                analysisData.setAnalysis_weekday(analysis);
                 analysisData.setAnalysis_weekday(requestHttpConnection.getClassfiedTime(url, user.getId()));
                 break;
             default:

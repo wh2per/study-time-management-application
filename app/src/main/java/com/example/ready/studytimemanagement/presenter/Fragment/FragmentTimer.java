@@ -2,14 +2,9 @@ package com.example.ready.studytimemanagement.presenter.Fragment;
 
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.os.Handler;
-import android.os.IBinder;
-import android.os.SystemClock;
-import android.support.design.widget.FloatingActionButton;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;

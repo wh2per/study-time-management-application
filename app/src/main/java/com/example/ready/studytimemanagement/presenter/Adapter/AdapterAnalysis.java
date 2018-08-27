@@ -41,7 +41,7 @@ public class AdapterAnalysis extends BaseAdapter{
         ItemAnalysis item = items.get(i);
         v.setTitleText(item.getTitle());
         v.setSubText(item.getSubTitle());
-        v.setCombinedChart();
+        v.setCombinedChart(i);
        // v.setBarChart();
         //v.setLineChart();
         return v;
