@@ -1,5 +1,6 @@
 package com.example.ready.studytimemanagement.presenter.Fragment;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -34,10 +35,12 @@ import com.example.ready.studytimemanagement.model.Data;
 import com.example.ready.studytimemanagement.presenter.Activity.AppLockActivity;
 import com.example.ready.studytimemanagement.presenter.Activity.MainActivity;
 import com.example.ready.studytimemanagement.presenter.BasicTimer;
+import com.example.ready.studytimemanagement.presenter.Item.ItemApplock;
 import com.example.ready.studytimemanagement.presenter.Service.TimerService;
 import com.triggertrap.seekarc.SeekArc;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class FragmentTimer extends Fragment{
@@ -49,6 +52,9 @@ public class FragmentTimer extends Fragment{
     private boolean timerOn;
     private Data tempData;
     private SeekArc seekBar;
+
+    private ArrayList<ItemApplock> applocks;
+    private Intent lockIntent;
 
     //private TimerService timerService;
     //private Intent tService;
@@ -63,6 +69,10 @@ public class FragmentTimer extends Fragment{
 
     public FragmentTimer(){}
 
+    @SuppressLint("ValidFragment")
+    public FragmentTimer(ArrayList<ItemApplock> applocks){
+        this.applocks = applocks;
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -82,6 +92,12 @@ public class FragmentTimer extends Fragment{
 
         tempData = new Data();
 
+        //start app lock list activity
+        lockIntent = new Intent(getActivity(),AppLockActivity.class);
+        lockIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(lockIntent);
+
+        //for timer service
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("TIMER_BROAD_CAST_ACK");
         getActivity().registerReceiver(br,intentFilter);
@@ -220,8 +236,7 @@ public class FragmentTimer extends Fragment{
         appListBtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(),AppLockActivity.class);
-                startActivity(intent);
+                startActivity(lockIntent);
             }
         });
 

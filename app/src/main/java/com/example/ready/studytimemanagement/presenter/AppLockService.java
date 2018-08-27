@@ -10,7 +10,9 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.example.ready.studytimemanagement.presenter.Activity.LockActivity;
 import com.example.ready.studytimemanagement.presenter.Controller.AppLockController;
+import com.example.ready.studytimemanagement.presenter.Item.ItemApplock;
 
 import java.util.ArrayList;
 
@@ -22,7 +24,7 @@ public class AppLockService extends Service {
 
     boolean checkFlag;
 
-    private ArrayList<AppLockList> AppLock;
+    private ArrayList<ItemApplock> AppLock;
 
     private class checkThread extends Thread{
         public void run() {
@@ -86,7 +88,7 @@ public class AppLockService extends Service {
         // 서비스가 호출될 때마다 실행
         Log.d("Service : ", "서비스의 onStartCommand - "+flags+"번 서비스");
 
-        AppLock = (ArrayList<AppLockList>) intent.getSerializableExtra("AppLock");
+        AppLock = intent.getParcelableArrayListExtra("AppLock");
 
         if(checkFlag==false) {
             th = new checkThread();

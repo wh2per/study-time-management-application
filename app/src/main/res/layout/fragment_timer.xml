@@ -56,35 +56,29 @@
         android:id="@+id/minusMinBtn"
         android:layout_width="50dp"
         android:layout_height="25dp"
-        android:background="@drawable/btn_stroke"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/btn_stroke"
+        android:elevation="0dp"
         android:text="-30"
         android:textColor="@color/colorPrimary"
-        android:elevation="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/seekArc"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintStart_toStartOf="@+id/seekArc"
+        app:layout_constraintTop_toTopOf="@+id/seekArc" />
 
     <Button
         android:id="@+id/plusMinBtn"
         android:layout_width="50dp"
         android:layout_height="25dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/btn_stroke"
         android:elevation="0dp"
         android:text="+30"
         android:textColor="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/seekArc"
         app:layout_constraintStart_toEndOf="@+id/seekArc"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toTopOf="@+id/seekArc" />
     <Button
         android:id="@+id/StartBtn"
         android:layout_width="100dp"

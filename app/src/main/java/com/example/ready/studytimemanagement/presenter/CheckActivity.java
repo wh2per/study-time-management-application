@@ -66,12 +66,12 @@ public class CheckActivity extends LoginController implements View.OnClickListen
         time = (EditText)findViewById(R.id.time);
         appname = (EditText)findViewById(R.id.appname);
 
-        installname = (TextView)findViewById(R.id.installname);
+        //installname = (TextView)findViewById(R.id.installname);
         readcategory = (TextView)findViewById(R.id.readcategory);
         readdate = (TextView)findViewById(R.id.readdate);
         readtime = (TextView)findViewById(R.id.readtime);
 
-        appicon = (ImageView)findViewById(R.id.appicon);
+        //appicon = (ImageView)findViewById(R.id.appicon);
 
         mData = new ArrayList<Data>();
 
@@ -80,7 +80,7 @@ public class CheckActivity extends LoginController implements View.OnClickListen
 
         findViewById(R.id.applist).setOnClickListener(this);
 
-        findViewById(R.id.lockSetting).setOnClickListener(this);
+        //findViewById(R.id.lockSetting).setOnClickListener(this);
         findViewById(R.id.lock).setOnClickListener(this);
 
         lfc = new LogfileController();
@@ -157,11 +157,11 @@ public class CheckActivity extends LoginController implements View.OnClickListen
 
 
 
-        }else if(i==R.id.lockSetting){
+        }/*else if(i==R.id.lockSetting){
             String app = appname.getText().toString();
             AppLock.add(new AppLockList(app,false));
             Log.d("Add Lock APP",app);
-        }else if(i==R.id.lock){
+        }*/else if(i==R.id.lock){
             Intent intent = new Intent(getApplicationContext(),AppLockService.class); // 이동할 컴포넌트
             intent.putExtra("AppLock",AppLock);
             startService(intent); // 서비스 시작

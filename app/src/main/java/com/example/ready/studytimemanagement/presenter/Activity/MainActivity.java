@@ -1,16 +1,22 @@
 package com.example.ready.studytimemanagement.presenter.Activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.ready.studytimemanagement.R;
 import com.example.ready.studytimemanagement.presenter.Adapter.MainPagerAdapter;
 import com.example.ready.studytimemanagement.presenter.Fragment.FragmentAnalysis;
 import com.example.ready.studytimemanagement.presenter.Fragment.FragmentSetting;
 import com.example.ready.studytimemanagement.presenter.Fragment.FragmentTimer;
+import com.example.ready.studytimemanagement.presenter.Item.ItemApplock;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,8 +28,13 @@ public class MainActivity extends AppCompatActivity {
         final ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setOffscreenPageLimit(3);
 
+        //Intent appListIntent = getIntent();
+        //ArrayList <ItemApplock> itemApplocks  = appListIntent.getParcelableArrayListExtra("appList");
+        //Log.v("listcheck",itemApplocks.get(1).getTitle());
+
+        /*
         Intent intent = new Intent(this,LoginActivity.class);
-        startActivity(intent);
+        startActivity(intent);*/
     /*
         Intent intent = new Intent(this.getIntent());
         String id = intent.getStringExtra("ID");
@@ -33,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         final MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager());
         final FragmentAnalysis fragmentAnalysis = new FragmentAnalysis();
         final FragmentTimer fragmentTimer = new FragmentTimer();
+//        final FragmentTimer fragmentTimer = new FragmentTimer(itemApplocks);
         fragmentTimer.mainActivity = this;
         final FragmentSetting fragmentSetting = new FragmentSetting();
 
@@ -80,5 +92,11 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        ActivityCompat.finishAffinity(this);
     }
 }
