@@ -25,6 +25,7 @@ public class AppLockService extends Service {
     private Context context = null;
     final static String sfilePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/ServiceLog/applock.txt";
     boolean checkFlag;
+    boolean grantFlag;
 
     private ArrayList<AppLockList> AppLock;
 
@@ -43,16 +44,7 @@ public class AppLockService extends Service {
                 granted = (mode == AppOpsManager.MODE_ALLOWED);
             }
 
-            Log.d("isRooting granted = " , String.valueOf(granted));
-
-            if (granted == false)
-            {
-                // 권한이 없을 경우 권한 요구 페이지 이동
-                Intent intent = new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS);
-                context.startActivity(intent);
-            }
-
-            while(checkFlag) {
+            while(checkFlag && granted) {
                 if(alc.CheckRunningApp(context,AppLock)) {
                     Intent intent = new Intent(context,LockActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -69,6 +61,7 @@ public class AppLockService extends Service {
         }
     }
 
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -84,6 +77,7 @@ public class AppLockService extends Service {
         alc = new AppLockController();
         lfc = new LogfileController();
         checkFlag = false;
+        grantFlag = false;
         context = getApplicationContext();
         AppLock = new ArrayList<AppLockList>();
     }

@@ -1,14 +1,18 @@
 package com.example.ready.studytimemanagement.presenter.Fragment;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.app.AppOpsManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.content.Context;
 import android.hardware.Sensor;
@@ -49,6 +53,7 @@ public class FragmentTimer extends Fragment{
     private boolean timerOn;
     private Data tempData;
     private SeekArc seekBar;
+
 
     //private TimerService timerService;
     //private Intent tService;
@@ -223,6 +228,28 @@ public class FragmentTimer extends Fragment{
                 Intent intent = new Intent(getContext(),AppLockActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
+
+                // GET_USAGE_STATS 권한 확인
+                boolean granted = false;
+                AppOpsManager appOps = (AppOpsManager) mainActivity.getSystemService(Context.APP_OPS_SERVICE);
+                int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,android.os.Process.myUid(), mainActivity.getPackageName());
+
+                if (mode == AppOpsManager.MODE_DEFAULT) {
+                    granted = (mainActivity.checkCallingOrSelfPermission(android.Manifest.permission.PACKAGE_USAGE_STATS) == PackageManager.PERMISSION_GRANTED);
+                } else {
+                    granted = (mode == AppOpsManager.MODE_ALLOWED);
+                }
+
+                Log.d("isRooting granted = " , String.valueOf(granted));
+
+                if (granted == false)
+                {
+                    // 권한이 없을 경우 권한 요구 페이지 이동
+                    Intent sintent = new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    mainActivity.startActivity(sintent);
+                }
+
             }
         });
 

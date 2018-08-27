@@ -1,8 +1,12 @@
 package com.example.ready.studytimemanagement.presenter.Activity;
 
 import android.app.Activity;
+import android.app.AppOpsManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -13,12 +17,14 @@ import com.example.ready.studytimemanagement.presenter.Adapter.AdapterApplock;
 import com.example.ready.studytimemanagement.presenter.AppLockService;
 import com.example.ready.studytimemanagement.presenter.Controller.AppLockController;
 
-public class AppLockActivity extends AppLockController {
+public class AppLockActivity extends AppCompatActivity {
+    AppLockController alc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_applock);
         Log.d("lock","다시 실행됨");
+        alc = new AppLockController();
 
         Toolbar mToolbar  = findViewById(R.id.appListToolbar);
         mToolbar.setTitle("앱 목록");
@@ -29,10 +35,11 @@ public class AppLockActivity extends AppLockController {
 
         final AdapterApplock adapterApplock = new AdapterApplock(this.getApplicationContext());
 
-        LoadAppList(this,adapterApplock);
+        alc.LoadAppList(this,adapterApplock);
 
         listView.setAdapter(adapterApplock);
     }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -42,9 +49,10 @@ public class AppLockActivity extends AppLockController {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:{
-                Intent intent = new Intent(getApplicationContext(),AppLockService.class); // 이동할 컴포넌트
+                
+                Intent sintent = new Intent(getApplicationContext(),AppLockService.class); // 이동할 컴포넌트
                 //intent.putExtra("AppLock",AppLock);
-                startService(intent); // 서비스 시작
+                startService(sintent); // 서비스 시작
                 Intent mintent = new Intent(getApplicationContext(),MainActivity.class);
                 mintent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(mintent);
