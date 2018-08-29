@@ -24,7 +24,7 @@ import java.util.HashMap;
  * @brief Class to communicate android with server
  */
 public class RequestHttpConnection {
-    private static final String SERVER_ADDR = "http://192.168.25.45:";
+    private static final String SERVER_ADDR = "http://192.168.25.38:";
     private static final String SERVER_PORT = "5000";
     private InputStream is = null;
 

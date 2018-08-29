@@ -1,9 +1,12 @@
-package com.example.ready.studytimemanagement.model;
+package com.example.ready.studytimemanagement.control;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.ready.studytimemanagement.control.RequestHttpConnection;
+import com.example.ready.studytimemanagement.model.AnalysisData;
+import com.example.ready.studytimemanagement.model.Data;
+import com.example.ready.studytimemanagement.model.User;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,11 +17,13 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
     private Data data;
     private AnalysisData analysisData;
     private RequestHttpConnection requestHttpConnection;
-    public NetworkTask(String url, User user, Data data, AnalysisData analysisData) {
+    private final String[] weekdays = {"월", "화", "수", "목", "금", "토", "일"};
+
+    public NetworkTask(String url, User user, Data data) {
         this.url = url;
         this.user = user;
         this.data = data;
-        this.analysisData = analysisData;
+        this.analysisData = new AnalysisData();
     }
 
     @Override
@@ -47,14 +52,18 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
             case "/classify-week":
                 analysisData.setAnalysis_week(requestHttpConnection.getClassfiedTime(url, user.getId()));
                 break;
-            case "classfi-weekday":
+            case "/classify-weekday":
                 analysisData.setAnalysis_weekday(requestHttpConnection.getClassfiedTime(url, user.getId()));
                 break;
             default:
-                Log.e("url error", "inappropriate url");
+                Log.e("url error", "inappropriate url: " + url);
                 break;
         }
-        return null;
+        return result;
     }
 
+    public AnalysisData getAnalysisData() {
+        Log.e("analysis test", Integer.toString(analysisData.getAnalysis_category().size()));
+        return analysisData;
+    }
 }

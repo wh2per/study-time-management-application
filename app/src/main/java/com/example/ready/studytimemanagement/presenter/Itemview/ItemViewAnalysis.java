@@ -3,13 +3,17 @@ package com.example.ready.studytimemanagement.presenter.Itemview;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Network;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.ready.studytimemanagement.R;
+import com.example.ready.studytimemanagement.control.NetworkTask;
+import com.example.ready.studytimemanagement.model.*;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.charts.CombinedChart;
@@ -30,12 +34,17 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 public class ItemViewAnalysis extends LinearLayout {
     private TextView titleText, subText;
     private LineChart chart;
-    private String[] weekText = {" ","월","화","수","목","금","토","일"," "};
+    private HashMap<String, Long> analysisData;
+    private ArrayList<String> xaxis;
 
     public ItemViewAnalysis(Context context) {
         super(context);
@@ -62,7 +71,9 @@ public class ItemViewAnalysis extends LinearLayout {
     public void setSubText(String s) {
         subText.setText(s);
     }
-    public void setCombinedChart(){
+    public void setCombinedChart(int index, HashMap<String, Long> _analysisData, ArrayList<String> _xaxis){
+        this.xaxis = _xaxis;
+        this.analysisData = _analysisData;
         CombinedChart combinedChart = findViewById(R.id.combinedChart);
         combinedChart.getDescription().setEnabled(false);
         combinedChart.setDrawGridBackground(false);
@@ -96,7 +107,7 @@ public class ItemViewAnalysis extends LinearLayout {
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return weekText[(int) value % weekText.length];
+                return xaxis.get((int) value % xaxis.size());
             }
         });
 
@@ -110,8 +121,15 @@ public class ItemViewAnalysis extends LinearLayout {
     }
     public LineData generateLineData(){
         List<Entry> entries = new ArrayList<Entry>();
-        for(int i =0; i<weekText.length; i++){
-            entries.add(new Entry(i,40));
+        int sum = 0;
+        for(int i = 1; i < xaxis.size()-1; i++) {
+            sum += (int) (analysisData.get(xaxis.get(i)) / 60);
+        }
+        int avg = 40;
+        if(xaxis.size()-2 > 0)
+            avg = sum / (xaxis.size()-2);
+        for(int i =0; i<xaxis.size(); i++){
+            entries.add(new Entry(i, avg));
         }
         LineDataSet dataSet = new LineDataSet(entries,"label");
         dataSet.setColor(Color.rgb(33,33,33));
@@ -124,10 +142,11 @@ public class ItemViewAnalysis extends LinearLayout {
     }
     public BarData generateBarData(){
         List<BarEntry> entries = new ArrayList<BarEntry>();
-        for(int i = 1; i<weekText.length-1; i++){
-            entries.add(new BarEntry(i,i*10));
+
+        for(int i = 1; i<xaxis.size()-1; i++){
+            entries.add(new BarEntry(i, (int) (analysisData.get(xaxis.get(i)) / 60)));
         }
-        entries.add(new BarEntry(weekText.length-1,0));
+        entries.add(new BarEntry(xaxis.size()-1,0));
 
         BarDataSet dataSet = new BarDataSet(entries,"label");
         dataSet.setColor(Color.rgb(133,204,159));
@@ -136,6 +155,7 @@ public class ItemViewAnalysis extends LinearLayout {
         barData.setDrawValues(false);
         return barData;
     }
+
     /*
      * @brief set the Line Graph
      * */
