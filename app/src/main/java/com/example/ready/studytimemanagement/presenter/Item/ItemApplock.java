@@ -1,23 +1,82 @@
 package com.example.ready.studytimemanagement.presenter.Item;
 
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.ImageView;
 
-public class ItemApplock {
-    private String title;
+import com.example.ready.studytimemanagement.R;
+
+public class ItemApplock implements Parcelable {
+    private String appName;
     private Drawable appIcon;
-    private Boolean appSwitch;
-    public ItemApplock(String title, Drawable appIcon){
-        this.title = title;
+    private Boolean lockFlag;
+
+    public ItemApplock(String appName, Drawable appIcon){
+        this.appName = appName;
         this.appIcon = appIcon;
-        this.appSwitch = false;
-    }
-    public String getTitle() {
-        return title;
+        //this.appIcon = getBitmapFromDrawable(appIcon);
+        this.lockFlag = false;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public ItemApplock(String appName) {
+        this.appName = appName;
+        this.appIcon = appIcon;
+        //this.appIcon = getBitmapFromDrawable(appIcon);
+        this.lockFlag = false;
+    }
+
+    protected ItemApplock(Parcel in) {
+        appName = in.readString();
+        appIcon = in.readParcelable(Bitmap.class.getClassLoader());
+        byte tmpLockFlag = in.readByte();
+        lockFlag = tmpLockFlag == 0 ? null : tmpLockFlag == 1;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(appName);
+        dest.writeParcelable((Parcelable) appIcon, flags);
+        dest.writeByte((byte) (lockFlag == null ? 0 : lockFlag ? 1 : 2));
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<ItemApplock> CREATOR = new Creator<ItemApplock>() {
+        @Override
+        public ItemApplock createFromParcel(Parcel in) {
+            return new ItemApplock(in);
+        }
+
+        @Override
+        public ItemApplock[] newArray(int size) {
+            return new ItemApplock[size];
+        }
+    };
+    @NonNull
+    private Bitmap getBitmapFromDrawable(@NonNull Drawable drawable) {
+        final Bitmap bmp = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(bmp);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bmp;
+    }
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String title) {
+        this.appName = title;
     }
 
     public Drawable getAppIcon() {
@@ -28,11 +87,12 @@ public class ItemApplock {
         this.appIcon = appIcon;
     }
 
-    public Boolean getAppSwitch() {
-        return appSwitch;
+    public Boolean getLockFlag() {
+        return lockFlag;
     }
 
-    public void setAppSwitch(Boolean appSwitch) {
-        this.appSwitch = appSwitch;
+    public void setLockFlag(Boolean lockFlag) {
+        this.lockFlag = lockFlag;
     }
+
 }

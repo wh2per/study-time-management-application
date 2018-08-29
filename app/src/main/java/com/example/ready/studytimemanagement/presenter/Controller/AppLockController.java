@@ -12,7 +12,6 @@ import android.util.Log;
 
 import com.example.ready.studytimemanagement.presenter.Activity.BaseActivity;
 import com.example.ready.studytimemanagement.presenter.Adapter.AdapterApplock;
-import com.example.ready.studytimemanagement.presenter.AppLockList;
 import com.example.ready.studytimemanagement.presenter.Item.ItemApplock;
 
 import java.util.ArrayList;
@@ -23,6 +22,24 @@ import java.util.TreeMap;
 public class AppLockController extends BaseActivity {
     PackageManager pkgm;
     List<ResolveInfo> AppInfos;
+
+    public ArrayList<ItemApplock> LoadAppList(Activity act){
+
+        ArrayList<ItemApplock> itemApplocks = new ArrayList<ItemApplock>();
+
+        pkgm = act.getPackageManager();
+        Intent intent = new Intent(Intent.ACTION_MAIN, null);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        AppInfos = pkgm.queryIntentActivities(intent, 0);
+        for (ResolveInfo info : AppInfos) {
+            ActivityInfo ai = info.activityInfo;
+            //Log.d("APP TITLE", ai.loadLabel(pkgm).toString());
+            //Log.d("APP Package Name", ai.packageName);
+            //Log.d("APP Class Name", ai.name);
+            itemApplocks.add(new ItemApplock(ai.loadLabel(pkgm).toString(),ai.loadIcon(pkgm)));
+        }
+        return itemApplocks;
+    }
 
     public void LoadAppList(Activity act, AdapterApplock adapterApplock){
         pkgm = act.getPackageManager();
@@ -38,7 +55,7 @@ public class AppLockController extends BaseActivity {
         }
     }
 
-    public boolean CheckRunningApp(Context context, ArrayList<AppLockList> AppLock) {
+    public boolean CheckRunningApp(Context context, ArrayList<ItemApplock> AppLock) {
         Log.d("App Lock : ","체크함수 시작!");
 
         // 기타 프로세스 목록 확인

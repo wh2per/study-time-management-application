@@ -6,23 +6,30 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Environment;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.example.ready.studytimemanagement.presenter.Activity.LockActivity;
 import com.example.ready.studytimemanagement.presenter.Controller.AppLockController;
+import com.example.ready.studytimemanagement.presenter.Controller.LogfileController;
+import com.example.ready.studytimemanagement.presenter.Item.ItemApplock;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 public class AppLockService extends Service {
 
+    LogfileController lfc;
     AppLockController alc;
     checkThread th;
     private Context context = null;
-
+    final static String sfilename= "applock.txt";
     boolean checkFlag;
+    boolean grantFlag;
 
-    private ArrayList<AppLockList> AppLock;
+    private ArrayList<ItemApplock> AppLock;
 
     private class checkThread extends Thread{
         public void run() {
@@ -39,19 +46,10 @@ public class AppLockService extends Service {
                 granted = (mode == AppOpsManager.MODE_ALLOWED);
             }
 
-            Log.d("isRooting granted = " , String.valueOf(granted));
-
-            if (granted == false)
-            {
-                // 권한이 없을 경우 권한 요구 페이지 이동
-                Intent intent = new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS);
-                context.startActivity(intent);
-            }
-
-            while(checkFlag) {
+            while(checkFlag && granted) {
                 if(alc.CheckRunningApp(context,AppLock)) {
                     Intent intent = new Intent(context,LockActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent);
                     //finish();
                 }
@@ -64,6 +62,7 @@ public class AppLockService extends Service {
             }
         }
     }
+
 
     @Nullable
     @Override
@@ -78,15 +77,28 @@ public class AppLockService extends Service {
         Log.d("Service : ", "서비스의 onCreate");
 
         alc = new AppLockController();
+        lfc = new LogfileController();
         checkFlag = false;
+        grantFlag = false;
         context = getApplicationContext();
+        AppLock = new ArrayList<ItemApplock>();
     }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // 서비스가 호출될 때마다 실행
         Log.d("Service : ", "서비스의 onStartCommand - "+flags+"번 서비스");
 
-        AppLock = (ArrayList<AppLockList>) intent.getSerializableExtra("AppLock");
+        AppLock.clear();
+        String line = lfc.ReadLogFile(context,sfilename);
+        StringTokenizer tokens = new StringTokenizer(line);
+
+        Log.d("tokens : ",""+tokens.countTokens());
+
+        while(tokens.hasMoreTokens()) {
+            AppLock.add(new ItemApplock(tokens.nextToken(",")));
+        }
+
+        //AppLock = (ArrayList<AppLockList>) intent.getSerializableExtra("AppLock");
 
         if(checkFlag==false) {
             th = new checkThread();
@@ -95,6 +107,7 @@ public class AppLockService extends Service {
             stopSelf();
         }
         checkFlag = !checkFlag;
+        //Notification notification = new Notification(R.drawable.ic_launcher, "서비스 실행됨", System.currentTimeMillis());
         startForeground(1,new Notification());
         return super.onStartCommand(intent, flags, startId);
     }
@@ -105,8 +118,6 @@ public class AppLockService extends Service {
         th = null;
         Log.d("Thread", "쓰레드 뿌셔");
         // 서비스가 종료될 때 실행
-
-        Log.d("Service : ", "서비스의 onDestroy");
     }
 
 }

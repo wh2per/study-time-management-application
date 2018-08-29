@@ -12,9 +12,10 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.ready.studytimemanagement.R;
+import com.example.ready.studytimemanagement.presenter.Activity.LoadActivity;
 import com.example.ready.studytimemanagement.presenter.Adapter.AdapterSetting;
 import com.example.ready.studytimemanagement.presenter.Item.ItemSetting;
-import com.example.ready.studytimemanagement.presenter.Activity.LoginActivity;
+import com.example.ready.studytimemanagement.presenter.Activity.LockActivity;
 
 public class FragmentSetting extends Fragment{
     Button testSignin;
@@ -28,7 +29,9 @@ public class FragmentSetting extends Fragment{
         testSignin.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(),LoginActivity.class);
+                //Intent intent = new Intent(getContext(),LoginActivity.class);
+                Intent intent = new Intent(getContext(),LockActivity.class);
+
                 startActivity(intent);
             }
         });

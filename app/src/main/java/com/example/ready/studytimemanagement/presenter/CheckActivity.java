@@ -1,5 +1,6 @@
 package com.example.ready.studytimemanagement.presenter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -31,6 +32,10 @@ public class CheckActivity extends LoginController implements View.OnClickListen
     final static String foldername = Environment.getExternalStorageDirectory().getAbsolutePath()+"/DataLog";
     final static String filename = "datalog.txt";
 
+    final static String sfilePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/ServiceLog/applock.txt";
+    final static String sfoldername = Environment.getExternalStorageDirectory().getAbsolutePath()+"/ServiceLog";
+    final static String sfilename = "applock.txt";
+
     private EditText category;
     private EditText date;
     private EditText time;
@@ -47,6 +52,8 @@ public class CheckActivity extends LoginController implements View.OnClickListen
     AppLockController alc;
 
     ArrayList<AppLockList> AppLock;
+
+    Context cont;
 
     @Override
     protected void onCreate(Bundle bundle){
@@ -66,12 +73,12 @@ public class CheckActivity extends LoginController implements View.OnClickListen
         time = (EditText)findViewById(R.id.time);
         appname = (EditText)findViewById(R.id.appname);
 
-        installname = (TextView)findViewById(R.id.installname);
+        //installname = (TextView)findViewById(R.id.installname);
         readcategory = (TextView)findViewById(R.id.readcategory);
         readdate = (TextView)findViewById(R.id.readdate);
         readtime = (TextView)findViewById(R.id.readtime);
 
-        appicon = (ImageView)findViewById(R.id.appicon);
+        //appicon = (ImageView)findViewById(R.id.appicon);
 
         mData = new ArrayList<Data>();
 
@@ -80,13 +87,15 @@ public class CheckActivity extends LoginController implements View.OnClickListen
 
         findViewById(R.id.applist).setOnClickListener(this);
 
-        findViewById(R.id.lockSetting).setOnClickListener(this);
+        //findViewById(R.id.lockSetting).setOnClickListener(this);
         findViewById(R.id.lock).setOnClickListener(this);
 
         lfc = new LogfileController();
         alc = new AppLockController();
 
         AppLock = new ArrayList<AppLockList>();
+
+        cont = getApplicationContext();
     }
 
     @Override
@@ -130,40 +139,38 @@ public class CheckActivity extends LoginController implements View.OnClickListen
             String content = "#####\r\n";
             content = content+"#CATEGORY=="+category_s+"\r\n"+"#DATE=="+date_s+"\r\n"+"#TIME=="+time_s+"\r\n";
 
-            lfc.WriteLogFile(foldername,filename,content,true);
+            lfc.WriteLogFile(cont,filename,content);
             Log.d("datalog","write complete!!");
         }else if(i==R.id.load){
-            String line = lfc.ReadLogFile(filePath);
-
-            String[] dataSet = line.split("#####");
-            for(int j=1; j<dataSet.length; j++){
-                String[] data = dataSet[j].split("#");
-                for(int k=1; k<data.length; k++){               // category -> date -> time
-                    data[k] = data[k].substring(data[k].indexOf("==")+2);
-                }
-                Data d = new Data();
-                d.setCategory(data[1]);
-                d.setDate(data[2]);
-                d.setAmount(data[3]);
-                d.setTarget_time("7");
-                mData.add(d);
-            }
-
-            readcategory.setText(mData.get(mData.size()-1).getCategory());
-            readdate.setText(mData.get(mData.size()-1).getDate());
-            readtime.setText(mData.get(mData.size()-1).getAmount());
+//            String line = lfc.ReadLogFile(filePath);
+//
+//            String[] dataSet = line.split("#####");
+//            for(int j=1; j<dataSet.length; j++){
+//                String[] data = dataSet[j].split("#");
+//                for(int k=1; k<data.length; k++){               // category -> date -> time
+//                    data[k] = data[k].substring(data[k].indexOf("==")+2);
+//                }
+//                Data d = new Data();
+//                d.setCategory(data[1]);
+//                d.setDate(data[2]);
+//                d.setAmount(data[3]);
+//                d.setTarget_time("7");
+//                mData.add(d);
+//            }
+//
+//            readcategory.setText(mData.get(mData.size()-1).getCategory());
+//            readdate.setText(mData.get(mData.size()-1).getDate());
+//            readtime.setText(mData.get(mData.size()-1).getAmount());
         }else if(i==R.id.applist){
-            //alc.LoadAppList(this);
 
-
-
-        }else if(i==R.id.lockSetting){
+        }/*else if(i==R.id.lockSetting){
             String app = appname.getText().toString();
+            lfc.WriteLogFile(cont,sfilename,app+",");
             AppLock.add(new AppLockList(app,false));
             Log.d("Add Lock APP",app);
-        }else if(i==R.id.lock){
+        }*/else if(i==R.id.lock){
             Intent intent = new Intent(getApplicationContext(),AppLockService.class); // 이동할 컴포넌트
-            intent.putExtra("AppLock",AppLock);
+            //intent.putExtra("AppLock",AppLock);
             startService(intent); // 서비스 시작
         }
     }

@@ -1,10 +1,20 @@
 package com.example.ready.studytimemanagement.presenter.Fragment;
 
+import android.annotation.SuppressLint;
+import android.Manifest;
 import android.app.AlertDialog;
+import android.app.AppOpsManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.os.Handler;
+import android.os.IBinder;
+import android.os.SystemClock;
+import android.provider.Settings;
+import android.support.design.widget.FloatingActionButton;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -29,10 +39,12 @@ import com.example.ready.studytimemanagement.model.Data;
 import com.example.ready.studytimemanagement.presenter.Activity.AppLockActivity;
 import com.example.ready.studytimemanagement.presenter.Activity.MainActivity;
 import com.example.ready.studytimemanagement.presenter.BasicTimer;
+import com.example.ready.studytimemanagement.presenter.Item.ItemApplock;
 import com.example.ready.studytimemanagement.presenter.Service.TimerService;
 import com.triggertrap.seekarc.SeekArc;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class FragmentTimer extends Fragment{
@@ -44,6 +56,9 @@ public class FragmentTimer extends Fragment{
     private boolean timerOn;
     private Data tempData;
     private SeekArc seekBar;
+
+    private ArrayList<ItemApplock> applocks;
+    private Intent lockIntent;
 
     //private TimerService timerService;
     //private Intent tService;
@@ -58,6 +73,10 @@ public class FragmentTimer extends Fragment{
 
     public FragmentTimer(){}
 
+    @SuppressLint("ValidFragment")
+    public FragmentTimer(ArrayList<ItemApplock> applocks){
+        this.applocks = applocks;
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -77,6 +96,12 @@ public class FragmentTimer extends Fragment{
 
         tempData = new Data();
 
+        //start app lock list activity
+        lockIntent = new Intent(getActivity(),AppLockActivity.class);
+        lockIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(lockIntent);
+
+        //for timer service
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("TIMER_BROAD_CAST_ACK");
         getActivity().registerReceiver(br,intentFilter);
@@ -215,8 +240,29 @@ public class FragmentTimer extends Fragment{
         appListBtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(),AppLockActivity.class);
-                startActivity(intent);
+                startActivity(lockIntent);
+
+                // GET_USAGE_STATS 권한 확인
+                boolean granted = false;
+                AppOpsManager appOps = (AppOpsManager) mainActivity.getSystemService(Context.APP_OPS_SERVICE);
+                int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,android.os.Process.myUid(), mainActivity.getPackageName());
+
+                if (mode == AppOpsManager.MODE_DEFAULT) {
+                    granted = (mainActivity.checkCallingOrSelfPermission(android.Manifest.permission.PACKAGE_USAGE_STATS) == PackageManager.PERMISSION_GRANTED);
+                } else {
+                    granted = (mode == AppOpsManager.MODE_ALLOWED);
+                }
+
+                Log.d("isRooting granted = " , String.valueOf(granted));
+
+                if (granted == false)
+                {
+                    // 권한이 없을 경우 권한 요구 페이지 이동
+                    Intent sintent = new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS);
+                    sintent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    mainActivity.startActivity(sintent);
+                }
+
             }
         });
 

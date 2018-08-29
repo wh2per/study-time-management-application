@@ -64,7 +64,7 @@ public class LoginController extends LogfileController {
     public boolean isExistUserLog(){
         File file = new File(filePath);
         if(file.exists()){
-            String line = ReadLogFile(filePath);
+            String line = ReadLogFile(getApplicationContext(),filename);
             StringTokenizer tokens = new StringTokenizer(line);
             String ID = tokens.nextToken(",");
             String EMAIL = tokens.nextToken(",");
@@ -77,7 +77,7 @@ public class LoginController extends LogfileController {
 
             return true;
         }else{
-            Log.d("userloig", "유저정보가 읍따");
+            Log.d("userlog", "유저정보가 읍따");
             return false;
         }
     }
@@ -192,7 +192,8 @@ public class LoginController extends LogfileController {
 
                             // 로그파일 생성
                             String content = ID + ","+EMAIL;
-                            WriteLogFile(foldername,filename,content,false);
+                            WriteLogFile(getApplicationContext(),filename,content);
+                            Log.d("LOG SAVE", "google success");
 
                             Intent intent = new Intent(getApplicationContext(),CheckActivity.class);
                             intent.putExtra("ID", ID);
@@ -237,7 +238,8 @@ public class LoginController extends LogfileController {
 
                             // 로그파일 생성
                             String content = ID + ","+EMAIL;
-                            WriteLogFile(foldername,filename,content,false);
+                            WriteLogFile(getApplicationContext(),filename,content);
+                            Log.d("LOG SAVE", "facebook success");
 
                             Intent intent = new Intent(getApplicationContext(),CheckActivity.class);
                             intent.putExtra("ID", ID);
@@ -315,7 +317,8 @@ public class LoginController extends LogfileController {
 
                     // 로그파일 생성
                     String content = ID + ","+EMAIL;
-                    WriteLogFile(foldername,filename,content,false);
+                    WriteLogFile(getApplicationContext(),filename,content);
+                    Log.d("LOG SAVE", "kakako success");
 
                     Intent intent = new Intent(getApplicationContext(),CheckActivity.class);
                     intent.putExtra("ID", ID);

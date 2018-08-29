@@ -12,19 +12,19 @@
 
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity android:name=".presenter.Activity.MainActivity">
+        <activity android:name=".presenter.Activity.LoadActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presenter.Activity.LoginActivity">
-
+        <activity android:name=".presenter.Activity.MainActivity">
         </activity>
-        <activity android:name=".presenter.LockActivity">
+        <activity android:name=".presenter.Activity.LoginActivity">
+        </activity>
+        <activity android:name=".presenter.Activity.LockActivity">
         </activity>
         <activity android:name=".presenter.CheckActivity">
-
         </activity>
         <activity android:name=".presenter.Activity.AppLockActivity">
         </activity>
@@ -55,10 +55,19 @@
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
         <service android:name=".presenter.AppLockService" />
+        <receiver
+            android:name=".presenter.RestartService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions" />
 </manifest>
