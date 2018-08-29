@@ -11,8 +11,10 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.example.ready.studytimemanagement.presenter.Activity.LockActivity;
 import com.example.ready.studytimemanagement.presenter.Controller.AppLockController;
 import com.example.ready.studytimemanagement.presenter.Controller.LogfileController;
+import com.example.ready.studytimemanagement.presenter.Item.ItemApplock;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -27,7 +29,7 @@ public class AppLockService extends Service {
     boolean checkFlag;
     boolean grantFlag;
 
-    private ArrayList<AppLockList> AppLock;
+    private ArrayList<ItemApplock> AppLock;
 
     private class checkThread extends Thread{
         public void run() {
@@ -79,7 +81,7 @@ public class AppLockService extends Service {
         checkFlag = false;
         grantFlag = false;
         context = getApplicationContext();
-        AppLock = new ArrayList<AppLockList>();
+        AppLock = new ArrayList<ItemApplock>();
     }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -93,7 +95,7 @@ public class AppLockService extends Service {
         Log.d("tokens : ",""+tokens.countTokens());
 
         while(tokens.hasMoreTokens()) {
-            AppLock.add(new AppLockList(tokens.nextToken(","),false));
+            AppLock.add(new ItemApplock(tokens.nextToken(",")));
         }
 
         //AppLock = (ArrayList<AppLockList>) intent.getSerializableExtra("AppLock");

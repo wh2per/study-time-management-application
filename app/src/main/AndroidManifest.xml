@@ -12,19 +12,19 @@
 
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity android:name=".presenter.Activity.MainActivity">
+        <activity android:name=".presenter.Activity.LoadActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presenter.Activity.LoginActivity">
-
+        <activity android:name=".presenter.Activity.MainActivity">
         </activity>
-        <activity android:name=".presenter.LockActivity">
+        <activity android:name=".presenter.Activity.LoginActivity">
+        </activity>
+        <activity android:name=".presenter.Activity.LockActivity">
         </activity>
         <activity android:name=".presenter.CheckActivity">
-
         </activity>
         <activity android:name=".presenter.Activity.AppLockActivity">
         </activity>

@@ -1,6 +1,7 @@
 package com.example.ready.studytimemanagement.presenter.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -42,7 +43,8 @@ public class AdapterAnalysis extends BaseAdapter{
         v.setTitleText(item.getTitle());
         v.setSubText(item.getSubTitle());
         v.setCombinedChart();
-       // v.setBarChart();
+
+        //v.setBarChart();
         //v.setLineChart();
         return v;
     }

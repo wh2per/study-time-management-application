@@ -1,6 +1,9 @@
 package com.example.ready.studytimemanagement.presenter.Adapter;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -18,9 +21,15 @@ public class AdapterApplock extends BaseAdapter{
     public AdapterApplock(Context c){
         this.context = c;
     }
+    public AdapterApplock(Context c, ArrayList<ItemApplock> list){
+        this.context = c;
+        this.items = list;
+
+    }
     public void addItem(ItemApplock item){
         items.add(item);
     }
+
     @Override
     public int getCount() {
         return items.size();
@@ -40,13 +49,14 @@ public class AdapterApplock extends BaseAdapter{
     public View getView(int i, View view, ViewGroup viewGroup) {
         ItemViewApplock v = new ItemViewApplock(context);
         final ItemApplock item = items.get(i);
-        v.setAppName(item.getTitle());
+        v.setAppName(item.getAppName());
         v.setAppIcon(item.getAppIcon());
-        v.setAppSwitch(item.getAppSwitch());
+        //v.setAppIcon(new BitmapDrawable(view.getContext().getResources(),item.getAppIcon()));
+        v.setAppSwitch(item.getLockFlag());
         v.getAppSwitch().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                item.setAppSwitch(b);
+                item.setLockFlag(b);
             }
         });
 
