@@ -66,9 +66,8 @@ public class AdapterAnalysis extends BaseAdapter{
         ItemAnalysis item = items.get(i);
         v.setTitleText(item.getTitle());
         v.setSubText(item.getSubTitle());
-        v.setCombinedChart(i, analysisData[i], xaxis[i]);
-       // v.setBarChart();
-        //v.setLineChart();
+        //TODO if server operates, remove comments
+//        v.setCombinedChart(i, analysisData[i], xaxis[i]);
         return v;
     }
 
