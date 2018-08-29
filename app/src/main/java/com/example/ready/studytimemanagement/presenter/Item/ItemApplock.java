@@ -18,19 +18,14 @@ public class ItemApplock implements Parcelable {
     private String appName;
     private Drawable appIcon;
     private Boolean lockFlag;
+    private String appPackage;
 
-    public ItemApplock(String appName, Drawable appIcon){
+    public ItemApplock(String appName, Drawable appIcon, String appPackage){
         this.appName = appName;
         this.appIcon = appIcon;
         //this.appIcon = getBitmapFromDrawable(appIcon);
         this.lockFlag = false;
-    }
-
-    public ItemApplock(String appName) {
-        this.appName = appName;
-        this.appIcon = appIcon;
-        //this.appIcon = getBitmapFromDrawable(appIcon);
-        this.lockFlag = false;
+        this.appPackage = appPackage;
     }
 
     protected ItemApplock(Parcel in) {
@@ -95,4 +90,7 @@ public class ItemApplock implements Parcelable {
         this.lockFlag = lockFlag;
     }
 
+    public String getAppPackage() {return appPackage;}
+
+    public void setAppPackage(String appPackage) {  this.appPackage = appPackage;  }
 }

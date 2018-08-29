@@ -36,26 +36,12 @@ public class AppLockController extends BaseActivity {
             //Log.d("APP TITLE", ai.loadLabel(pkgm).toString());
             //Log.d("APP Package Name", ai.packageName);
             //Log.d("APP Class Name", ai.name);
-            itemApplocks.add(new ItemApplock(ai.loadLabel(pkgm).toString(),ai.loadIcon(pkgm)));
+            itemApplocks.add(new ItemApplock(ai.loadLabel(pkgm).toString(),ai.loadIcon(pkgm), ai.packageName));
         }
         return itemApplocks;
     }
 
-    public void LoadAppList(Activity act, AdapterApplock adapterApplock){
-        pkgm = act.getPackageManager();
-        Intent intent = new Intent(Intent.ACTION_MAIN, null);
-        intent.addCategory(Intent.CATEGORY_LAUNCHER);
-        AppInfos = pkgm.queryIntentActivities(intent, 0);
-        for (ResolveInfo info : AppInfos) {
-            ActivityInfo ai = info.activityInfo;
-            Log.d("APP TITLE", ai.loadLabel(pkgm).toString());
-            Log.d("APP Package Name", ai.packageName);
-            //Log.d("APP Class Name", ai.name);
-            adapterApplock.addItem(new ItemApplock(ai.loadLabel(pkgm).toString(),ai.loadIcon(pkgm)));
-        }
-    }
-
-    public boolean CheckRunningApp(Context context, ArrayList<ItemApplock> AppLock) {
+    public boolean CheckRunningApp(Context context, ArrayList<String> AppLock) {
         Log.d("App Lock : ","체크함수 시작!");
 
         // 기타 프로세스 목록 확인
@@ -72,8 +58,8 @@ public class AppLockController extends BaseActivity {
             Log.d("CurrentApp = " ,runningTask.get(runningTask.lastKey()).getPackageName());
 
             for(int i=0; i<AppLock.size(); i++){
-                if (AppLock.get(i).getAppName().equals(runningTask.get(runningTask.lastKey()).getPackageName()) && AppLock.get(i).getLockFlag()==false){
-                    Log.d("Catch ForeGround App : ", AppLock.get(i).getAppName());
+                if (AppLock.get(i).equals(runningTask.get(runningTask.lastKey()).getPackageName())){
+                    Log.d("Catch ForeGround App : ", AppLock.get(i));
                     //AppLock.get(i).setLockFlag(true);
                     return true;
                 }

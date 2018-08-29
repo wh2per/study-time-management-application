@@ -17,12 +17,17 @@ import com.example.ready.studytimemanagement.R;
 import com.example.ready.studytimemanagement.presenter.Adapter.AdapterApplock;
 import com.example.ready.studytimemanagement.presenter.AppLockService;
 import com.example.ready.studytimemanagement.presenter.Controller.AppLockController;
+import com.example.ready.studytimemanagement.presenter.Controller.LogfileController;
 import com.example.ready.studytimemanagement.presenter.Item.ItemApplock;
 
 import java.util.ArrayList;
 
 public class AppLockActivity extends AppCompatActivity {
     AppLockController alc;
+    LogfileController lfc;
+    Context cont;
+    final static String sfilename = "applock.txt";
+
     private ArrayList<ItemApplock> applocks;
     private Intent mainIntent;
     @Override
@@ -31,7 +36,8 @@ public class AppLockActivity extends AppCompatActivity {
         setContentView(R.layout.activity_applock);
         Log.d("lock","다시 실행됨");
         alc = new AppLockController();
-
+        lfc = new LogfileController();
+        cont = getApplicationContext();
         // load applist from main activity
         applocks = alc.LoadAppList(this);
         //Intent intent = getIntent();
@@ -61,8 +67,15 @@ public class AppLockActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case android.R.id.home:{
 
+                lfc.WriteLogFile(cont, sfilename, "", 2);
+                for (int i = 0; i < applocks.size(); i++) {
+                    if (applocks.get(i).getLockFlag() == true) {
+                        lfc.WriteLogFile(cont, sfilename, applocks.get(i).getAppPackage() + ",", 1);
+                    }
+                }
+
                 Intent sintent = new Intent(getApplicationContext(),AppLockService.class); // 이동할 컴포넌트
-                //intent.putExtra("AppLock",AppLock);
+                sintent.putExtra("OnOff",false);
                 startService(sintent); // 서비스 시작
                 Intent mintent = new Intent(getApplicationContext(),MainActivity.class);
                 mintent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
