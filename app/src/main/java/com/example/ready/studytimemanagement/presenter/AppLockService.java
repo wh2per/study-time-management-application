@@ -26,7 +26,6 @@ public class AppLockService extends Service {
     checkThread th;
     private Context context = null;
     final static String sfilename= "applock.txt";
-    boolean checkFlag;
     boolean grantFlag;
 
     private ArrayList<String> AppLock;
@@ -46,7 +45,7 @@ public class AppLockService extends Service {
                 granted = (mode == AppOpsManager.MODE_ALLOWED);
             }
 
-            while(granted && checkFlag) {
+            while(granted && !isInterrupted()) {
                 if(alc.CheckRunningApp(context,AppLock)) {
                     Intent intent = new Intent(context,LockActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -54,11 +53,6 @@ public class AppLockService extends Service {
                     //finish();
                 }
                 Log.d("Thread", this.getId()+" : " + num++);
-                try {
-                    Thread.sleep(1000 );
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
             }
         }
     }
@@ -78,36 +72,33 @@ public class AppLockService extends Service {
 
         alc = new AppLockController();
         lfc = new LogfileController();
-        checkFlag = false;
         grantFlag = false;
         context = getApplicationContext();
         AppLock = new ArrayList<String>();
+        th = new checkThread();
+        th.start();
     }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // 서비스가 호출될 때마다 실행
         Log.d("Service : ", "서비스의 onStartCommand - "+flags+"번 서비스");
-        checkFlag = intent.getBooleanExtra("OnOff",false);
+
+        th.interrupt();
+
         AppLock.clear();
-        String line = lfc.ReadLogFile(context,sfilename);
+        String line = lfc.ReadLogFile(context, sfilename);
         StringTokenizer tokens = new StringTokenizer(line);
 
-        Log.d("tokens : ",""+tokens.countTokens());
+        Log.d("tokens : ", "" + tokens.countTokens());
 
-        while(tokens.hasMoreTokens()) {
+        while (tokens.hasMoreTokens()) {
             AppLock.add((tokens.nextToken(",")));
         }
 
-        if(checkFlag == false) {
-            th = new checkThread();
-            th.start();
-            Log.d("쓰레드를 새로만들꺼야",""+th.getId());
-        }
-        if(checkFlag == true){
-            //Log.d("쓰레드가 이미 있어",""+th.getId());
-            stopSelf();
-        }
-        checkFlag =!checkFlag;
+        th = new checkThread();
+        th.start();
+
+
         //Notification notification = new Notification(R.drawable.ic_launcher, "서비스 실행됨", System.currentTimeMillis());
         startForeground(1,new Notification());
         return super.onStartCommand(intent, flags, startId);
@@ -115,6 +106,7 @@ public class AppLockService extends Service {
 
     @Override
     public void onDestroy() {
+        Log.d("Service : ", "서비스 부실게");
         super.onDestroy();
         // 서비스가 종료될 때 실행
     }

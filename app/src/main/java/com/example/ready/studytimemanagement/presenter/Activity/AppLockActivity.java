@@ -66,7 +66,6 @@ public class AppLockActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:{
-
                 lfc.WriteLogFile(cont, sfilename, "", 2);
                 for (int i = 0; i < applocks.size(); i++) {
                     if (applocks.get(i).getLockFlag() == true) {
@@ -75,8 +74,8 @@ public class AppLockActivity extends AppCompatActivity {
                 }
 
                 Intent sintent = new Intent(getApplicationContext(),AppLockService.class); // 이동할 컴포넌트
-                sintent.putExtra("OnOff",false);
                 startService(sintent); // 서비스 시작
+
                 Intent mintent = new Intent(getApplicationContext(),MainActivity.class);
                 mintent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(mintent);

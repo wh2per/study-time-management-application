@@ -262,12 +262,7 @@ public class FragmentTimer extends Fragment{
                     Intent sintent = new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS);
                     sintent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                     mainActivity.startActivity(sintent);
-                }else{
-                    Intent sintent = new Intent(mainActivity,AppLockService.class); // 이동할 컴포넌트
-                    sintent.putExtra("OnOff",true);
-                    mainActivity.startService(sintent); // 서비스 시작
                 }
-
             }
         });
 
