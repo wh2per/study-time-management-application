@@ -52,6 +52,11 @@ public class AppLockService extends Service {
                     startActivity(intent);
                     //finish();
                 }
+                try {
+                    sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 Log.d("Thread", this.getId()+" : " + num++);
             }
         }
@@ -76,6 +81,7 @@ public class AppLockService extends Service {
         context = getApplicationContext();
         AppLock = new ArrayList<String>();
         th = new checkThread();
+        //th.setDaemon(true);
         th.start();
     }
     @Override
@@ -83,7 +89,7 @@ public class AppLockService extends Service {
         // 서비스가 호출될 때마다 실행
         Log.d("Service : ", "서비스의 onStartCommand - "+flags+"번 서비스");
 
-        th.interrupt();
+        //th.interrupt();
 
         AppLock.clear();
         String line = lfc.ReadLogFile(context, sfilename);
@@ -95,9 +101,8 @@ public class AppLockService extends Service {
             AppLock.add((tokens.nextToken(",")));
         }
 
-        th = new checkThread();
-        th.start();
-
+        //th = new checkThread();
+       // th.start();
 
         //Notification notification = new Notification(R.drawable.ic_launcher, "서비스 실행됨", System.currentTimeMillis());
         startForeground(1,new Notification());

@@ -21,6 +21,7 @@ import com.example.ready.studytimemanagement.presenter.Controller.LogfileControl
 import com.example.ready.studytimemanagement.presenter.Item.ItemApplock;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 public class AppLockActivity extends AppCompatActivity {
     AppLockController alc;
@@ -42,7 +43,21 @@ public class AppLockActivity extends AppCompatActivity {
         applocks = alc.LoadAppList(this);
         //Intent intent = getIntent();
         //applocks = intent.getParcelableArrayListExtra("applist");
+        String line = lfc.ReadLogFile(cont, sfilename);
+        Log.d("아니이게뭐야제발 뜨라고","얼탱이방탱이가 없네 : "+line);
 
+        if((line = lfc.ReadLogFile(cont, sfilename)) != "") {
+            Log.d("아니이게뭐야제발 뜨라고","이제 좀 되냐 : "+line);
+            StringTokenizer tokens = new StringTokenizer(line);
+            while(tokens.hasMoreTokens()) {
+                String temp = tokens.nextToken(",");
+                for (int i = 0; i < applocks.size(); i++) {
+                    if (applocks.get(i).getAppPackage().equals(temp)) {
+                        applocks.get(i).setLockFlag(true);
+                    }
+                }
+            }
+        }
         Toolbar mToolbar  = findViewById(R.id.appListToolbar);
         mToolbar.setTitle("앱 목록");
         setSupportActionBar(mToolbar);
