@@ -26,10 +26,9 @@ public class AppLockService extends Service {
     checkThread th;
     private Context context = null;
     final static String sfilename= "applock.txt";
-    boolean checkFlag;
     boolean grantFlag;
 
-    private ArrayList<ItemApplock> AppLock;
+    private ArrayList<String> AppLock;
 
     private class checkThread extends Thread{
         public void run() {
@@ -46,19 +45,19 @@ public class AppLockService extends Service {
                 granted = (mode == AppOpsManager.MODE_ALLOWED);
             }
 
-            while(checkFlag && granted) {
+            while(granted && !isInterrupted()) {
                 if(alc.CheckRunningApp(context,AppLock)) {
                     Intent intent = new Intent(context,LockActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent);
                     //finish();
                 }
-                Log.d("Thread", "" + num++);
                 try {
-                    Thread.sleep(1000 );
+                    sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                Log.d("Thread", this.getId()+" : " + num++);
             }
         }
     }
@@ -78,35 +77,33 @@ public class AppLockService extends Service {
 
         alc = new AppLockController();
         lfc = new LogfileController();
-        checkFlag = false;
         grantFlag = false;
         context = getApplicationContext();
-        AppLock = new ArrayList<ItemApplock>();
+        AppLock = new ArrayList<String>();
+        th = new checkThread();
+        //th.setDaemon(true);
+        th.start();
     }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // 서비스가 호출될 때마다 실행
         Log.d("Service : ", "서비스의 onStartCommand - "+flags+"번 서비스");
 
+        //th.interrupt();
+
         AppLock.clear();
-        String line = lfc.ReadLogFile(context,sfilename);
+        String line = lfc.ReadLogFile(context, sfilename);
         StringTokenizer tokens = new StringTokenizer(line);
 
-        Log.d("tokens : ",""+tokens.countTokens());
+        Log.d("tokens : ", "" + tokens.countTokens());
 
-        while(tokens.hasMoreTokens()) {
-            AppLock.add(new ItemApplock(tokens.nextToken(",")));
+        while (tokens.hasMoreTokens()) {
+            AppLock.add((tokens.nextToken(",")));
         }
 
-        //AppLock = (ArrayList<AppLockList>) intent.getSerializableExtra("AppLock");
+        //th = new checkThread();
+       // th.start();
 
-        if(checkFlag==false) {
-            th = new checkThread();
-            th.start();
-        }else {
-            stopSelf();
-        }
-        checkFlag = !checkFlag;
         //Notification notification = new Notification(R.drawable.ic_launcher, "서비스 실행됨", System.currentTimeMillis());
         startForeground(1,new Notification());
         return super.onStartCommand(intent, flags, startId);
@@ -114,9 +111,8 @@ public class AppLockService extends Service {
 
     @Override
     public void onDestroy() {
+        Log.d("Service : ", "서비스 부실게");
         super.onDestroy();
-        th = null;
-        Log.d("Thread", "쓰레드 뿌셔");
         // 서비스가 종료될 때 실행
     }
 

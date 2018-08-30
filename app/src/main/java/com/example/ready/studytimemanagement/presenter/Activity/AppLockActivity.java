@@ -17,12 +17,18 @@ import com.example.ready.studytimemanagement.R;
 import com.example.ready.studytimemanagement.presenter.Adapter.AdapterApplock;
 import com.example.ready.studytimemanagement.presenter.AppLockService;
 import com.example.ready.studytimemanagement.presenter.Controller.AppLockController;
+import com.example.ready.studytimemanagement.presenter.Controller.LogfileController;
 import com.example.ready.studytimemanagement.presenter.Item.ItemApplock;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 public class AppLockActivity extends AppCompatActivity {
     AppLockController alc;
+    LogfileController lfc;
+    Context cont;
+    final static String sfilename = "applock.txt";
+
     private ArrayList<ItemApplock> applocks;
     private Intent mainIntent;
     @Override
@@ -31,12 +37,27 @@ public class AppLockActivity extends AppCompatActivity {
         setContentView(R.layout.activity_applock);
         Log.d("lock","다시 실행됨");
         alc = new AppLockController();
-
+        lfc = new LogfileController();
+        cont = getApplicationContext();
         // load applist from main activity
         applocks = alc.LoadAppList(this);
         //Intent intent = getIntent();
         //applocks = intent.getParcelableArrayListExtra("applist");
+        String line = lfc.ReadLogFile(cont, sfilename);
+        Log.d("아니이게뭐야제발 뜨라고","얼탱이방탱이가 없네 : "+line);
 
+        if((line = lfc.ReadLogFile(cont, sfilename)) != "") {
+            Log.d("아니이게뭐야제발 뜨라고","이제 좀 되냐 : "+line);
+            StringTokenizer tokens = new StringTokenizer(line);
+            while(tokens.hasMoreTokens()) {
+                String temp = tokens.nextToken(",");
+                for (int i = 0; i < applocks.size(); i++) {
+                    if (applocks.get(i).getAppPackage().equals(temp)) {
+                        applocks.get(i).setLockFlag(true);
+                    }
+                }
+            }
+        }
         Toolbar mToolbar  = findViewById(R.id.appListToolbar);
         mToolbar.setTitle("앱 목록");
         setSupportActionBar(mToolbar);
@@ -60,10 +81,16 @@ public class AppLockActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:{
+                lfc.WriteLogFile(cont, sfilename, "", 2);
+                for (int i = 0; i < applocks.size(); i++) {
+                    if (applocks.get(i).getLockFlag() == true) {
+                        lfc.WriteLogFile(cont, sfilename, applocks.get(i).getAppPackage() + ",", 1);
+                    }
+                }
 
                 Intent sintent = new Intent(getApplicationContext(),AppLockService.class); // 이동할 컴포넌트
-                //intent.putExtra("AppLock",AppLock);
                 startService(sintent); // 서비스 시작
+
                 Intent mintent = new Intent(getApplicationContext(),MainActivity.class);
                 mintent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(mintent);

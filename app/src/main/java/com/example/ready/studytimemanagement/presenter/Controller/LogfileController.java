@@ -21,10 +21,15 @@ public class LogfileController extends BaseActivity {
 
     }
     //텍스트내용을 경로의 텍스트 파일에 쓰기
-    public void WriteLogFile(Context cont,String filename, String contents){
+    public void WriteLogFile(Context cont,String filename, String contents, int flag){
         try{
             //파일 output stream 생성
-            FileOutputStream fos = cont.openFileOutput(filename, MODE_APPEND);      //del이 true면 이어서 저장
+            FileOutputStream fos;
+            if(flag==1)
+                fos = cont.openFileOutput(filename, MODE_APPEND);      //이어서 저장
+            else
+                fos = cont.openFileOutput(filename, MODE_PRIVATE);      //새로 저장
+
             //파일쓰기
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(fos));
             writer.write(contents);
@@ -49,7 +54,7 @@ public class LogfileController extends BaseActivity {
             }
             reader.close();
             fis.close();
-            Log.d("userlog", strBuffer.toString());
+            Log.d("logfile content : ", strBuffer.toString());
         }catch (IOException e){
             e.printStackTrace();
             return "";

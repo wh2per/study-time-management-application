@@ -51,7 +51,7 @@ public class CheckActivity extends LoginController implements View.OnClickListen
     LogfileController lfc;
     AppLockController alc;
 
-    ArrayList<AppLockList> AppLock;
+
 
     Context cont;
 
@@ -93,7 +93,6 @@ public class CheckActivity extends LoginController implements View.OnClickListen
         lfc = new LogfileController();
         alc = new AppLockController();
 
-        AppLock = new ArrayList<AppLockList>();
 
         cont = getApplicationContext();
     }
@@ -139,7 +138,7 @@ public class CheckActivity extends LoginController implements View.OnClickListen
             String content = "#####\r\n";
             content = content+"#CATEGORY=="+category_s+"\r\n"+"#DATE=="+date_s+"\r\n"+"#TIME=="+time_s+"\r\n";
 
-            lfc.WriteLogFile(cont,filename,content);
+            //lfc.WriteLogFile(cont,filename,content);
             Log.d("datalog","write complete!!");
         }else if(i==R.id.load){
 //            String line = lfc.ReadLogFile(filePath);
@@ -163,12 +162,7 @@ public class CheckActivity extends LoginController implements View.OnClickListen
 //            readtime.setText(mData.get(mData.size()-1).getAmount());
         }else if(i==R.id.applist){
 
-        }/*else if(i==R.id.lockSetting){
-            String app = appname.getText().toString();
-            lfc.WriteLogFile(cont,sfilename,app+",");
-            AppLock.add(new AppLockList(app,false));
-            Log.d("Add Lock APP",app);
-        }*/else if(i==R.id.lock){
+        }else if(i==R.id.lock){
             Intent intent = new Intent(getApplicationContext(),AppLockService.class); // 이동할 컴포넌트
             //intent.putExtra("AppLock",AppLock);
             startService(intent); // 서비스 시작

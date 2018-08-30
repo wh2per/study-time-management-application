@@ -192,7 +192,7 @@ public class LoginController extends LogfileController {
 
                             // 로그파일 생성
                             String content = ID + ","+EMAIL;
-                            WriteLogFile(getApplicationContext(),filename,content);
+                            WriteLogFile(getApplicationContext(),filename,content,2);
                             Log.d("LOG SAVE", "google success");
 
                             Intent intent = new Intent(getApplicationContext(),CheckActivity.class);
@@ -238,7 +238,7 @@ public class LoginController extends LogfileController {
 
                             // 로그파일 생성
                             String content = ID + ","+EMAIL;
-                            WriteLogFile(getApplicationContext(),filename,content);
+                            WriteLogFile(getApplicationContext(),filename,content,2);
                             Log.d("LOG SAVE", "facebook success");
 
                             Intent intent = new Intent(getApplicationContext(),CheckActivity.class);
@@ -317,7 +317,7 @@ public class LoginController extends LogfileController {
 
                     // 로그파일 생성
                     String content = ID + ","+EMAIL;
-                    WriteLogFile(getApplicationContext(),filename,content);
+                    WriteLogFile(getApplicationContext(),filename,content,2);
                     Log.d("LOG SAVE", "kakako success");
 
                     Intent intent = new Intent(getApplicationContext(),CheckActivity.class);

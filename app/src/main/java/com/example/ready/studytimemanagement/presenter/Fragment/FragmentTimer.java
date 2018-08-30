@@ -38,6 +38,7 @@ import com.example.ready.studytimemanagement.R;
 import com.example.ready.studytimemanagement.model.Data;
 import com.example.ready.studytimemanagement.presenter.Activity.AppLockActivity;
 import com.example.ready.studytimemanagement.presenter.Activity.MainActivity;
+import com.example.ready.studytimemanagement.presenter.AppLockService;
 import com.example.ready.studytimemanagement.presenter.BasicTimer;
 import com.example.ready.studytimemanagement.presenter.Item.ItemApplock;
 import com.example.ready.studytimemanagement.presenter.Service.TimerService;
@@ -262,7 +263,6 @@ public class FragmentTimer extends Fragment{
                     sintent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                     mainActivity.startActivity(sintent);
                 }
-
             }
         });
 
