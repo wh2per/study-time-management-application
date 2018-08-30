@@ -2,15 +2,19 @@ package com.example.ready.studytimemanagement.presenter;
 
 import android.app.AppOpsManager;
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Environment;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.example.ready.studytimemanagement.R;
 import com.example.ready.studytimemanagement.presenter.Activity.LockActivity;
 import com.example.ready.studytimemanagement.presenter.Controller.AppLockController;
 import com.example.ready.studytimemanagement.presenter.Controller.LogfileController;
@@ -83,13 +87,12 @@ public class AppLockService extends Service {
         th = new checkThread();
         //th.setDaemon(true);
         th.start();
+
     }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // 서비스가 호출될 때마다 실행
         Log.d("Service : ", "서비스의 onStartCommand - "+flags+"번 서비스");
-
-        //th.interrupt();
 
         AppLock.clear();
         String line = lfc.ReadLogFile(context, sfilename);
@@ -101,11 +104,22 @@ public class AppLockService extends Service {
             AppLock.add((tokens.nextToken(",")));
         }
 
-        //th = new checkThread();
-       // th.start();
+        Notification notification = new Notification(R.drawable.ic_launcher, "서비스 실행됨", System.currentTimeMillis());
 
-        //Notification notification = new Notification(R.drawable.ic_launcher, "서비스 실행됨", System.currentTimeMillis());
-        startForeground(1,new Notification());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = null;
+            Log.d("Service : ", "오레오레오레오레오레오레");
+            channel = new NotificationChannel("im_channel_id", "System", NotificationManager.IMPORTANCE_LOW);
+            NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            manager.createNotificationChannel(channel);
+            notification = new Notification.Builder(this, "im_channel_id")
+                    .setSmallIcon(R.drawable.ic_launcher)  // the status icon
+                    .setWhen(System.currentTimeMillis())  // the time stamp
+                    .setContentText("AppLockService")  // the contents of the entry
+                    .build();
+        }
+        startForeground(1,notification);
+
         return super.onStartCommand(intent, flags, startId);
     }
 

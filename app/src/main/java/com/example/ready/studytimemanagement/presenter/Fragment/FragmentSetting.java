@@ -10,15 +10,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.ready.studytimemanagement.R;
 import com.example.ready.studytimemanagement.presenter.Activity.LoadActivity;
+import com.example.ready.studytimemanagement.presenter.Activity.MainActivity;
 import com.example.ready.studytimemanagement.presenter.Adapter.AdapterSetting;
 import com.example.ready.studytimemanagement.presenter.Item.ItemSetting;
 import com.example.ready.studytimemanagement.presenter.Activity.LockActivity;
 
 public class FragmentSetting extends Fragment{
     Button testSignin;
+    private TextView textView2;
+    public MainActivity mainActivity;
 
     @Nullable
     @Override
@@ -35,6 +39,9 @@ public class FragmentSetting extends Fragment{
                 startActivity(intent);
             }
         });
+
+        textView2 = rootView.findViewById(R.id.textView2);
+        textView2.setText(mainActivity.name);
 
         ListView listView = (ListView) rootView.findViewById(R.id.settingList);
         AdapterSetting adapter = new AdapterSetting(getActivity().getApplicationContext());

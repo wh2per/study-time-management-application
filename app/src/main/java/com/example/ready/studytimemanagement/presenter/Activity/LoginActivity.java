@@ -1,5 +1,6 @@
 package com.example.ready.studytimemanagement.presenter.Activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,22 +9,34 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 
 import com.example.ready.studytimemanagement.R;
+import com.example.ready.studytimemanagement.presenter.Controller.LogfileController;
 import com.example.ready.studytimemanagement.presenter.Controller.LoginController;
 
 import java.io.FileOutputStream;
+import java.util.StringTokenizer;
 
 public class LoginActivity extends LoginController{
-    private LoginController lgc;
     private FrameLayout kakaoBtn, facebookBtn, googleBtn;
     private Button noMemberBtn;
+
+    private LogfileController lfc;
+    private Context cont;
+    final String filename = "userlog.txt";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_login);
 
-        lgc = new LoginController();
+        lfc = new LogfileController();
+        cont = getApplicationContext();
+
+        //check login log
+        if(lfc.ReadLogFile(cont,filename) != "nofile"){
+            Intent intent = new Intent(cont, LoadActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
         googleBtn = findViewById(R.id.googleBtn);
         kakaoBtn = findViewById(R.id.kakaoBtn);
@@ -63,17 +76,9 @@ public class LoginActivity extends LoginController{
             }
         });
 
-
-        //이전에 로그인한 기록이 있는지 검사
-        if(isExistUserLog()){   //기록이 있음
-            //startLogin();
-        }else{      //기록이 없음
-            GoogleCreate();
-            FacebookCreate();
-            KakaoCreate();
-        }
-
-
+        GoogleCreate();
+        FacebookCreate();
+        KakaoCreate();
     }
 
     // [START on_start_check_user]

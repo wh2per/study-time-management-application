@@ -1,10 +1,6 @@
 package com.example.ready.studytimemanagement.presenter.Activity;
 
-import android.app.Activity;
-import android.app.AppOpsManager;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -41,12 +37,10 @@ public class AppLockActivity extends AppCompatActivity {
         cont = getApplicationContext();
         // load applist from main activity
         applocks = alc.LoadAppList(this);
-        //Intent intent = getIntent();
-        //applocks = intent.getParcelableArrayListExtra("applist");
         String line = lfc.ReadLogFile(cont, sfilename);
         Log.d("아니이게뭐야제발 뜨라고","얼탱이방탱이가 없네 : "+line);
 
-        if((line = lfc.ReadLogFile(cont, sfilename)) != "") {
+        if((line = lfc.ReadLogFile(cont, sfilename)) != "nofile") {
             Log.d("아니이게뭐야제발 뜨라고","이제 좀 되냐 : "+line);
             StringTokenizer tokens = new StringTokenizer(line);
             while(tokens.hasMoreTokens()) {
@@ -68,14 +62,19 @@ public class AppLockActivity extends AppCompatActivity {
         final AdapterApplock adapterApplock = new AdapterApplock(this.getApplicationContext(),applocks);
 
         listView.setAdapter(adapterApplock);
+
         mainIntent = new Intent(getApplicationContext(),MainActivity.class);
         mainIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(mainIntent);
+
     }
     @Override
     public void onStart() {
+
         super.onStart();
     }
+
+    
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
