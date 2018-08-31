@@ -1,15 +1,13 @@
 package com.example.ready.studytimemanagement.presenter.Controller;
 
 import android.content.Intent;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.example.ready.studytimemanagement.R;
+import com.example.ready.studytimemanagement.presenter.Activity.BaseActivity;
 import com.example.ready.studytimemanagement.presenter.Activity.LoadActivity;
-import com.example.ready.studytimemanagement.presenter.Activity.MainActivity;
-import com.example.ready.studytimemanagement.presenter.CheckActivity;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -37,10 +35,8 @@ import com.kakao.usermgmt.callback.MeResponseCallback;
 import com.kakao.usermgmt.response.model.UserProfile;
 import com.kakao.util.exception.KakaoException;
 
-import java.io.File;
-import java.util.StringTokenizer;
-
-public class LoginController extends LogfileController {
+public class LoginController extends BaseActivity {
+    private LogfileController lfc = new LogfileController();
 
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
@@ -170,7 +166,7 @@ public class LoginController extends LogfileController {
 
                             // 로그파일 생성
                             String content = ID + ","+EMAIL;
-                            WriteLogFile(getApplicationContext(),filename,content,2);
+                            lfc.WriteLogFile(getApplicationContext(),filename,content,2);
                             Log.d("LOG SAVE", "google success");
 
                             Intent intent = new Intent(getApplicationContext(), LoadActivity.class);
@@ -214,7 +210,7 @@ public class LoginController extends LogfileController {
 
                             // 로그파일 생성
                             String content = ID + ","+EMAIL;
-                            WriteLogFile(getApplicationContext(),filename,content,2);
+                            lfc.WriteLogFile(getApplicationContext(),filename,content,2);
                             Log.d("LOG SAVE", "facebook success");
 
                             Intent intent = new Intent(getApplicationContext(),LoadActivity.class);
@@ -291,7 +287,7 @@ public class LoginController extends LogfileController {
 
                     // 로그파일 생성
                     String content = ID + ","+EMAIL;
-                    WriteLogFile(getApplicationContext(),filename,content,2);
+                    lfc.WriteLogFile(getApplicationContext(),filename,content,2);
                     Log.d("LOG SAVE", "kakako success");
 
                     Intent intent = new Intent(getApplicationContext(),LoadActivity.class);

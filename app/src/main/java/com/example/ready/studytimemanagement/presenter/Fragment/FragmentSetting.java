@@ -1,10 +1,10 @@
 package com.example.ready.studytimemanagement.presenter.Fragment;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +13,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.ready.studytimemanagement.R;
-import com.example.ready.studytimemanagement.presenter.Activity.LoadActivity;
+import com.example.ready.studytimemanagement.presenter.Activity.LockActivity;
 import com.example.ready.studytimemanagement.presenter.Activity.MainActivity;
 import com.example.ready.studytimemanagement.presenter.Adapter.AdapterSetting;
 import com.example.ready.studytimemanagement.presenter.Item.ItemSetting;
-import com.example.ready.studytimemanagement.presenter.Activity.LockActivity;
 
 public class FragmentSetting extends Fragment{
     Button testSignin;
@@ -35,7 +34,6 @@ public class FragmentSetting extends Fragment{
             public void onClick(View view) {
                 //Intent intent = new Intent(getContext(),LoginActivity.class);
                 Intent intent = new Intent(getContext(),LockActivity.class);
-
                 startActivity(intent);
             }
         });
