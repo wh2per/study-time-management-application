@@ -1,47 +1,47 @@
 package com.example.ready.studytimemanagement.presenter.Activity;
 
-import android.app.Activity;
-import android.content.Intent;
+import android.content.Context;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.example.ready.studytimemanagement.R;
 import com.example.ready.studytimemanagement.presenter.Adapter.MainPagerAdapter;
+import com.example.ready.studytimemanagement.presenter.Controller.LogfileController;
 import com.example.ready.studytimemanagement.presenter.Fragment.FragmentAnalysis;
 import com.example.ready.studytimemanagement.presenter.Fragment.FragmentSetting;
 import com.example.ready.studytimemanagement.presenter.Fragment.FragmentTimer;
-import com.example.ready.studytimemanagement.presenter.Item.ItemApplock;
 
-import java.util.ArrayList;
-
-import java.io.FileOutputStream;
+import java.util.StringTokenizer;
 
 public class MainActivity extends AppCompatActivity {
+
+    private LogfileController lfc;
+    private Context cont;
+    final String filename = "userlog.txt";
+    public String name;
+    public String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d("main","다시 실행됨");
+
+        lfc = new LogfileController();
+        cont = getApplicationContext();
+
+        String line = lfc.ReadLogFile(cont,filename);
+        StringTokenizer tokens = new StringTokenizer(line);
+
+        name = tokens.nextToken(",");
+        email = tokens.nextToken(",");
+
         final ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setOffscreenPageLimit(3);
-
-        //Intent appListIntent = getIntent();
-        //ArrayList <ItemApplock> itemApplocks  = appListIntent.getParcelableArrayListExtra("appList");
-        //Log.v("listcheck",itemApplocks.get(1).getTitle());
-
-        /*
-        Intent intent = new Intent(this,LoginActivity.class);
-        startActivity(intent);*/
-    /*
-        Intent intent = new Intent(this.getIntent());
-        String id = intent.getStringExtra("ID");
-        String email = intent.getStringExtra("EMAIL");
-*/
 
         final MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager());
         final FragmentAnalysis fragmentAnalysis = new FragmentAnalysis();
@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 //        final FragmentTimer fragmentTimer = new FragmentTimer(itemApplocks);
         fragmentTimer.mainActivity = this;
         final FragmentSetting fragmentSetting = new FragmentSetting();
+        fragmentSetting.mainActivity = this;
         adapter.addItem(fragmentAnalysis);
         adapter.addItem(fragmentTimer);
         adapter.addItem(fragmentSetting);

@@ -7,11 +7,10 @@ import com.example.ready.studytimemanagement.presenter.Activity.BaseActivity;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
@@ -55,6 +54,8 @@ public class LogfileController extends BaseActivity {
             reader.close();
             fis.close();
             Log.d("logfile content : ", strBuffer.toString());
+        }catch (FileNotFoundException e){
+            return "nofile";
         }catch (IOException e){
             e.printStackTrace();
             return "";

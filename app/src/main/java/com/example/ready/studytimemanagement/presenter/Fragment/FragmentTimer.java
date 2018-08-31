@@ -342,8 +342,6 @@ public class FragmentTimer extends Fragment{
         totalView.setText(bt.makeToTimeFormat(0));
     }
 
-
-
     /*
      * @brief dialog message with edittext for save category
      * @param Data $d uses for save category value

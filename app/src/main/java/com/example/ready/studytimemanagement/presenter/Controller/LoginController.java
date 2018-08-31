@@ -1,14 +1,13 @@
 package com.example.ready.studytimemanagement.presenter.Controller;
 
 import android.content.Intent;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.example.ready.studytimemanagement.R;
-import com.example.ready.studytimemanagement.presenter.Activity.MainActivity;
-import com.example.ready.studytimemanagement.presenter.CheckActivity;
+import com.example.ready.studytimemanagement.presenter.Activity.BaseActivity;
+import com.example.ready.studytimemanagement.presenter.Activity.LoadActivity;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -36,17 +35,13 @@ import com.kakao.usermgmt.callback.MeResponseCallback;
 import com.kakao.usermgmt.response.model.UserProfile;
 import com.kakao.util.exception.KakaoException;
 
-import java.io.File;
-import java.util.StringTokenizer;
-
-public class LoginController extends LogfileController {
+public class LoginController extends BaseActivity {
+    private LogfileController lfc = new LogfileController();
 
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
-    final String foldername = Environment.getExternalStorageDirectory().getAbsolutePath()+"/Log";
-    final String filename = "userlog.txt";
-    final String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/Log/userlog.txt";
 
+    final String filename = "userlog.txt";
 
     // [START declare_auth]
     public static FirebaseAuth mAuth;
@@ -60,27 +55,6 @@ public class LoginController extends LogfileController {
     //카카오용 콜백
     private SessionCallback callback;
     private com.kakao.usermgmt.LoginButton btnKakao;
-
-    public boolean isExistUserLog(){
-        File file = new File(filePath);
-        if(file.exists()){
-            String line = ReadLogFile(getApplicationContext(),filename);
-            StringTokenizer tokens = new StringTokenizer(line);
-            String ID = tokens.nextToken(",");
-            String EMAIL = tokens.nextToken(",");
-
-            Intent intent = new Intent(getApplicationContext(),CheckActivity.class);
-            intent.putExtra("ID", ID);
-            intent.putExtra("EMAIL",EMAIL);
-            startActivity(intent);
-            finish();
-
-            return true;
-        }else{
-            Log.d("userlog", "유저정보가 읍따");
-            return false;
-        }
-    }
 
     public void GoogleCreate(){
         // [START config_signin]
@@ -192,12 +166,10 @@ public class LoginController extends LogfileController {
 
                             // 로그파일 생성
                             String content = ID + ","+EMAIL;
-                            WriteLogFile(getApplicationContext(),filename,content,2);
+                            lfc.WriteLogFile(getApplicationContext(),filename,content,2);
                             Log.d("LOG SAVE", "google success");
 
-                            Intent intent = new Intent(getApplicationContext(),CheckActivity.class);
-                            intent.putExtra("ID", ID);
-                            intent.putExtra("EMAIL",EMAIL);
+                            Intent intent = new Intent(getApplicationContext(), LoadActivity.class);
                             startActivity(intent);
                             //finish();
                         } else {
@@ -238,12 +210,10 @@ public class LoginController extends LogfileController {
 
                             // 로그파일 생성
                             String content = ID + ","+EMAIL;
-                            WriteLogFile(getApplicationContext(),filename,content,2);
+                            lfc.WriteLogFile(getApplicationContext(),filename,content,2);
                             Log.d("LOG SAVE", "facebook success");
 
-                            Intent intent = new Intent(getApplicationContext(),CheckActivity.class);
-                            intent.putExtra("ID", ID);
-                            intent.putExtra("EMAIL",EMAIL);
+                            Intent intent = new Intent(getApplicationContext(),LoadActivity.class);
                             startActivity(intent);
                             //finish();
                         } else {
@@ -317,12 +287,10 @@ public class LoginController extends LogfileController {
 
                     // 로그파일 생성
                     String content = ID + ","+EMAIL;
-                    WriteLogFile(getApplicationContext(),filename,content,2);
+                    lfc.WriteLogFile(getApplicationContext(),filename,content,2);
                     Log.d("LOG SAVE", "kakako success");
 
-                    Intent intent = new Intent(getApplicationContext(),CheckActivity.class);
-                    intent.putExtra("ID", ID);
-                    intent.putExtra("EMAIL",EMAIL);
+                    Intent intent = new Intent(getApplicationContext(),LoadActivity.class);
                     startActivity(intent);
                     //finish();
                 }
