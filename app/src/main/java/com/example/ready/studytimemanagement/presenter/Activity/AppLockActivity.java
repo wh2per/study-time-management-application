@@ -32,9 +32,11 @@ public class AppLockActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_applock);
         Log.d("lock","다시 실행됨");
+
         alc = new AppLockController();
         lfc = new LogfileController();
         cont = getApplicationContext();
+
         // load applist from main activity
         applocks = alc.LoadAppList(this);
         String line = lfc.ReadLogFile(cont, sfilename);
