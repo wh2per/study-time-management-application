@@ -14,4 +14,23 @@
     <style name="SwitchTheme" parent="Theme.AppCompat.Light">
         <item name="android:colorControlActivated">@color/colorPrimary</item>
     </style>
+
+    <style name="TranslucentActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="Theme.AppCompat.Translucent">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:actionBarStyle">@style/TranslucentActionBar</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 </resources>

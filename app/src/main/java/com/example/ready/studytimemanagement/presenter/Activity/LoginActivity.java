@@ -10,12 +10,8 @@ import android.widget.FrameLayout;
 
 import com.example.ready.studytimemanagement.R;
 import com.example.ready.studytimemanagement.presenter.Controller.LogfileController;
-import com.example.ready.studytimemanagement.presenter.Controller.LoginController;
 
-import java.io.FileOutputStream;
-import java.util.StringTokenizer;
-
-public class LoginActivity extends LoginController{
+public class LoginActivity extends BaseActivity{
     private FrameLayout kakaoBtn, facebookBtn, googleBtn;
     private Button noMemberBtn;
 
@@ -23,21 +19,26 @@ public class LoginActivity extends LoginController{
     private Context cont;
     final String filename = "userlog.txt";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        Log.d("LoginActivity : ","켜졌다!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
         lfc = new LogfileController();
         cont = getApplicationContext();
 
+
         //check login log
-        if(lfc.ReadLogFile(cont,filename) != "nofile"){
+        if(lfc.ReadLogFile(cont,filename).equals("nofile")==false){
+            Log.d("LoginActivity : ","파일이 있음");
             Intent intent = new Intent(cont, LoadActivity.class);
             startActivity(intent);
             finish();
         }
-
+        Log.d("LoginActivity : ","파일이 없음");
         googleBtn = findViewById(R.id.googleBtn);
         kakaoBtn = findViewById(R.id.kakaoBtn);
         facebookBtn = findViewById(R.id.facebookBtn);
@@ -49,15 +50,19 @@ public class LoginActivity extends LoginController{
         googleBtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gsignIn();
+                Intent intent = new Intent(cont,GoogleLoginActivity.class);
+                intent.putExtra("InOut",1);
+                startActivity(intent);
             }
         });
+
         kakaoBtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
                 findViewById(R.id.kakao).performClick();
             }
         });
+
         facebookBtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,9 +81,6 @@ public class LoginActivity extends LoginController{
             }
         });
 
-        GoogleCreate();
-        FacebookCreate();
-        KakaoCreate();
     }
 
     // [START on_start_check_user]
