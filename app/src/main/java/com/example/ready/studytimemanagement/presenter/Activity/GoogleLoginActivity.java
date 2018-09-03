@@ -69,9 +69,14 @@ public class GoogleLoginActivity extends AppCompatActivity{
             signIn();
         }else if(InOutflag==2){
             Log.d("LoginActivity : ","signout다!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            revokeAccess();
-            finish();
-        }
+            signOut();
+            Log.d("FragmentSetting : ","재시작한다!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Intent restart = getApplicationContext().getPackageManager().getLaunchIntentForPackage(getApplicationContext().getPackageName());
+            restart.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            restart.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(restart);
+        }else
+            Log.d("LoginActivity : ","씨발!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
     // [END on_start_check_user]
 
