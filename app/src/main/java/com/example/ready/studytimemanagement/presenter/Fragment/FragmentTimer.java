@@ -44,6 +44,8 @@ import com.example.ready.studytimemanagement.presenter.Item.ItemApplock;
 import com.example.ready.studytimemanagement.presenter.Service.TimerService;
 import com.triggertrap.seekarc.SeekArc;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -144,7 +146,7 @@ public class FragmentTimer extends Fragment{
                     Intent timerService = new Intent(mainActivity,TimerService.class);
                     mainActivity.stopService(timerService);
 */
-                    showNoticeDialog(tempData);
+
 
                     // need delay to get broadcast msg
                     new Handler().postDelayed(new Runnable() {
@@ -153,8 +155,9 @@ public class FragmentTimer extends Fragment{
                             tempData.setTarget_time(String.valueOf(bt.makeToTimeFormat(targetTime)));
                             tempData.setAmount(String.valueOf(bt.makeToTimeFormat(bt.getTotalTime())));
                             Log.v("saved",String.valueOf(bt.makeToTimeFormat(bt.getTotalTime())));
+                            showNoticeDialog(tempData);
                         }
-                    },1000);
+                    },500);
 
                     Date currentTime = new Date();
                     SimpleDateFormat time = new SimpleDateFormat("hh:mm:ss");
@@ -357,6 +360,9 @@ public class FragmentTimer extends Fragment{
         dialog.show();
         Button saveBtn = dialog.findViewById(R.id.saveBtn);
         final EditText ed = dialog.findViewById(R.id.categoryText);
+        TextView ctText = dialog.findViewById(R.id.completeTimeText);
+        ctText.setText(d.getAmount());
+
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -440,7 +446,6 @@ public class FragmentTimer extends Fragment{
                         Intent timerService = new Intent(mainActivity,TimerService.class);
                         mainActivity.stopService(timerService);
 
-                        showNoticeDialog(tempData);
 
                         // need delay to get broadcast msg
                         new Handler().postDelayed(new Runnable() {
@@ -449,8 +454,9 @@ public class FragmentTimer extends Fragment{
                                 tempData.setTarget_time(String.valueOf(bt.makeToTimeFormat(targetTime)));
                                 tempData.setAmount(String.valueOf(bt.makeToTimeFormat(bt.getTotalTime())));
                                 Log.v("saved",String.valueOf(bt.makeToTimeFormat(bt.getTotalTime())));
+                                showNoticeDialog(tempData);
                             }
-                        },1000);
+                        },500);
                         /*
                         tempData.setTarget_time(String.valueOf(bt.makeToTimeFormat(targetTime)));
                         tempData.setAmount(String.valueOf(bt.makeToTimeFormat(bt.getTotalTime())));
