@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +14,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.ready.studytimemanagement.R;
+import com.example.ready.studytimemanagement.presenter.Activity.AppLockActivity;
+import com.example.ready.studytimemanagement.presenter.Activity.GoogleLoginActivity;
 import com.example.ready.studytimemanagement.presenter.Activity.LockActivity;
 import com.example.ready.studytimemanagement.presenter.Activity.MainActivity;
 import com.example.ready.studytimemanagement.presenter.Adapter.AdapterSetting;
+import com.example.ready.studytimemanagement.presenter.Controller.LogfileController;
 import com.example.ready.studytimemanagement.presenter.Item.ItemSetting;
 
 public class FragmentSetting extends Fragment{
     Button testSignin;
     private TextView textView2;
     public MainActivity mainActivity;
+    private LogfileController lfc = new LogfileController();
+    final String filename = "userlog.txt";
 
     @Nullable
     @Override
@@ -32,9 +38,15 @@ public class FragmentSetting extends Fragment{
         testSignin.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(getContext(),LoginActivity.class);
-                Intent intent = new Intent(getContext(),LockActivity.class);
+                lfc.WriteLogFile(getContext(),filename,"",2);
+                lfc.WriteLogFile(getContext(),filename,"nofile",2);
+                Log.d("GoogleLoginActivity : ","킨다!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+                Intent intent = new Intent(mainActivity, GoogleLoginActivity.class);
+                intent.putExtra("InOut",2);
                 startActivity(intent);
+
+
             }
         });
 

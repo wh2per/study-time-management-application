@@ -35,7 +35,7 @@ import com.kakao.usermgmt.callback.MeResponseCallback;
 import com.kakao.usermgmt.response.model.UserProfile;
 import com.kakao.util.exception.KakaoException;
 
-public class LoginController extends BaseActivity {
+public class LoginController2 extends BaseActivity {
     private LogfileController lfc = new LogfileController();
 
     private static final String TAG = "GoogleActivity";
