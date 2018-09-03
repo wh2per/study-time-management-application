@@ -62,12 +62,6 @@
             android:layout_gravity="center_horizontal"
             android:visibility="gone" />
 
-        <com.facebook.login.widget.LoginButton
-            android:id="@+id/facebook"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="center_horizontal"
-            android:visibility="gone" />
         <FrameLayout
             android:id="@+id/facebookBtn"
             android:layout_width="match_parent"

@@ -121,7 +121,7 @@ public class GoogleLoginActivity extends AppCompatActivity{
                             String EMAIL = mAuth.getCurrentUser().getEmail();
 
                             // 로그파일 생성
-                            String content = ID + ","+EMAIL;
+                            String content = "1,"+ID + ","+EMAIL;
                             lfc.WriteLogFile(getApplicationContext(),filename,content,2);
                             Log.d("LOG SAVE", "google success");
 

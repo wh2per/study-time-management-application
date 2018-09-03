@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.ready.studytimemanagement.R;
 import com.example.ready.studytimemanagement.presenter.Activity.AppLockActivity;
+import com.example.ready.studytimemanagement.presenter.Activity.FacebookLoginActivity;
 import com.example.ready.studytimemanagement.presenter.Activity.GoogleLoginActivity;
 import com.example.ready.studytimemanagement.presenter.Activity.LockActivity;
 import com.example.ready.studytimemanagement.presenter.Activity.MainActivity;
@@ -37,16 +38,20 @@ public class FragmentSetting extends Fragment{
 
         testSignin.setOnClickListener(new Button.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) {        //로그아웃
                 lfc.WriteLogFile(getContext(),filename,"",2);
                 lfc.WriteLogFile(getContext(),filename,"nofile",2);
                 Log.d("GoogleLoginActivity : ","킨다!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
-                Intent intent = new Intent(mainActivity, GoogleLoginActivity.class);
-                intent.putExtra("InOut",2);
-                startActivity(intent);
-
-
+                if(mainActivity.sns.equals("1")) {
+                    Intent intent = new Intent(mainActivity, GoogleLoginActivity.class);
+                    intent.putExtra("InOut", 2);
+                    startActivity(intent);
+                }else if(mainActivity.sns.equals("2")){
+                    Intent intent = new Intent(mainActivity, FacebookLoginActivity.class);
+                    intent.putExtra("InOut", 2);
+                    startActivity(intent);
+                }
             }
         });
 

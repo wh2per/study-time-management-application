@@ -60,13 +60,17 @@ public class LoginActivity extends BaseActivity{
             @Override
             public void onClick(View view) {
                 findViewById(R.id.kakao).performClick();
+
             }
         });
 
         facebookBtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                findViewById(R.id.facebook).performClick();
+                //findViewById(R.id.facebook).performClick();
+                Intent intent = new Intent(cont,FacebookLoginActivity.class);
+                intent.putExtra("InOut",1);
+                startActivity(intent);
             }
         });
 

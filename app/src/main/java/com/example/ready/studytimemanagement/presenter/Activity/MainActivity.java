@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     final String filename = "userlog.txt";
     public String name;
     public String email;
+    public String sns;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         String line = lfc.ReadLogFile(cont,filename);
         StringTokenizer tokens = new StringTokenizer(line);
 
+        sns = tokens.nextToken(",");
         name = tokens.nextToken(",");
         email = tokens.nextToken(",");
 

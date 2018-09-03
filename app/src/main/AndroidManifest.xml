@@ -28,6 +28,8 @@
         </activity>
         <activity android:name=".presenter.Activity.GoogleLoginActivity" android:theme="@style/Theme.AppCompat.Translucent">
         </activity>
+        <activity android:name=".presenter.Activity.FacebookLoginActivity" android:theme="@style/Theme.AppCompat.Translucent">
+        </activity>
         <service android:name=".presenter.Service.TimerService">
             <intent-filter>
                 <action android:name="timerservice"/>
