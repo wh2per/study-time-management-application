@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.ready.studytimemanagement.R;
@@ -25,6 +27,9 @@ public class AppLockActivity extends AppCompatActivity {
     Context cont;
     final static String sfilename = "applock.txt";
 
+    private Button startBtn;
+    private Toolbar mToolbar;
+    private ListView listView;
     private ArrayList<ItemApplock> applocks;
     private Intent mainIntent;
     @Override
@@ -54,17 +59,35 @@ public class AppLockActivity extends AppCompatActivity {
                 }
             }
         }
-        Toolbar mToolbar  = findViewById(R.id.appListToolbar);
+        mToolbar  = findViewById(R.id.appListToolbar);
         mToolbar.setTitle("앱 목록");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        ListView listView = findViewById(R.id.appLockList);
+        listView = findViewById(R.id.appLockList);
+
 
         final AdapterApplock adapterApplock = new AdapterApplock(this.getApplicationContext(),applocks);
 
         listView.setAdapter(adapterApplock);
 
+        // start service by button
+        startBtn = findViewById(R.id.lockStartBtn);
+        startBtn.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                lfc.WriteLogFile(cont, sfilename, "", 2);
+                for (int i = 0; i < applocks.size(); i++) {
+                    if (applocks.get(i).getLockFlag() == true) {
+                        lfc.WriteLogFile(cont, sfilename, applocks.get(i).getAppPackage() + ",", 1);
+                    }
+                }
+
+                Intent sintent = new Intent(getApplicationContext(),AppLockService.class); // 이동할 컴포넌트
+                startService(sintent); // 서비스 시작
+
+            }
+        });
         mainIntent = new Intent(getApplicationContext(),MainActivity.class);
         mainIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(mainIntent);

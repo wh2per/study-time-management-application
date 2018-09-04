@@ -22,9 +22,10 @@ public class MainActivity extends AppCompatActivity {
     private LogfileController lfc;
     private Context cont;
     final String filename = "userlog.txt";
-    public String name;
-    public String email;
-    public String sns;
+
+    private String name;
+    private String email;
+    private String sns;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +40,9 @@ public class MainActivity extends AppCompatActivity {
         StringTokenizer tokens = new StringTokenizer(line);
 
         sns = tokens.nextToken(",");
-        name = tokens.nextToken(",");
-        email = tokens.nextToken(",");
+        this.setName(tokens.nextToken(","));
+        this.setEmail(email = tokens.nextToken(","));
+
 
         final ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setOffscreenPageLimit(3);
@@ -48,8 +50,10 @@ public class MainActivity extends AppCompatActivity {
         final MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager());
         final FragmentAnalysis fragmentAnalysis = new FragmentAnalysis();
         final FragmentTimer fragmentTimer = new FragmentTimer();
+
 //        final FragmentTimer fragmentTimer = new FragmentTimer(itemApplocks);
         final FragmentSetting fragmentSetting = new FragmentSetting();
+
         adapter.addItem(fragmentAnalysis);
         adapter.addItem(fragmentTimer);
         adapter.addItem(fragmentSetting);
@@ -100,5 +104,21 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finishAffinity();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

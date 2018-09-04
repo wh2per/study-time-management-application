@@ -28,7 +28,7 @@ public class FragmentSetting extends Fragment{
     Button testSignin;
     private TextView textView2;
     public MainActivity mainActivity;
-    private LogfileController lfc = new LogfileController();
+    private LogfileController lfc;
     final String filename = "userlog.txt";
 
     @Nullable
@@ -36,7 +36,9 @@ public class FragmentSetting extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView =(ViewGroup) inflater.inflate(R.layout.fragment_setting, container,false);
         testSignin = rootView.findViewById(R.id.testSignin);
-        mainActivity = (MainActivity)getActivity();
+
+        lfc = new LogfileController();
+        mainActivity = (MainActivity) this.getActivity();
 
         testSignin.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -62,7 +64,7 @@ public class FragmentSetting extends Fragment{
         });
 
         textView2 = rootView.findViewById(R.id.textView2);
-        textView2.setText(mainActivity.name);
+        textView2.setText(mainActivity.getName());
 
         ListView listView = (ListView) rootView.findViewById(R.id.settingList);
         AdapterSetting adapter = new AdapterSetting(getActivity().getApplicationContext());

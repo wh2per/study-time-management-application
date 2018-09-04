@@ -111,7 +111,7 @@ public class BasicTimer implements Parcelable{
                         //targetView.setText(makeToTimeFormat(tempTarget));
                     }
                     //totalView.setText(makeToTimeFormat(totalTime+1000));
-                    handler.postDelayed(this,0);
+                    handler.postDelayed(this,1000);
                 }
             }
         });
