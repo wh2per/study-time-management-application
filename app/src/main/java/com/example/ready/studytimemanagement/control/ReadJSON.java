@@ -61,7 +61,6 @@ public class ReadJSON {
             }
         }
         reader.endObject();
-        Log.d("json user id", user.getId());
         return user;
     }
 
