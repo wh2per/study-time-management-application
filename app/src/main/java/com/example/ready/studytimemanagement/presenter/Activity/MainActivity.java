@@ -22,8 +22,10 @@ public class MainActivity extends AppCompatActivity {
     private LogfileController lfc;
     private Context cont;
     final String filename = "userlog.txt";
+
     private String name;
     private String email;
+    private String sns;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +39,10 @@ public class MainActivity extends AppCompatActivity {
         String line = lfc.ReadLogFile(cont,filename);
         StringTokenizer tokens = new StringTokenizer(line);
 
+        sns = tokens.nextToken(",");
         this.setName(tokens.nextToken(","));
         this.setEmail(email = tokens.nextToken(","));
+
 
         final ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setOffscreenPageLimit(3);
@@ -46,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
         final MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager());
         final FragmentAnalysis fragmentAnalysis = new FragmentAnalysis();
         final FragmentTimer fragmentTimer = new FragmentTimer();
+
+//        final FragmentTimer fragmentTimer = new FragmentTimer(itemApplocks);
         final FragmentSetting fragmentSetting = new FragmentSetting();
 
         adapter.addItem(fragmentAnalysis);
@@ -97,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        ActivityCompat.finishAffinity(this);
+        finishAffinity();
     }
 
     public String getName() {

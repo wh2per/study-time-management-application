@@ -294,6 +294,7 @@ public class FragmentTimer extends Fragment{
 
         return rootView;
     }
+
     /**
     * @brief boardcast receiver for timer service
     **/
@@ -304,6 +305,7 @@ public class FragmentTimer extends Fragment{
             Log.v("actREC",bt.makeToTimeFormat(bt.getTotalTime()));
         }
     };
+
     /**
      * @brief unregister the boardcast receiver while activity on pause
      **/
@@ -350,7 +352,7 @@ public class FragmentTimer extends Fragment{
         this.targetTime = l;
     }
     private void updateTextview(){
-       // Log.v("tatag", String.valueOf(targetTime));
+
         targetView.setText(bt.makeToTimeFormat(targetTime));
         totalView.setText(bt.makeToTimeFormat(0));
     }
@@ -371,8 +373,10 @@ public class FragmentTimer extends Fragment{
         dialog.show();
         Button saveBtn = dialog.findViewById(R.id.saveBtn);
         final EditText ed = dialog.findViewById(R.id.categoryText);
+
         TextView ctText = dialog.findViewById(R.id.completeTimeText);
         ctText.setText(d.getAmount());
+
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
