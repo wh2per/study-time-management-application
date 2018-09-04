@@ -312,6 +312,11 @@ public class FragmentTimer extends Fragment{
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         if(receiverRegied){
             getActivity().unregisterReceiver(br);
             receiverRegied = false;
