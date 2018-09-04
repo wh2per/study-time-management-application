@@ -44,6 +44,8 @@ import com.example.ready.studytimemanagement.presenter.Item.ItemApplock;
 import com.example.ready.studytimemanagement.presenter.Service.TimerService;
 import com.triggertrap.seekarc.SeekArc;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -57,7 +59,7 @@ public class FragmentTimer extends Fragment{
     private boolean timerOn;
     private Data tempData;
     private SeekArc seekBar;
-
+    private boolean receiverRegied;
     private ArrayList<ItemApplock> applocks;
     private Intent lockIntent;
 
@@ -96,8 +98,7 @@ public class FragmentTimer extends Fragment{
         timerOn = false;
 
         tempData = new Data();
-
-        mainActivity = (MainActivity)getActivity();
+        mainActivity = (MainActivity) this.getActivity();
 
         //start app lock list activity
         lockIntent = new Intent(getActivity(),AppLockActivity.class);
@@ -108,6 +109,7 @@ public class FragmentTimer extends Fragment{
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("TIMER_BROAD_CAST_ACK");
         getActivity().registerReceiver(br,intentFilter);
+        receiverRegied = true;
         final Intent sendIntent = new Intent("TIMER_BROAD_CAST_REQ");
         getActivity().sendBroadcast(sendIntent);
 
@@ -135,7 +137,6 @@ public class FragmentTimer extends Fragment{
             public void onClick(View view){
                 if(timerOn){
                     // timer stop!!
-                    //startBtn.setText("시작");
                     startBtn.setBackgroundResource(R.drawable.lock_icon_grey);
                     timerOn = false;
                     bt.timerStop();
@@ -146,8 +147,6 @@ public class FragmentTimer extends Fragment{
                     Intent timerService = new Intent(mainActivity,TimerService.class);
                     mainActivity.stopService(timerService);
 */
-                    showNoticeDialog(tempData);
-
                     // need delay to get broadcast msg
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -155,8 +154,9 @@ public class FragmentTimer extends Fragment{
                             tempData.setTarget_time(String.valueOf(bt.makeToTimeFormat(targetTime)));
                             tempData.setAmount(String.valueOf(bt.makeToTimeFormat(bt.getTotalTime())));
                             Log.v("saved",String.valueOf(bt.makeToTimeFormat(bt.getTotalTime())));
+                            showNoticeDialog(tempData);
                         }
-                    },1000);
+                    },500);
 
                     Date currentTime = new Date();
                     SimpleDateFormat time = new SimpleDateFormat("hh:mm:ss");
@@ -171,7 +171,6 @@ public class FragmentTimer extends Fragment{
                     //Log.v("tag",tempData.getDate());
                 }else{
                     /// timer start!
-                    //startBtn.setText("정지");
                     startBtn.setBackgroundResource(R.drawable.lock_icon_color);
                     timerOn = true;
                     bt.timerStart();;
@@ -228,15 +227,11 @@ public class FragmentTimer extends Fragment{
                     targetTime = (progress/2)*3200000;
                 }*/
             }
-
             @Override
             public void onStartTrackingTouch(SeekArc seekArc) {
-
             }
-
             @Override
             public void onStopTrackingTouch(SeekArc seekArc) {
-
             }
         });
 
@@ -294,8 +289,8 @@ public class FragmentTimer extends Fragment{
         return rootView;
     }
     /*
-    * @brief boardcast receiver for timer service
-    * */
+     * @brief boardcast receiver for timer service
+     * */
     BroadcastReceiver br = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -303,6 +298,15 @@ public class FragmentTimer extends Fragment{
             Log.v("actREC",bt.makeToTimeFormat(bt.getTotalTime()));
         }
     };
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(receiverRegied){
+            getActivity().unregisterReceiver(br);
+            receiverRegied = false;
+        }
+    }
     /*
     // service connection definition
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -338,7 +342,7 @@ public class FragmentTimer extends Fragment{
         this.targetTime = l;
     }
     private void updateTextview(){
-       // Log.v("tatag", String.valueOf(targetTime));
+        // Log.v("tatag", String.valueOf(targetTime));
 
         targetView.setText(bt.makeToTimeFormat(targetTime));
         totalView.setText(bt.makeToTimeFormat(0));
@@ -359,6 +363,9 @@ public class FragmentTimer extends Fragment{
         dialog.show();
         Button saveBtn = dialog.findViewById(R.id.saveBtn);
         final EditText ed = dialog.findViewById(R.id.categoryText);
+        //TextView ctText = dialog.findViewById(R.id.completeTimeText);
+       // ctText.setText(d.getAmount());
+
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -442,7 +449,6 @@ public class FragmentTimer extends Fragment{
                         Intent timerService = new Intent(mainActivity,TimerService.class);
                         mainActivity.stopService(timerService);
 
-                        showNoticeDialog(tempData);
 
                         // need delay to get broadcast msg
                         new Handler().postDelayed(new Runnable() {
@@ -451,8 +457,9 @@ public class FragmentTimer extends Fragment{
                                 tempData.setTarget_time(String.valueOf(bt.makeToTimeFormat(targetTime)));
                                 tempData.setAmount(String.valueOf(bt.makeToTimeFormat(bt.getTotalTime())));
                                 Log.v("saved",String.valueOf(bt.makeToTimeFormat(bt.getTotalTime())));
+                                showNoticeDialog(tempData);
                             }
-                        },1000);
+                        },500);
                         /*
                         tempData.setTarget_time(String.valueOf(bt.makeToTimeFormat(targetTime)));
                         tempData.setAmount(String.valueOf(bt.makeToTimeFormat(bt.getTotalTime())));
