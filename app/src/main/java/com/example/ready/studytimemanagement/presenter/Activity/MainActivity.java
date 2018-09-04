@@ -49,9 +49,7 @@ public class MainActivity extends AppCompatActivity {
         final FragmentAnalysis fragmentAnalysis = new FragmentAnalysis();
         final FragmentTimer fragmentTimer = new FragmentTimer();
 //        final FragmentTimer fragmentTimer = new FragmentTimer(itemApplocks);
-        fragmentTimer.mainActivity = this;
         final FragmentSetting fragmentSetting = new FragmentSetting();
-        fragmentSetting.mainActivity = this;
         adapter.addItem(fragmentAnalysis);
         adapter.addItem(fragmentTimer);
         adapter.addItem(fragmentSetting);
@@ -101,6 +99,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        ActivityCompat.finishAffinity(this);
+        finishAffinity();
     }
 }

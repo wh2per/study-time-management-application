@@ -97,6 +97,8 @@ public class FragmentTimer extends Fragment{
 
         tempData = new Data();
 
+        mainActivity = (MainActivity)getActivity();
+
         //start app lock list activity
         lockIntent = new Intent(getActivity(),AppLockActivity.class);
         lockIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);

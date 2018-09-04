@@ -70,6 +70,7 @@ public class GoogleLoginActivity extends AppCompatActivity{
         }else if(InOutflag==2){
             Log.d("LoginActivity : ","signout다!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             signOut();
+
             Log.d("FragmentSetting : ","재시작한다!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             Intent restart = getApplicationContext().getPackageManager().getLaunchIntentForPackage(getApplicationContext().getPackageName());
             restart.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

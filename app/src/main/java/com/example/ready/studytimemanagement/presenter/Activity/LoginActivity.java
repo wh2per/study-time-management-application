@@ -36,7 +36,7 @@ public class LoginActivity extends BaseActivity{
             Log.d("LoginActivity : ","파일이 있음");
             Intent intent = new Intent(cont, LoadActivity.class);
             startActivity(intent);
-            finish();
+            Log.d("LoginActivity : ","찍히면 안댐");
         }
         Log.d("LoginActivity : ","파일이 없음");
         googleBtn = findViewById(R.id.googleBtn);
@@ -59,15 +59,15 @@ public class LoginActivity extends BaseActivity{
         kakaoBtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                findViewById(R.id.kakao).performClick();
-
+                Intent intent = new Intent(cont,KakaoLoginActivity.class);
+                intent.putExtra("InOut",1);
+                startActivity(intent);
             }
         });
 
         facebookBtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //findViewById(R.id.facebook).performClick();
                 Intent intent = new Intent(cont,FacebookLoginActivity.class);
                 intent.putExtra("InOut",1);
                 startActivity(intent);

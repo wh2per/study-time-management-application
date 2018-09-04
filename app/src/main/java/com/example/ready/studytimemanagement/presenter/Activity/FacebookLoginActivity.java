@@ -11,7 +11,6 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -56,7 +55,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
 
-        Log.d("FacebookActivity : ", "signin!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        Log.d("FacebookActivity : ", "Signin!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         LoginManager.getInstance().logInWithReadPermissions(FacebookLoginActivity.this, Arrays.asList("public_profile", "email"));
         LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -90,6 +89,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
         }else if(InOutflag==2){
             Log.d("FacebookActivity : ","signout다!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             signOut();
+
             Log.d("StudyLock : ","재시작한다!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             Intent restart = getApplicationContext().getPackageManager().getLaunchIntentForPackage(getApplicationContext().getPackageName());
             restart.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -146,6 +146,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
     // [END auth_with_facebook]
 
     public void signOut() {
+        Log.d("Facebook", mAuth.getCurrentUser().getDisplayName() + "logout");
         mAuth.signOut();
         LoginManager.getInstance().logOut();
     }
