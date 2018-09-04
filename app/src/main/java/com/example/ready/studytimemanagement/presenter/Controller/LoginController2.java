@@ -72,37 +72,37 @@ public class LoginController2 extends BaseActivity {
         // [END initialize_auth]
     }
 
-    public void FacebookCreate(){
-        // [START initialize_fblogin]
-        // Initialize Facebook Login button
-        mCallbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton = findViewById(R.id.facebook);
-        loginButton.setReadPermissions("email", "public_profile");
-        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                Log.d(TAG, "facebook:onSuccess:" + loginResult);
-                handleFacebookAccessToken(loginResult.getAccessToken());
-            }
-
-            @Override
-            public void onCancel() {
-                Log.d(TAG, "facebook:onCancel");
-                // [START_EXCLUDE]
-                //updateUI(null);
-                // [END_EXCLUDE]
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Log.d(TAG, "facebook:onError", error);
-                // [START_EXCLUDE]
-                //updateUI(null);
-                // [END_EXCLUDE]
-            }
-        });
-        // [END initialize_fblogin]
-    }
+//    public void FacebookCreate(){
+//        // [START initialize_fblogin]
+//        // Initialize Facebook Login button
+//        mCallbackManager = CallbackManager.Factory.create();
+//        //LoginButton loginButton = findViewById(R.id.facebook);
+//        loginButton.setReadPermissions("email", "public_profile");
+//        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+//            @Override
+//            public void onSuccess(LoginResult loginResult) {
+//                Log.d(TAG, "facebook:onSuccess:" + loginResult);
+//                handleFacebookAccessToken(loginResult.getAccessToken());
+//            }
+//
+//            @Override
+//            public void onCancel() {
+//                Log.d(TAG, "facebook:onCancel");
+//                // [START_EXCLUDE]
+//                //updateUI(null);
+//                // [END_EXCLUDE]
+//            }
+//
+//            @Override
+//            public void onError(FacebookException error) {
+//                Log.d(TAG, "facebook:onError", error);
+//                // [START_EXCLUDE]
+//                //updateUI(null);
+//                // [END_EXCLUDE]
+//            }
+//        });
+//        // [END initialize_fblogin]
+//    }
 
     public void KakaoCreate(){
         callback = new SessionCallback();

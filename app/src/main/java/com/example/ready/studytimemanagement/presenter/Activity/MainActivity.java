@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     final String filename = "userlog.txt";
     public String name;
     public String email;
+    public String sns;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         String line = lfc.ReadLogFile(cont,filename);
         StringTokenizer tokens = new StringTokenizer(line);
 
+        sns = tokens.nextToken(",");
         name = tokens.nextToken(",");
         email = tokens.nextToken(",");
 
@@ -47,9 +49,7 @@ public class MainActivity extends AppCompatActivity {
         final FragmentAnalysis fragmentAnalysis = new FragmentAnalysis();
         final FragmentTimer fragmentTimer = new FragmentTimer();
 //        final FragmentTimer fragmentTimer = new FragmentTimer(itemApplocks);
-        fragmentTimer.mainActivity = this;
         final FragmentSetting fragmentSetting = new FragmentSetting();
-        fragmentSetting.mainActivity = this;
         adapter.addItem(fragmentAnalysis);
         adapter.addItem(fragmentTimer);
         adapter.addItem(fragmentSetting);
@@ -99,6 +99,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        ActivityCompat.finishAffinity(this);
+        finishAffinity();
     }
 }
