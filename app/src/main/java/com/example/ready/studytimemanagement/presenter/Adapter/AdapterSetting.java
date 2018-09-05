@@ -1,6 +1,7 @@
 package com.example.ready.studytimemanagement.presenter.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -38,9 +39,20 @@ public class AdapterSetting extends BaseAdapter{
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
+        final int mode = i;
         ItemViewSetting v = new ItemViewSetting(context);
         ItemSetting item = items.get(i);
         v.setMenuText(item.getMenuTitle());
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (mode){
+                    case 3:
+                        Log.v("setting case","logout");
+                        break;
+                }
+            }
+        });
         return v;
     }
 }
