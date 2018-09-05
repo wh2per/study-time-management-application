@@ -53,7 +53,6 @@ public class LogfileController extends BaseActivity {
             }
             reader.close();
             fis.close();
-            Log.d("logfile content : ", strBuffer.toString());
         }catch (FileNotFoundException e){
             return "nofile";
         }catch (IOException e){

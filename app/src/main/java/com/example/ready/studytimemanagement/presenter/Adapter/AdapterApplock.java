@@ -1,9 +1,6 @@
 package com.example.ready.studytimemanagement.presenter.Adapter;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.drawable.BitmapDrawable;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;

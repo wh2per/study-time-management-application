@@ -1,7 +1,6 @@
 package com.example.ready.studytimemanagement.presenter.Adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,21 +10,12 @@ import com.example.ready.studytimemanagement.control.NetworkTask;
 import com.example.ready.studytimemanagement.model.User;
 import com.example.ready.studytimemanagement.presenter.Item.ItemAnalysis;
 import com.example.ready.studytimemanagement.presenter.Itemview.ItemViewAnalysis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.CombinedData;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
 public class AdapterAnalysis extends BaseAdapter{

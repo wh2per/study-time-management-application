@@ -1,19 +1,10 @@
-package com.example.ready.studytimemanagement.presenter;
+package com.example.ready.studytimemanagement.presenter.Item;
 
-import android.app.Service;
-import android.content.Intent;
-import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.SystemClock;
-import android.support.annotation.Nullable;
 import android.widget.TextView;
-
-import com.example.ready.studytimemanagement.model.Data;
-
-import java.io.Serializable;
 
 public class BasicTimer implements Parcelable{
 

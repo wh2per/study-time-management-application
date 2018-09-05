@@ -11,7 +11,6 @@ import android.content.pm.ResolveInfo;
 import android.util.Log;
 
 import com.example.ready.studytimemanagement.presenter.Activity.BaseActivity;
-import com.example.ready.studytimemanagement.presenter.Adapter.AdapterApplock;
 import com.example.ready.studytimemanagement.presenter.Item.ItemApplock;
 
 import java.util.ArrayList;
@@ -33,16 +32,12 @@ public class AppLockController extends BaseActivity {
         AppInfos = pkgm.queryIntentActivities(intent, 0);
         for (ResolveInfo info : AppInfos) {
             ActivityInfo ai = info.activityInfo;
-            //Log.d("APP TITLE", ai.loadLabel(pkgm).toString());
-            //Log.d("APP Package Name", ai.packageName);
-            //Log.d("APP Class Name", ai.name);
             itemApplocks.add(new ItemApplock(ai.loadLabel(pkgm).toString(),ai.loadIcon(pkgm), ai.packageName));
         }
         return itemApplocks;
     }
 
     public boolean CheckRunningApp(Context context, ArrayList<String> AppLock) {
-        Log.d("App Lock : ","체크함수 시작!");
 
         // 기타 프로세스 목록 확인
         UsageStatsManager usage = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
@@ -53,14 +48,10 @@ public class AppLockController extends BaseActivity {
             SortedMap<Long, UsageStats> runningTask = new TreeMap<Long,UsageStats>();
             for (UsageStats usageStats : stats) {
                 runningTask.put(usageStats.getLastTimeUsed(), usageStats);
-                //Log.d("packageName = " ,usageStats.getPackageName());
             }
-            Log.d("CurrentApp = " ,runningTask.get(runningTask.lastKey()).getPackageName());
 
             for(int i=0; i<AppLock.size(); i++){
                 if (AppLock.get(i).equals(runningTask.get(runningTask.lastKey()).getPackageName())){
-                    Log.d("Catch ForeGround App : ", AppLock.get(i));
-                    //AppLock.get(i).setLockFlag(true);
                     return true;
                 }
             }

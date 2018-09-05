@@ -1,31 +1,19 @@
 package com.example.ready.studytimemanagement.presenter.Activity;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageInstaller;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.example.ready.studytimemanagement.presenter.Controller.LogfileController;
-import com.example.ready.studytimemanagement.presenter.Controller.LoginController2;
-import com.facebook.login.LoginManager;
 import com.kakao.auth.AuthType;
-import com.kakao.auth.Session;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
-import com.kakao.usermgmt.LoginButton;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.MeResponseCallback;
 import com.kakao.usermgmt.response.model.UserProfile;
 import com.kakao.util.exception.KakaoException;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.List;
-
-import static java.security.AccessController.getContext;
 
 
 public class KakaoLoginActivity extends AppCompatActivity {
@@ -42,8 +30,6 @@ public class KakaoLoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d("KakaoLoginActivity : ","켜졌다!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
         Intent intent = getIntent();
         InOutflag = intent.getIntExtra("InOut",0);
 
@@ -54,7 +40,6 @@ public class KakaoLoginActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         if(InOutflag==1) {
-            Log.d("LoginActivity : ", "sigin!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
             callback = new SessionCallback();
             Session.getCurrentSession().addCallback(callback);
@@ -62,17 +47,14 @@ public class KakaoLoginActivity extends AppCompatActivity {
             Session.getCurrentSession().open(AuthType.KAKAO_ACCOUNT,this);
         }
         else if(InOutflag==2){
-            Log.d("LoginActivity : ","signout다!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             //LoginManager.getInstance().logOut();
             Session.getCurrentSession().close();
 
-            Log.d("FragmentSetting : ","재시작한다!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             Intent restart = getApplicationContext().getPackageManager().getLaunchIntentForPackage(getApplicationContext().getPackageName());
             restart.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             restart.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(restart);
-        }else
-            Log.d("LoginActivity : ","씨발!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        }
     }
 
 

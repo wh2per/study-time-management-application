@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.ready.studytimemanagement">
     <application
-        android:name=".presenter.GlobalApplication"
+        android:name=".presenter.Adapter.GlobalApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -58,9 +58,9 @@
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
-        <service android:name=".presenter.AppLockService" />
+        <service android:name=".presenter.Service.AppLockService" />
         <receiver
-        android:name=".presenter.RestartService"
+        android:name=".presenter.Service.RestartService"
         android:enabled="true"
         android:exported="false">
         <intent-filter>

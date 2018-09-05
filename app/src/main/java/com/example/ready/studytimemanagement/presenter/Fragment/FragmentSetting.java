@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +13,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.ready.studytimemanagement.R;
-import com.example.ready.studytimemanagement.presenter.Activity.AppLockActivity;
 import com.example.ready.studytimemanagement.presenter.Activity.FacebookLoginActivity;
 import com.example.ready.studytimemanagement.presenter.Activity.GoogleLoginActivity;
 import com.example.ready.studytimemanagement.presenter.Activity.KakaoLoginActivity;
-import com.example.ready.studytimemanagement.presenter.Activity.LockActivity;
 import com.example.ready.studytimemanagement.presenter.Activity.MainActivity;
 import com.example.ready.studytimemanagement.presenter.Adapter.AdapterSetting;
 import com.example.ready.studytimemanagement.presenter.Controller.LogfileController;
@@ -43,7 +40,6 @@ public class FragmentSetting extends Fragment{
             public void onClick(View view) {        //로그아웃
                 lfc.WriteLogFile(getContext(),filename,"",2);
                 lfc.WriteLogFile(getContext(),filename,"nofile",2);
-                Log.d("SNSActivity : ","킨다!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
                 if(mainActivity.sns.equals("1")) {
                     Intent intent = new Intent(mainActivity, GoogleLoginActivity.class);

@@ -1,6 +1,7 @@
-package com.example.ready.studytimemanagement.presenter;
+package com.example.ready.studytimemanagement.presenter.Adapter;
 
 import android.app.Application;
+
 import com.kakao.auth.KakaoSDK;
 
 public class GlobalApplication extends Application {

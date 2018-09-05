@@ -41,8 +41,6 @@ public class FacebookLoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d("FacebookLoginAct : ","켜졌다!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
         Intent intent = getIntent();
         InOutflag = intent.getIntExtra("InOut",0);
 
@@ -55,7 +53,6 @@ public class FacebookLoginActivity extends AppCompatActivity {
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
 
-        Log.d("FacebookActivity : ", "Signin!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         LoginManager.getInstance().logInWithReadPermissions(FacebookLoginActivity.this, Arrays.asList("public_profile", "email"));
         LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -87,10 +84,8 @@ public class FacebookLoginActivity extends AppCompatActivity {
         if(InOutflag==1){
 
         }else if(InOutflag==2){
-            Log.d("FacebookActivity : ","signout다!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             signOut();
 
-            Log.d("StudyLock : ","재시작한다!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             Intent restart = getApplicationContext().getPackageManager().getLaunchIntentForPackage(getApplicationContext().getPackageName());
             restart.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             restart.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

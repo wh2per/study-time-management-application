@@ -11,7 +11,7 @@ import android.widget.ListView;
 
 import com.example.ready.studytimemanagement.R;
 import com.example.ready.studytimemanagement.presenter.Adapter.AdapterApplock;
-import com.example.ready.studytimemanagement.presenter.AppLockService;
+import com.example.ready.studytimemanagement.presenter.Service.AppLockService;
 import com.example.ready.studytimemanagement.presenter.Controller.AppLockController;
 import com.example.ready.studytimemanagement.presenter.Controller.LogfileController;
 import com.example.ready.studytimemanagement.presenter.Item.ItemApplock;
@@ -31,7 +31,6 @@ public class AppLockActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_applock);
-        Log.d("lock","다시 실행됨");
 
         alc = new AppLockController();
         lfc = new LogfileController();
@@ -40,10 +39,8 @@ public class AppLockActivity extends AppCompatActivity {
         // load applist from main activity
         applocks = alc.LoadAppList(this);
         String line = lfc.ReadLogFile(cont, sfilename);
-        Log.d("아니이게뭐야제발 뜨라고","얼탱이방탱이가 없네 : "+line);
 
         if((line = lfc.ReadLogFile(cont, sfilename)) != "nofile") {
-            Log.d("아니이게뭐야제발 뜨라고","이제 좀 되냐 : "+line);
             StringTokenizer tokens = new StringTokenizer(line);
             while(tokens.hasMoreTokens()) {
                 String temp = tokens.nextToken(",");
@@ -74,8 +71,6 @@ public class AppLockActivity extends AppCompatActivity {
 
         super.onStart();
     }
-
-    
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

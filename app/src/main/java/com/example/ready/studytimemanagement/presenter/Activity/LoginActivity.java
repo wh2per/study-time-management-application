@@ -3,7 +3,6 @@ package com.example.ready.studytimemanagement.presenter.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -25,20 +24,14 @@ public class LoginActivity extends BaseActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Log.d("LoginActivity : ","켜졌다!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
         lfc = new LogfileController();
         cont = getApplicationContext();
 
-
         //check login log
         if(lfc.ReadLogFile(cont,filename).equals("nofile")==false){
-            Log.d("LoginActivity : ","파일이 있음");
             Intent intent = new Intent(cont, LoadActivity.class);
             startActivity(intent);
-            Log.d("LoginActivity : ","찍히면 안댐");
         }
-        Log.d("LoginActivity : ","파일이 없음");
         googleBtn = findViewById(R.id.googleBtn);
         kakaoBtn = findViewById(R.id.kakaoBtn);
         facebookBtn = findViewById(R.id.facebookBtn);

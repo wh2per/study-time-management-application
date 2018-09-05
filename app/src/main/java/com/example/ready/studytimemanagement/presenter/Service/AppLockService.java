@@ -1,4 +1,4 @@
-package com.example.ready.studytimemanagement.presenter;
+package com.example.ready.studytimemanagement.presenter.Service;
 
 import android.app.AppOpsManager;
 import android.app.Notification;
@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.Environment;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -18,7 +17,6 @@ import com.example.ready.studytimemanagement.R;
 import com.example.ready.studytimemanagement.presenter.Activity.LockActivity;
 import com.example.ready.studytimemanagement.presenter.Controller.AppLockController;
 import com.example.ready.studytimemanagement.presenter.Controller.LogfileController;
-import com.example.ready.studytimemanagement.presenter.Item.ItemApplock;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -77,7 +75,6 @@ public class AppLockService extends Service {
     public void onCreate() {
         super.onCreate();
         // 서비스에서 가장 먼저 호출됨(최초에 한번만)
-        Log.d("Service : ", "서비스의 onCreate");
 
         alc = new AppLockController();
         lfc = new LogfileController();
@@ -92,7 +89,6 @@ public class AppLockService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // 서비스가 호출될 때마다 실행
-        Log.d("Service : ", "서비스의 onStartCommand - "+flags+"번 서비스");
 
         AppLock.clear();
         String line = lfc.ReadLogFile(context, sfilename);
@@ -108,7 +104,6 @@ public class AppLockService extends Service {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = null;
-            Log.d("Service : ", "오레오레오레오레오레오레");
             channel = new NotificationChannel("im_channel_id", "System", NotificationManager.IMPORTANCE_LOW);
             NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             manager.createNotificationChannel(channel);
@@ -125,7 +120,6 @@ public class AppLockService extends Service {
 
     @Override
     public void onDestroy() {
-        Log.d("Service : ", "서비스 부실게");
         super.onDestroy();
         // 서비스가 종료될 때 실행
     }

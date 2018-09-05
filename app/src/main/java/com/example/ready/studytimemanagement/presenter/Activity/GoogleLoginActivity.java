@@ -39,8 +39,6 @@ public class GoogleLoginActivity extends AppCompatActivity{
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
 
-        Log.d("GoogleLoginActivity : ","켜졌다!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
         Intent intent = getIntent();
         InOutflag = intent.getIntExtra("InOut",0);
         // [START config_signin]
@@ -65,19 +63,15 @@ public class GoogleLoginActivity extends AppCompatActivity{
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(InOutflag==1){
-            Log.d("LoginActivity : ","sigin!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             signIn();
         }else if(InOutflag==2){
-            Log.d("LoginActivity : ","signout다!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             signOut();
 
-            Log.d("FragmentSetting : ","재시작한다!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             Intent restart = getApplicationContext().getPackageManager().getLaunchIntentForPackage(getApplicationContext().getPackageName());
             restart.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             restart.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(restart);
-        }else
-            Log.d("LoginActivity : ","씨발!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        }
     }
     // [END on_start_check_user]
 
@@ -124,7 +118,6 @@ public class GoogleLoginActivity extends AppCompatActivity{
                             // 로그파일 생성
                             String content = "1,"+ID + ","+EMAIL;
                             lfc.WriteLogFile(getApplicationContext(),filename,content,2);
-                            Log.d("LOG SAVE", "google success");
 
                             Intent intent = new Intent(getApplicationContext(), LoadActivity.class);
                             startActivity(intent);

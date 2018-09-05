@@ -1,30 +1,23 @@
 package com.example.ready.studytimemanagement.presenter.Fragment;
 
 import android.annotation.SuppressLint;
-import android.Manifest;
 import android.app.AlertDialog;
 import android.app.AppOpsManager;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.SystemClock;
-import android.provider.Settings;
-import android.support.design.widget.FloatingActionButton;
-import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Vibrator;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,13 +31,10 @@ import com.example.ready.studytimemanagement.R;
 import com.example.ready.studytimemanagement.model.Data;
 import com.example.ready.studytimemanagement.presenter.Activity.AppLockActivity;
 import com.example.ready.studytimemanagement.presenter.Activity.MainActivity;
-import com.example.ready.studytimemanagement.presenter.AppLockService;
-import com.example.ready.studytimemanagement.presenter.BasicTimer;
+import com.example.ready.studytimemanagement.presenter.Item.BasicTimer;
 import com.example.ready.studytimemanagement.presenter.Item.ItemApplock;
 import com.example.ready.studytimemanagement.presenter.Service.TimerService;
 import com.triggertrap.seekarc.SeekArc;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -307,33 +297,6 @@ public class FragmentTimer extends Fragment{
             receiverRegied = false;
         }
     }
-    /*
-    // service connection definition
-    private ServiceConnection mConnection = new ServiceConnection() {
-
-        // Called when the connection with the service is established
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            TimerService.BindServiceBinder binder = (TimerService.BindServiceBinder) service;
-            timerService = binder.getService(); // get service.
-            timerService.registerCallback(mCallback); // callback registration
-            //Log.v("noooo","noooso");
-        }
-        // Called when the connection with the service disconnects unexpectedly
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            timerService = null;
-            //Log.v("noooo","noooo");
-        }
-    };
-
-    // call below callback in service. it is running in Activity.
-    private TimerService.ICallback mCallback = new TimerService.ICallback() {
-        @Override
-        public void remoteCall() {
-            Log.d("MainActivity","called by service");
-        }
-    };*/
 
     public long getTargetTime(){
         return this.targetTime;
