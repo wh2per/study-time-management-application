@@ -91,7 +91,6 @@ public class AppLockActivity extends AppCompatActivity {
         mainIntent = new Intent(getApplicationContext(),MainActivity.class);
         mainIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(mainIntent);
-
     }
     @Override
     public void onStart() {
