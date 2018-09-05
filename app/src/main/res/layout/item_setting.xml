@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="hello"
-        android:textSize="25sp"
-        android:layout_marginLeft="36dp"
-        android:layout_marginRight="36dp"
+        android:textSize="20sp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
         android:textColor="#000"/>
 </LinearLayout>

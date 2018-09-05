@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">studytimemanagement</string>
+    <string name="app_name">Lockey</string>
     <string name="loading">loading</string>
     <string name="signed_out">signed_out</string>
     <string name="google_status_fmt">google_status_fmt</string>

@@ -25,8 +25,7 @@ import com.example.ready.studytimemanagement.presenter.Controller.LogfileControl
 import com.example.ready.studytimemanagement.presenter.Item.ItemSetting;
 
 public class FragmentSetting extends Fragment{
-    Button testSignin;
-    private TextView textView2;
+    private TextView profileName;
     public MainActivity mainActivity;
     private LogfileController lfc;
     final String filename = "userlog.txt";
@@ -35,11 +34,9 @@ public class FragmentSetting extends Fragment{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView =(ViewGroup) inflater.inflate(R.layout.fragment_setting, container,false);
-        testSignin = rootView.findViewById(R.id.testSignin);
-
         lfc = new LogfileController();
         mainActivity = (MainActivity) this.getActivity();
-
+    /*
         testSignin.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {        //로그아웃
@@ -62,16 +59,17 @@ public class FragmentSetting extends Fragment{
                 }
             }
         });
-
-        textView2 = rootView.findViewById(R.id.textView2);
-        textView2.setText(mainActivity.getName());
+*/
+        profileName = rootView.findViewById(R.id.profileName);
+        profileName.setText(mainActivity.getName());
 
         ListView listView = (ListView) rootView.findViewById(R.id.settingList);
         AdapterSetting adapter = new AdapterSetting(getActivity().getApplicationContext());
 
-        adapter.addItem(new ItemSetting("내 계정 관리"));
+        adapter.addItem(new ItemSetting("계정 관리"));
         adapter.addItem(new ItemSetting("결제 내역 보기"));
         adapter.addItem(new ItemSetting("기기 설정"));
+        adapter.addItem(new ItemSetting("로그아웃"));
         listView.setAdapter(adapter);
 
         return rootView;

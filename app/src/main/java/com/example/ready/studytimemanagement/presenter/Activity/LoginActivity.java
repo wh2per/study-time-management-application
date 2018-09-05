@@ -44,9 +44,9 @@ public class LoginActivity extends BaseActivity{
         facebookBtn = findViewById(R.id.facebookBtn);
         noMemberBtn = findViewById(R.id.noMemberBtn);
 
-        /*
+        /**
         * @brief click Listener for each sign in buttons
-        * */
+        **/
         googleBtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,13 +74,14 @@ public class LoginActivity extends BaseActivity{
             }
         });
 
-        /*
+        /**
         * @brief for Non-member user
-        * need develop more
-        * */
+        **/
         noMemberBtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(cont, LoadActivity.class);
+                startActivity(intent);
                 finish();
             }
         });

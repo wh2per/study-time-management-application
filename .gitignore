@@ -11,7 +11,5 @@
 *.ser
 .idea/caches/build_file_checksums.ser
 app/google-services.json
-app/google-services.json
 .idea/modules.xml
-.idea/caches/build_file_checksums.ser
 build.gradle
