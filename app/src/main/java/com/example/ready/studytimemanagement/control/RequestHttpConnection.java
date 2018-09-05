@@ -24,7 +24,7 @@ import java.util.HashMap;
  * @brief Class to communicate android with server
  */
 public class RequestHttpConnection {
-    private static final String SERVER_ADDR = "http://192.168.25.38:";
+    private static final String SERVER_ADDR = "http://172.20.10.6:";
     private static final String SERVER_PORT = "5000";
     private InputStream is = null;
 
@@ -87,11 +87,12 @@ public class RequestHttpConnection {
             ReadJSON readJson = new ReadJSON();
             try {
                 // convert inputstream to string
-
-                if(is != null)
+                if(is != null) {
                     user = readJson.readJsonUser(is);
-                else
+                    Log.e("isUser in requestHTTP", user.getisUser() ? "yes" : "no");
+                } else {
                     user = null;
+                }
             }
             catch (Exception e) {
                 e.printStackTrace();
@@ -141,11 +142,8 @@ public class RequestHttpConnection {
             os.close();
 
             is = httpCon.getInputStream();
-            InputStreamReader responseReader = new InputStreamReader(is, "UTF-8");
-            JsonReader jsonReader = new JsonReader(responseReader);
             try {
                 // convert inputstream to string
-
                 if(is != null)
                     result = convertInputStreamToString(is);
                 else
@@ -157,8 +155,6 @@ public class RequestHttpConnection {
             }
             finally {
                 is.close();
-                responseReader.close();
-                jsonReader.close();
                 httpCon.disconnect();
             }
         }
@@ -256,8 +252,6 @@ public class RequestHttpConnection {
             os.close();
 
             is = httpCon.getInputStream();
-            InputStreamReader responseReader = new InputStreamReader(is, "UTF-8");
-            JsonReader jsonReader = new JsonReader(responseReader);
             try {
                 if(is != null)
                     result = convertInputStreamToString(is);
@@ -269,8 +263,6 @@ public class RequestHttpConnection {
             }
             finally {
                 is.close();
-                responseReader.close();
-                jsonReader.close();
                 httpCon.disconnect();
             }
         }

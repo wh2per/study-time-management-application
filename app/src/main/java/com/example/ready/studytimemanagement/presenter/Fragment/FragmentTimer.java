@@ -45,6 +45,7 @@ public class FragmentTimer extends Fragment{
     private Button appListBtn;
     private Button startBtn, plusMinBtn, minusMinBtn;
     private long targetTime = 0;
+    private double achievement;
     public static BasicTimer bt;
     private boolean timerOn;
     private Data tempData;
@@ -73,6 +74,8 @@ public class FragmentTimer extends Fragment{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        // View Set up
         final ViewGroup rootView =(ViewGroup) inflater.inflate(R.layout.fragment_timer, container,false);
         targetView = (TextView)rootView.findViewById(R.id.TargetTimeText);
         totalView = (TextView)rootView.findViewById(R.id.TotalTimeText);
@@ -82,6 +85,7 @@ public class FragmentTimer extends Fragment{
         plusMinBtn = rootView.findViewById(R.id.plusMinBtn);
         minusMinBtn = rootView.findViewById(R.id.minusMinBtn);
 
+        // timer set up
         bt = new BasicTimer(targetTime);
         targetView.setText(bt.makeToTimeFormat(this.targetTime));
         totalView.setText(bt.makeToTimeFormat(0));
@@ -119,14 +123,17 @@ public class FragmentTimer extends Fragment{
 
         mSensorManager.registerListener(mGyroLis, mGgyroSensor, SensorManager.SENSOR_DELAY_UI);
 
-        /*
+        /**
          * @brief timer btn listener, make the timer stop/start & load pop dialog
-         * */
+         * timer started by button is just for a performance to make user think timer is working
+         * but real timer service is not started yet, it only starts through Gyro sensor
+         **/
         startBtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view){
                 if(timerOn){
                     // timer stop!!
+                    mSensorManager.registerListener(mGyroLis, mGgyroSensor, SensorManager.SENSOR_DELAY_UI);
                     startBtn.setBackgroundResource(R.drawable.lock_icon_grey);
                     timerOn = false;
                     bt.timerStop();
@@ -137,10 +144,12 @@ public class FragmentTimer extends Fragment{
                     Intent timerService = new Intent(mainActivity,TimerService.class);
                     mainActivity.stopService(timerService);
 */
+
                     // need delay to get broadcast msg
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
+                            achievement = (bt.getTotalTime()/bt.getTargetTime())*100;
                             tempData.setTarget_time(String.valueOf(bt.makeToTimeFormat(targetTime)));
                             tempData.setAmount(String.valueOf(bt.makeToTimeFormat(bt.getTotalTime())));
                             Log.v("saved",String.valueOf(bt.makeToTimeFormat(bt.getTotalTime())));
@@ -152,24 +161,24 @@ public class FragmentTimer extends Fragment{
                     SimpleDateFormat time = new SimpleDateFormat("hh:mm:ss");
                     tempData.setDate(time.format(currentTime));
 
+                    // reset the timer values
                     setTargetTime(0);
                     seekBar.setProgress(0);
-
                     updateTextview();
                     seekBar.setEnabled(true);
-                    //Log.v("tag",tempData.getCategory());
-                    //Log.v("tag",tempData.getDate());
                 }else{
                     /// timer start!
+                    mSensorManager.unregisterListener(mGyroLis);
                     startBtn.setBackgroundResource(R.drawable.lock_icon_color);
                     timerOn = true;
-                    bt.timerStart();;
+                    bt.timerStart();
+                    seekBar.setEnabled(false);
+
                     /*
                     Intent timerService = new Intent(mainActivity,TimerService.class);
                     timerService.putExtra("timer",bt);
                     mainActivity.startService(timerService);
                     */
-                    seekBar.setEnabled(false);
 
                     //timerService.setTimer(bt);
                     //mainActivity.startService(tService);
@@ -181,8 +190,7 @@ public class FragmentTimer extends Fragment{
                         public void run() {
                             targetView.setText(bt.makeToTimeFormat(bt.getTempTarget()));
                             totalView.setText(bt.makeToTimeFormat(bt.getTotalTime()+1000));
-                            timerViewHandler.postDelayed(this,0);
-
+                            timerViewHandler.postDelayed(this,1000);
                             if(!bt.getOnoff()){
                                 timerViewHandler.removeMessages(0);
                                 updateTextview();
@@ -278,9 +286,10 @@ public class FragmentTimer extends Fragment{
 
         return rootView;
     }
-    /*
-     * @brief boardcast receiver for timer service
-     * */
+
+    /**
+    * @brief boardcast receiver for timer service
+    **/
     BroadcastReceiver br = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -289,9 +298,17 @@ public class FragmentTimer extends Fragment{
         }
     };
 
+    /**
+     * @brief unregister the boardcast receiver while activity on pause
+     **/
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         if(receiverRegied){
             getActivity().unregisterReceiver(br);
             receiverRegied = false;
@@ -305,16 +322,16 @@ public class FragmentTimer extends Fragment{
         this.targetTime = l;
     }
     private void updateTextview(){
-        // Log.v("tatag", String.valueOf(targetTime));
 
         targetView.setText(bt.makeToTimeFormat(targetTime));
         totalView.setText(bt.makeToTimeFormat(0));
     }
 
-    /*
-     * @brief dialog message with edittext for save category
-     * @param Data $d uses for save category value
-     * */
+    /**
+     * @brief dialog message with edit text for save category
+     * @param d uses for save category value
+     * @TODO add achievement value if need
+     **/
     public void showNoticeDialog(final Data d) {
         // Create an instance of the dialog fragment and show it
         final AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
@@ -326,8 +343,10 @@ public class FragmentTimer extends Fragment{
         dialog.show();
         Button saveBtn = dialog.findViewById(R.id.saveBtn);
         final EditText ed = dialog.findViewById(R.id.categoryText);
-        //TextView ctText = dialog.findViewById(R.id.completeTimeText);
-       // ctText.setText(d.getAmount());
+
+        TextView ctText = dialog.findViewById(R.id.completeTimeText);
+        ctText.setText(d.getAmount());
+
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -341,10 +360,10 @@ public class FragmentTimer extends Fragment{
         });
     }
 
-    /*
+    /**
      * @brief GyroSenSensor
      * for a gyrosensor timer run by service
-     */
+     **/
     private class GyroscopeListener implements SensorEventListener {
         //Roll and Pitch
         private double pitch;
@@ -384,7 +403,7 @@ public class FragmentTimer extends Fragment{
                 pitch = pitch + gyroY*dt;
                 if (Math.abs(pitch * RAD2DGR) > 150.0) {
                     //textX.setText("           [Pitch]: 뒤집힘");
-                    if (!TimerOn) {
+                    if (!TimerOn && !timerOn) {
                         vibrator.vibrate(millisecond);
                         TimerOn = true;
                         isFirst = true;
@@ -399,7 +418,7 @@ public class FragmentTimer extends Fragment{
                         seekBar.setEnabled(false);
                     }
                 } else {
-                    if (isFirst) {
+                    if (isFirst && !timerOn) {
                         TimerOn = false;
                         isFirst = false;
                         startBtn.setBackgroundResource(R.drawable.lock_icon_grey);
@@ -417,6 +436,7 @@ public class FragmentTimer extends Fragment{
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
+                                achievement = (bt.getTotalTime()/bt.getTargetTime())*100;
                                 tempData.setTarget_time(String.valueOf(bt.makeToTimeFormat(targetTime)));
                                 tempData.setAmount(String.valueOf(bt.makeToTimeFormat(bt.getTotalTime())));
                                 Log.v("saved",String.valueOf(bt.makeToTimeFormat(bt.getTotalTime())));

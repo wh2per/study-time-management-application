@@ -56,7 +56,7 @@
         android:layout_marginRight="32dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/btn_stroke"
-        android:text="다이아 5개를 이용하여 즉시 잠금 해제"
+        android:text="잠금 해제 하러 가기"
         android:textSize="18sp"
         android:textColor="@color/colorPrimary"
         android:textStyle="bold"

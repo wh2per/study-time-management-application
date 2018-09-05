@@ -36,11 +36,14 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
                 Log.d("register-user", result);
                 break;
             case "/check-user":
-                User verifiedUser = requestHttpConnection.getUser(url, user.getId());
-                if(verifiedUser != null)
+                this.user = requestHttpConnection.getUser(url, user.getId());
+                if(this.user.getisUser()) {
                     Log.d("check-user", "success");
-                else
+                    result = "isUser";
+                } else {
                     Log.d("check-user", "fail");
+                    result = "noUser";
+                }
                 break;
             case "/register-time":
                 result = requestHttpConnection.registerTime(url, user.getId(), data);
@@ -64,6 +67,10 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
 
     public AnalysisData getAnalysisData() {
         Log.e("analysis test", Integer.toString(analysisData.getAnalysis_category().size()));
-        return analysisData;
+        return this.analysisData;
+    }
+
+    public User getUser() {
+        return this.user;
     }
 }

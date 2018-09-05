@@ -8,6 +8,7 @@ public class User {
     String nickname;
     int age;
     String job;
+    boolean isUser;
 
     public User() {}
 
@@ -41,6 +42,9 @@ public class User {
         this.job = job;
     }
 
+    public void setisUser(boolean user) { this.isUser = user; }
+
+
     public String getId() {
         return id;
     }
@@ -56,4 +60,7 @@ public class User {
     public String getJob() {
         return job;
     }
+
+    public boolean getisUser() { return isUser; }
+
 }

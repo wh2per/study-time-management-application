@@ -16,4 +16,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/appListToolbar" />
+    <Button
+        android:id="@+id/lockStartBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:textColor="#FFF"
+        android:textSize="18sp"
+        android:text="잠금"/>
 </RelativeLayout>
