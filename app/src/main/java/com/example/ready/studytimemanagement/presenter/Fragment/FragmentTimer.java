@@ -143,6 +143,7 @@ public class FragmentTimer extends Fragment{
             public void onClick(View view){
                 if(timerOn){
                     // timer stop!!
+                    mSensorManager.registerListener(mGyroLis, mGgyroSensor, SensorManager.SENSOR_DELAY_UI);
                     startBtn.setBackgroundResource(R.drawable.lock_icon_grey);
                     timerOn = false;
                     bt.timerStop();
@@ -177,6 +178,7 @@ public class FragmentTimer extends Fragment{
                     seekBar.setEnabled(true);
                 }else{
                     /// timer start!
+                    mSensorManager.unregisterListener(mGyroLis);
                     startBtn.setBackgroundResource(R.drawable.lock_icon_color);
                     timerOn = true;
                     bt.timerStart();
@@ -312,6 +314,11 @@ public class FragmentTimer extends Fragment{
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         if(receiverRegied){
             getActivity().unregisterReceiver(br);
             receiverRegied = false;
@@ -359,7 +366,7 @@ public class FragmentTimer extends Fragment{
 
     /**
      * @brief dialog message with edit text for save category
-     * @param Data $d uses for save category value
+     * @param d uses for save category value
      * @TODO add achievement value if need
      **/
     public void showNoticeDialog(final Data d) {
@@ -433,7 +440,7 @@ public class FragmentTimer extends Fragment{
                 pitch = pitch + gyroY*dt;
                 if (Math.abs(pitch * RAD2DGR) > 150.0) {
                     //textX.setText("           [Pitch]: 뒤집힘");
-                    if (!TimerOn) {
+                    if (!TimerOn && !timerOn) {
                         vibrator.vibrate(millisecond);
                         TimerOn = true;
                         isFirst = true;
@@ -448,7 +455,7 @@ public class FragmentTimer extends Fragment{
                         seekBar.setEnabled(false);
                     }
                 } else {
-                    if (isFirst) {
+                    if (isFirst && !timerOn) {
                         TimerOn = false;
                         isFirst = false;
                         startBtn.setBackgroundResource(R.drawable.lock_icon_grey);

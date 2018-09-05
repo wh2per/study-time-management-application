@@ -121,4 +121,8 @@ public class MainActivity extends AppCompatActivity {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getSns() { return sns; }
+
+    public void setSns(String sns) { this.sns = sns; }
 }

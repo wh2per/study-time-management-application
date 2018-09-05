@@ -54,12 +54,13 @@ public class ReadJSON {
                 user.setJob(reader.nextString());
             } else if (name.equals("age")) {
                 user.setAge(reader.nextInt());
+            } else if (name.equals("isUser")) {
+                user.setisUser((reader.nextString()).equals("yes") ? true : false);
             } else {
                 reader.skipValue();
             }
         }
         reader.endObject();
-        Log.d("json user id", user.getId());
         return user;
     }
 

@@ -44,15 +44,15 @@ public class FragmentSetting extends Fragment{
                 lfc.WriteLogFile(getContext(),filename,"nofile",2);
                 Log.d("SNSActivity : ","킨다!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
-                if(mainActivity.sns.equals("1")) {
+                if(mainActivity.getSns().equals("1")) {
                     Intent intent = new Intent(mainActivity, GoogleLoginActivity.class);
                     intent.putExtra("InOut", 2);
                     startActivity(intent);
-                }else if(mainActivity.sns.equals("2")){
+                }else if(mainActivity.getSns().equals("2")){
                     Intent intent = new Intent(mainActivity, FacebookLoginActivity.class);
                     intent.putExtra("InOut", 2);
                     startActivity(intent);
-                }else if(mainActivity.sns.equals("3")){
+                }else if(mainActivity.getSns().equals("3")){
                     Intent intent = new Intent(mainActivity, KakaoLoginActivity.class);
                     intent.putExtra("InOut", 2);
                     startActivity(intent);

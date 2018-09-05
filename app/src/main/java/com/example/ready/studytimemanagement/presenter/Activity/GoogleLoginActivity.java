@@ -7,7 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.example.ready.studytimemanagement.R;
+import com.example.ready.studytimemanagement.model.User;
 import com.example.ready.studytimemanagement.presenter.Controller.LogfileController;
+import com.example.ready.studytimemanagement.control.NetworkTask;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -20,6 +22,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+
+import java.util.concurrent.TimeUnit;
 
 public class GoogleLoginActivity extends AppCompatActivity{
 
@@ -112,26 +116,40 @@ public class GoogleLoginActivity extends AppCompatActivity{
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                        try {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d(TAG, "signInWithCredential:success");
+                                FirebaseUser user = mAuth.getCurrentUser();
 
-                            // 다음화면으로 이름과 이메일을 넘기고 화면을 띄운다
-                            String ID = mAuth.getCurrentUser().getDisplayName();
-                            String EMAIL = mAuth.getCurrentUser().getEmail();
+                                // 다음화면으로 이름과 이메일을 넘기고 화면을 띄운다
+                                String ID = mAuth.getCurrentUser().getDisplayName();
+                                String EMAIL = mAuth.getCurrentUser().getEmail();
 
-                            // 로그파일 생성
-                            String content = "1,"+ID + ","+EMAIL;
-                            lfc.WriteLogFile(getApplicationContext(),filename,content,2);
-                            Log.d("LOG SAVE", "google success");
+                                // 로그파일 생성
+                                String content = "1," + ID + "," + EMAIL;
+                                lfc.WriteLogFile(getApplicationContext(), filename, content, 2);
+                                Log.d("LOG SAVE", "google success");
 
-                            Intent intent = new Intent(getApplicationContext(), LoadActivity.class);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                                User temp_user = new User();
+                                temp_user.setId(EMAIL);
+                                NetworkTask networkTask = new NetworkTask("/check-user", temp_user, null);
+                                networkTask.execute().get(1000, TimeUnit.MILLISECONDS);
+                                if(networkTask.getUser().getisUser()) {
+                                    Intent intent = new Intent(getApplicationContext(), LoadActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            }
+                        } catch(Exception e) {
+                            Log.e("google login", e.getMessage());
                         }
                     }
                 });

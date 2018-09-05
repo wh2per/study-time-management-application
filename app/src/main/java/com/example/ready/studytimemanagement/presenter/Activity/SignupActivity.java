@@ -35,21 +35,19 @@ public class SignupActivity extends AppCompatActivity{
         nameText = findViewById(R.id.nameeditText);
         signupBtn = findViewById(R.id.signupBtn);
 
-
-
-        String line = lfc.ReadLogFile(cont,filename);
-        StringTokenizer tokens = new StringTokenizer(line);
-
-        String name = tokens.nextToken(",");
-        String email = tokens.nextToken(",");
-
-        idText.setText(email);
-        nameText.setText(name);
+//        String line = lfc.ReadLogFile(cont,filename);
+//        StringTokenizer tokens = new StringTokenizer(line);
+//
+//        String name = tokens.nextToken(",");
+//        String email = tokens.nextToken(",");
+//
+//        idText.setText(email);
+//        nameText.setText(name);
 
         signupBtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(cont, LoadActivity.class);
+                Intent intent = new Intent(getBaseContext(), LoadActivity.class);
                 startActivity(intent);
             }
         });
@@ -60,7 +58,7 @@ public class SignupActivity extends AppCompatActivity{
             case android.R.id.home:{
                 lfc = new LogfileController();
                 lfc.WriteLogFile(this,filename,"nofile",2);
-                Intent intent = new Intent(cont, LoginActivity.class);
+                Intent intent = new Intent(getBaseContext(), LoginActivity.class);
                 startActivity(intent);
                 finish();
                 return true;
