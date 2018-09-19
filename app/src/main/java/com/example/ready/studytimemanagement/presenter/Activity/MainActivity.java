@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.example.ready.studytimemanagement.R;
 import com.example.ready.studytimemanagement.presenter.Adapter.MainPagerAdapter;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         this.setNickname(tokens.nextToken());
         this.setAge(Integer.parseInt(tokens.nextToken()));
         this.setJob(tokens.nextToken());
-
+        Log.e("logfile in mainactivity", this.getNickname()+this.getJob());
         final ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setOffscreenPageLimit(3);
 
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         return nickname;
     }
 
-    public void setNickname(String name) {
+    public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 

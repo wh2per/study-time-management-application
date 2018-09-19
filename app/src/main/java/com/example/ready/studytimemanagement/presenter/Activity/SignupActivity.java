@@ -34,7 +34,7 @@ public class SignupActivity extends AppCompatActivity {
         jobText = findViewById(R.id.jobeditText);
         signupBtn = findViewById(R.id.signupBtn);
 
-        cont = this.getBaseContext();
+        cont = this.getApplicationContext();
 
         signupBtn.setOnClickListener(new Button.OnClickListener() {
             @Override
