@@ -22,9 +22,9 @@ public class MainActivity extends AppCompatActivity {
     private Context cont;
     final String filename = "userlog.txt";
 
-    private String nickname;
-    private String email;
     private String sns;
+    private String id;
+    private String nickname;
     private int age;
     private String job;
 
@@ -36,11 +36,11 @@ public class MainActivity extends AppCompatActivity {
         lfc = new LogfileController();
         cont = getApplicationContext();
 
-        String line = lfc.ReadLogFile(cont,filename);
+        String line = lfc.ReadLogFile(cont, filename);
         StringTokenizer tokens = new StringTokenizer(line, ",");
 
         this.setSns(tokens.nextToken());
-        this.setEmail(tokens.nextToken());
+        this.setId(tokens.nextToken());
         this.setNickname(tokens.nextToken());
         this.setAge(Integer.parseInt(tokens.nextToken()));
         this.setJob(tokens.nextToken());
@@ -115,12 +115,12 @@ public class MainActivity extends AppCompatActivity {
         this.nickname = nickname;
     }
 
-    public String getEmail() {
-        return email;
+    public String getId() {
+        return id;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getSns() { return sns; }

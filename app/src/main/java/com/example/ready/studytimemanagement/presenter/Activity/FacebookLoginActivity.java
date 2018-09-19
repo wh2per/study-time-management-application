@@ -124,7 +124,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
 
                             // 로그파일 생성
                             String content = "2,"+EMAIL;
-                            lfc.WriteLogFile(getApplicationContext(),filename,content,2);
+                            lfc.WriteLogFile(getApplicationContext(), filename, content,2);
                             Log.d("LOG SAVE", "google success");
 
                             Intent intent = new Intent(getApplicationContext(), LoadActivity.class);

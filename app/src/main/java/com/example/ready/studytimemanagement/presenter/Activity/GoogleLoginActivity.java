@@ -121,7 +121,7 @@ public class GoogleLoginActivity extends AppCompatActivity{
 
                             // 로그파일 생성
                             String content = "1,"+EMAIL;
-                            lfc.WriteLogFile(getApplicationContext(),filename,content,2);
+                            lfc.WriteLogFile(getApplicationContext(), filename, content,2);
 
                                 User temp_user = new User();
                                 temp_user.setId(EMAIL);
