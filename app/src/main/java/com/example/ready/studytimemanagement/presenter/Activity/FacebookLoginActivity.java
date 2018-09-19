@@ -119,12 +119,11 @@ public class FacebookLoginActivity extends AppCompatActivity {
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
 
-                            // 다음화면으로 이름과 이메일을 넘기고 화면을 띄운다
-                            String ID = mAuth.getCurrentUser().getDisplayName();
+                            // 다음화면으로 이메일을 넘기고 화면을 띄운다
                             String EMAIL = mAuth.getCurrentUser().getEmail();
 
                             // 로그파일 생성
-                            String content = "2,"+ID + ","+EMAIL;
+                            String content = "2,"+EMAIL;
                             lfc.WriteLogFile(getApplicationContext(),filename,content,2);
                             Log.d("LOG SAVE", "google success");
 

@@ -107,12 +107,11 @@ public class KakaoLoginActivity extends AppCompatActivity {
                     Log.e("Profile : ", id + "");
                     */
 
-                    // 다음화면으로 이름과 이메일을 넘기고 화면을 띄운다
-                    String ID = userProfile.getNickname();
+                    // 다음화면으로 이메일을 넘기고 화면을 띄운다
                     String EMAIL = userProfile.getEmail();
 
                     // 로그파일 생성
-                    String content = "3,"+ID + ","+EMAIL;
+                    String content = "3,"+EMAIL;
                     lfc.WriteLogFile(getApplicationContext(),filename,content,2);
                     Log.d("LOG SAVE", "kakako success");
 

@@ -9,15 +9,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.ready.studytimemanagement.R;
 import com.example.ready.studytimemanagement.presenter.Controller.LogfileController;
 
+import java.util.StringTokenizer;
 
-public class SignupActivity extends AppCompatActivity{
-
+public class SignupActivity extends AppCompatActivity {
     private Button signupBtn;
-    private EditText idText, pwText, nameText;
+    private EditText nicknameText, jobText, ageText;
     private LogfileController lfc;
     private Context cont;
     final String filename = "userlog.txt";
@@ -28,25 +29,29 @@ public class SignupActivity extends AppCompatActivity{
         setContentView(R.layout.activity_signup);
 
         lfc = new LogfileController();
-        idText = findViewById(R.id.ideditText);
-        pwText = findViewById(R.id.pweditText);
-        nameText = findViewById(R.id.nameeditText);
+        nicknameText = findViewById(R.id.nicknameeditText);
+        ageText = findViewById(R.id.ageeditText);
+        jobText = findViewById(R.id.jobeditText);
         signupBtn = findViewById(R.id.signupBtn);
 
-//        String line = lfc.ReadLogFile(cont,filename);
-//        StringTokenizer tokens = new StringTokenizer(line);
-//
-//        String name = tokens.nextToken(",");
-//        String email = tokens.nextToken(",");
-//
-//        idText.setText(email);
-//        nameText.setText(name);
+        cont = this.getBaseContext();
 
         signupBtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), LoadActivity.class);
-                startActivity(intent);
+                if(nicknameText.getText().equals("") ||
+                        ageText.getText().equals("") ||
+                        jobText.getText().equals("")) {
+                    Toast.makeText(cont, "빈칸 없이 입력해주세요.", Toast.LENGTH_LONG).show();
+                } else {
+                    String contents =
+                            "," + nicknameText.getText() +
+                            "," + ageText.getText() +
+                            "," + jobText.getText();
+                    lfc.WriteLogFile(cont, filename, contents, 1);
+                    Intent intent = new Intent(getBaseContext(), LoadActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }

@@ -21,9 +21,11 @@ public class MainActivity extends AppCompatActivity {
     private Context cont;
     final String filename = "userlog.txt";
 
-    private String name;
+    private String nickname;
     private String email;
     private String sns;
+    private int age;
+    private String job;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +36,13 @@ public class MainActivity extends AppCompatActivity {
         cont = getApplicationContext();
 
         String line = lfc.ReadLogFile(cont,filename);
-        StringTokenizer tokens = new StringTokenizer(line);
+        StringTokenizer tokens = new StringTokenizer(line, ",");
 
-        sns = tokens.nextToken(",");
-        this.setName(tokens.nextToken(","));
-        this.setEmail(email = tokens.nextToken(","));
-
+        this.setSns(tokens.nextToken());
+        this.setEmail(tokens.nextToken());
+        this.setNickname(tokens.nextToken());
+        this.setAge(Integer.parseInt(tokens.nextToken()));
+        this.setJob(tokens.nextToken());
 
         final ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setOffscreenPageLimit(3);
@@ -103,12 +106,12 @@ public class MainActivity extends AppCompatActivity {
         finishAffinity();
     }
 
-    public String getName() {
-        return name;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNickname(String name) {
+        this.nickname = nickname;
     }
 
     public String getEmail() {
@@ -122,4 +125,12 @@ public class MainActivity extends AppCompatActivity {
     public String getSns() { return sns; }
 
     public void setSns(String sns) { this.sns = sns; }
+
+    public int getAge() { return age; }
+
+    public void setAge(int age) { this.age = age; }
+
+    public String getJob() { return job; }
+
+    public void setJob(String job) { this.job = job; }
 }

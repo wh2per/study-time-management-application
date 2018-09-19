@@ -25,7 +25,7 @@ public class FragmentSetting extends Fragment{
         ViewGroup rootView =(ViewGroup) inflater.inflate(R.layout.fragment_setting, container,false);
         mainActivity = (MainActivity) this.getActivity();
         profileName = rootView.findViewById(R.id.profileName);
-        profileName.setText(mainActivity.getName());
+        profileName.setText(mainActivity.getNickname());
         ListView listView = (ListView) rootView.findViewById(R.id.settingList);
         AdapterSetting adapter = new AdapterSetting(mainActivity,getActivity().getApplicationContext());
 
