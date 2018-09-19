@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 
 import com.example.ready.studytimemanagement.control.NetworkTask;
 import com.example.ready.studytimemanagement.model.User;
+import com.example.ready.studytimemanagement.presenter.Activity.MainActivity;
+import com.example.ready.studytimemanagement.presenter.Controller.LogfileController;
 import com.example.ready.studytimemanagement.presenter.Item.ItemAnalysis;
 import com.example.ready.studytimemanagement.presenter.Itemview.ItemViewAnalysis;
 
@@ -16,6 +18,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
 public class AdapterAnalysis extends BaseAdapter{
@@ -25,9 +28,23 @@ public class AdapterAnalysis extends BaseAdapter{
     private HashMap<String, Long>[] analysisData = new HashMap[GRAPH_COUNT];
     private String[] weekdays = {"월", "화", "수", "목", "금", "토", "일"};
     private ArrayList<String>[] xaxis = new ArrayList[GRAPH_COUNT];
+    private User user;
+    private LogfileController lfc;
+    private static final String filename = "userlog.txt";
 
-    public AdapterAnalysis(Context c){
-        this.context = c;
+    public AdapterAnalysis(Context cont){
+        this.context = cont;
+        lfc = new LogfileController();
+
+        String line = lfc.ReadLogFile(this.context, filename);
+        StringTokenizer tokens = new StringTokenizer(line, ",");
+
+        String sns = tokens.nextToken();
+        String id = tokens.nextToken();
+        String nick = tokens.nextToken();
+        int age = Integer.parseInt(tokens.nextToken());
+        String job = tokens.nextToken();
+        user = new User(id, nick, age, job);
         for(int i = 0; i < GRAPH_COUNT; i++) {
             setFormattedData(i);
         }
@@ -57,13 +74,13 @@ public class AdapterAnalysis extends BaseAdapter{
         v.setTitleText(item.getTitle());
         v.setSubText(item.getSubTitle());
         //TODO if server operates, remove comments
-//        v.setCombinedChart(i, analysisData[i], xaxis[i]);
+        v.setCombinedChart(i, analysisData[i], xaxis[i]);
         return v;
     }
 
     private String setFormattedData(int index) {
         xaxis[index] = new ArrayList<String>();
-        User temp_user = new User("jorku@konkuk.ac.kr", "readyKim", 25, "student");
+
         NetworkTask asyncNetwork;
         Iterator<String> keys;
         HashMap<String, Long> temp = new HashMap<>();
@@ -71,7 +88,7 @@ public class AdapterAnalysis extends BaseAdapter{
         try {
             switch (index) {
                 case 0:
-                    asyncNetwork = new NetworkTask("/classify-category", temp_user, null);
+                    asyncNetwork = new NetworkTask("/classify-category", user, null);
                     asyncNetwork.execute().get(1000, TimeUnit.MILLISECONDS);
                     analysisData[index] = asyncNetwork.getAnalysisData().getAnalysis_category();
                     Log.e("category size", Integer.toString(analysisData[index].size()));
@@ -81,7 +98,7 @@ public class AdapterAnalysis extends BaseAdapter{
                     }
                     break;
                 case 1:
-                    asyncNetwork = new NetworkTask("/classify-weekday", temp_user, null);
+                    asyncNetwork = new NetworkTask("/classify-weekday", user, null);
                     asyncNetwork.execute().get(1000, TimeUnit.MILLISECONDS);
                     analysisData[index] = asyncNetwork.getAnalysisData().getAnalysis_weekday();
                     Log.e("weekday size", Integer.toString(analysisData[index].size()));
@@ -96,7 +113,7 @@ public class AdapterAnalysis extends BaseAdapter{
                     analysisData[index] = temp;
                     break;
                 case 2:
-                    asyncNetwork = new NetworkTask("/classify-week", temp_user, null);
+                    asyncNetwork = new NetworkTask("/classify-week", user, null);
                     asyncNetwork.execute().get(1000, TimeUnit.MILLISECONDS);
                     analysisData[index] = asyncNetwork.getAnalysisData().getAnalysis_week();
                     Log.e("week size", Integer.toString(analysisData[index].size()));
