@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.example.ready.studytimemanagement.R;
 import com.example.ready.studytimemanagement.presenter.Adapter.MainPagerAdapter;
@@ -21,9 +22,11 @@ public class MainActivity extends AppCompatActivity {
     private Context cont;
     final String filename = "userlog.txt";
 
-    private String name;
-    private String email;
     private String sns;
+    private String id;
+    private String nickname;
+    private int age;
+    private String job;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +36,17 @@ public class MainActivity extends AppCompatActivity {
         lfc = new LogfileController();
         cont = getApplicationContext();
 
-        String line = lfc.ReadLogFile(cont,filename);
-        StringTokenizer tokens = new StringTokenizer(line);
+        String line = lfc.ReadLogFile(cont, filename);
+        StringTokenizer tokens = new StringTokenizer(line, ",");
 
-        sns = tokens.nextToken(",");
-        this.setName(tokens.nextToken(","));
-        this.setEmail(email = tokens.nextToken(","));
+        this.setSns(tokens.nextToken());
+        this.setId(tokens.nextToken());
 
+        this.setNickname(tokens.nextToken());
+        this.setAge(Integer.parseInt(tokens.nextToken()));
+        this.setJob(tokens.nextToken());
 
+        Log.e("logfile in mainactivity", this.getNickname()+this.getJob());
         final ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setOffscreenPageLimit(3);
 
@@ -103,23 +109,31 @@ public class MainActivity extends AppCompatActivity {
         finishAffinity();
     }
 
-    public String getName() {
-        return name;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
-    public String getEmail() {
-        return email;
+    public String getId() {
+        return id;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getSns() { return sns; }
 
     public void setSns(String sns) { this.sns = sns; }
+
+    public int getAge() { return age; }
+
+    public void setAge(int age) { this.age = age; }
+
+    public String getJob() { return job; }
+
+    public void setJob(String job) { this.job = job; }
 }

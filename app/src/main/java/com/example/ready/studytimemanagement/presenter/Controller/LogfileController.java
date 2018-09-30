@@ -57,7 +57,7 @@ public class LogfileController extends BaseActivity {
             return "nofile";
         }catch (IOException e){
             e.printStackTrace();
-            return "";
+            return "nofile";
         }
         return strBuffer.toString();
     }

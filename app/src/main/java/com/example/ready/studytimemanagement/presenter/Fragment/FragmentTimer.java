@@ -29,16 +29,19 @@ import android.widget.Toast;
 
 import com.example.ready.studytimemanagement.R;
 import com.example.ready.studytimemanagement.model.Data;
+import com.example.ready.studytimemanagement.model.User;
 import com.example.ready.studytimemanagement.presenter.Activity.AppLockActivity;
 import com.example.ready.studytimemanagement.presenter.Activity.MainActivity;
 import com.example.ready.studytimemanagement.presenter.Item.BasicTimer;
 import com.example.ready.studytimemanagement.presenter.Item.ItemApplock;
 import com.example.ready.studytimemanagement.presenter.Service.TimerService;
+import com.example.ready.studytimemanagement.control.NetworkTask;
 import com.triggertrap.seekarc.SeekArc;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class FragmentTimer extends Fragment{
     private TextView targetView, totalView;
@@ -329,10 +332,10 @@ public class FragmentTimer extends Fragment{
 
     /**
      * @brief dialog message with edit text for save category
-     * @param d uses for save category value
+     * @param time_data uses for save category value
      * @TODO add achievement value if need
      **/
-    public void showNoticeDialog(final Data d) {
+    public void showNoticeDialog(final Data time_data) {
         // Create an instance of the dialog fragment and show it
         final AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
         // Get the layout inflater
@@ -345,17 +348,23 @@ public class FragmentTimer extends Fragment{
         final EditText ed = dialog.findViewById(R.id.categoryText);
 
         TextView ctText = dialog.findViewById(R.id.completeTimeText);
-        ctText.setText(d.getAmount());
-
+        ctText.setText(time_data.getAmount());
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                d.setCategory(String.valueOf(ed.getText()));
-                dialog.dismiss();
-                String toastMsg = d.getCategory()+" "+d.getAmount()+" 저장됐습니다";
-                Toast.makeText(getContext(),toastMsg,Toast.LENGTH_LONG).show();
-
+                try {
+                    time_data.setCategory(String.valueOf(ed.getText()));
+                    dialog.dismiss();
+                    String user_id = mainActivity.getId();
+                    User user = new User(user_id, null, 0, null);
+                    NetworkTask networkTask = new NetworkTask("/register-time", user, time_data);
+                    networkTask.execute().get(1000, TimeUnit.MILLISECONDS);
+                    String toastMsg = time_data.getCategory() + " " + time_data.getAmount() + " 저장됐습니다";
+                    Toast.makeText(getContext(), toastMsg, Toast.LENGTH_LONG).show();
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
