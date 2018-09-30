@@ -36,12 +36,14 @@ public class NetworkTask extends AsyncTask<Void, Void, String> {
                 Log.d("register-user", result);
                 break;
             case "/check-user":
-                this.user = requestHttpConnection.getUser(url, user.getId());
+               this.user = requestHttpConnection.getUser(url, user.getId());
                 if(this.user.getisUser()) {
-                    Log.d("check-user", "success");
+                    Log.e("check-user", "success");
+                    Log.e("check-user", this.user.getNickname());
+                    Log.e("check-user", user.getJob());
                     result = "isUser";
                 } else {
-                    Log.d("check-user", "fail");
+                    Log.e("check-user", "fail");
                     result = "noUser";
                 }
                 break;

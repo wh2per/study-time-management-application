@@ -50,8 +50,10 @@ public class ReadJSON {
                 user.setId(reader.nextString());
             } else if (name.equals("nickname")) {
                 user.setNickname(reader.nextString());
+                Log.e("read_nickname", user.getNickname());
             } else if (name.equals("job")) {
                 user.setJob(reader.nextString());
+                Log.e("read_job", user.getJob());
             } else if (name.equals("age")) {
                 user.setAge(reader.nextInt());
             } else if (name.equals("isUser")) {
