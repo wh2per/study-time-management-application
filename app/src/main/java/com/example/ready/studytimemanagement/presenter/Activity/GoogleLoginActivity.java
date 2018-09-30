@@ -119,15 +119,18 @@ public class GoogleLoginActivity extends AppCompatActivity{
                                 // 다음화면으로 이름과 이메일을 넘기고 화면을 띄운다
                                 String EMAIL = mAuth.getCurrentUser().getEmail();
 
-                            // 로그파일 생성
-                            String content = "1,"+EMAIL;
-                            lfc.WriteLogFile(getApplicationContext(), filename, content,2);
-
                                 User temp_user = new User();
                                 temp_user.setId(EMAIL);
                                 NetworkTask networkTask = new NetworkTask("/check-user", temp_user, null);
                                 networkTask.execute().get(1000, TimeUnit.MILLISECONDS);
                                 if(networkTask.getUser().getisUser()) {
+                                    String contents =
+                                            "1," + EMAIL +
+                                            "," + networkTask.getUser().getNickname() +
+                                                    "," + networkTask.getUser().getAge() +
+                                                    "," + networkTask.getUser().getJob();
+                                    lfc.WriteLogFile(getApplicationContext(), filename, contents, 2);
+
                                     Intent intent = new Intent(getApplicationContext(), LoadActivity.class);
                                     startActivity(intent);
                                     finish();

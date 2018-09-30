@@ -59,6 +59,7 @@ public class AdapterSetting extends BaseAdapter{
             public void onClick(View view) {
                 switch (mode){
                     case 3:
+                        Log.e("deb/logout", "in");
                         lfc.WriteLogFile(context,filename,"",2);
                         lfc.WriteLogFile(context,filename,"nofile",2);
 

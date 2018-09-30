@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.example.ready.studytimemanagement.control.NetworkTask;
+import com.example.ready.studytimemanagement.model.User;
 import com.example.ready.studytimemanagement.presenter.Controller.LogfileController;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.ISessionCallback;
@@ -14,6 +16,8 @@ import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.MeResponseCallback;
 import com.kakao.usermgmt.response.model.UserProfile;
 import com.kakao.util.exception.KakaoException;
+
+import java.util.concurrent.TimeUnit;
 
 
 public class KakaoLoginActivity extends AppCompatActivity {
@@ -90,6 +94,7 @@ public class KakaoLoginActivity extends AppCompatActivity {
                 // 사용자정보 요청에 성공한 경우,
                 @Override
                 public void onSuccess(UserProfile userProfile) {
+                    try {
                     /*
                     Log.e("SessionCallback :: ", "onSuccess");
                     String nickname = userProfile.getNickname();
@@ -107,17 +112,32 @@ public class KakaoLoginActivity extends AppCompatActivity {
                     Log.e("Profile : ", id + "");
                     */
 
-                    // 다음화면으로 이메일을 넘기고 화면을 띄운다
-                    String EMAIL = userProfile.getEmail();
+                        // 다음화면으로 이메일을 넘기고 화면을 띄운다
+                        String EMAIL = userProfile.getEmail();
 
-                    // 로그파일 생성
-                    String content = "3,"+EMAIL;
-                    lfc.WriteLogFile(getApplicationContext(), filename, content,2);
-                    Log.d("LOG SAVE", "kakako success");
+                        User temp_user = new User();
+                        temp_user.setId(EMAIL);
+                        NetworkTask networkTask = new NetworkTask("/check-user", temp_user, null);
+                        networkTask.execute().get(1000, TimeUnit.MILLISECONDS);
+                        if (networkTask.getUser().getisUser()) {
+                            String contents =
+                                    "3," + EMAIL +
+                                            "," + networkTask.getUser().getNickname() +
+                                            "," + networkTask.getUser().getAge() +
+                                            "," + networkTask.getUser().getJob();
+                            lfc.WriteLogFile(getApplicationContext(), filename, contents, 2);
 
-                    Intent intent = new Intent(getApplicationContext(),LoadActivity.class);
-                    startActivity(intent);
-                    //finish();
+                            Intent intent = new Intent(getApplicationContext(), LoadActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    } catch(Exception e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 // 사용자 정보 요청 실패

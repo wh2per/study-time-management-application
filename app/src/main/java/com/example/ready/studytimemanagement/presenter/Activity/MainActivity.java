@@ -41,9 +41,11 @@ public class MainActivity extends AppCompatActivity {
 
         this.setSns(tokens.nextToken());
         this.setId(tokens.nextToken());
+
         this.setNickname(tokens.nextToken());
         this.setAge(Integer.parseInt(tokens.nextToken()));
         this.setJob(tokens.nextToken());
+
         Log.e("logfile in mainactivity", this.getNickname()+this.getJob());
         final ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setOffscreenPageLimit(3);

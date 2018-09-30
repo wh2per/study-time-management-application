@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.example.ready.studytimemanagement.control.NetworkTask;
+import com.example.ready.studytimemanagement.model.User;
 import com.example.ready.studytimemanagement.presenter.Controller.LogfileController;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -22,6 +24,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class FacebookLoginActivity extends AppCompatActivity {
 
@@ -114,25 +118,41 @@ public class FacebookLoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                        try {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d(TAG, "signInWithCredential:success");
+                                FirebaseUser user = mAuth.getCurrentUser();
 
-                            // 다음화면으로 이메일을 넘기고 화면을 띄운다
-                            String EMAIL = mAuth.getCurrentUser().getEmail();
+                                // 다음화면으로 이메일을 넘기고 화면을 띄운다
+                                String EMAIL = mAuth.getCurrentUser().getEmail();
 
-                            // 로그파일 생성
-                            String content = "2,"+EMAIL;
-                            lfc.WriteLogFile(getApplicationContext(), filename, content,2);
-                            Log.d("LOG SAVE", "google success");
+                                User temp_user = new User();
+                                temp_user.setId(EMAIL);
+                                NetworkTask networkTask = new NetworkTask("/check-user", temp_user, null);
+                                networkTask.execute().get(1000, TimeUnit.MILLISECONDS);
+                                if (networkTask.getUser().getisUser()) {
+                                    String contents =
+                                            "2," + EMAIL +
+                                                    "," + networkTask.getUser().getNickname() +
+                                                    "," + networkTask.getUser().getAge() +
+                                                    "," + networkTask.getUser().getJob();
+                                    lfc.WriteLogFile(getApplicationContext(), filename, contents, 2);
 
-                            Intent intent = new Intent(getApplicationContext(), LoadActivity.class);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                                    Intent intent = new Intent(getApplicationContext(), LoadActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            }
+                        } catch(Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 });
