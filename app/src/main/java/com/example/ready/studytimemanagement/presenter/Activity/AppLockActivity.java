@@ -83,6 +83,9 @@ public class AppLockActivity extends AppCompatActivity {
                 Intent sintent = new Intent(getApplicationContext(),AppLockService.class); // 이동할 컴포넌트
                 startService(sintent); // 서비스 시작
 
+                Intent mintent = new Intent(getApplicationContext(),MainActivity.class);
+                mintent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(mintent);
             }
         });
         mainIntent = new Intent(getApplicationContext(),MainActivity.class);
@@ -93,6 +96,14 @@ public class AppLockActivity extends AppCompatActivity {
     public void onStart() {
 
         super.onStart();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent mintent = new Intent(getApplicationContext(),MainActivity.class);
+        mintent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(mintent);
     }
 
     @Override
