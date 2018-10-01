@@ -118,6 +118,9 @@ public class GoogleLoginActivity extends AppCompatActivity{
 
                                 // 다음화면으로 이름과 이메일을 넘기고 화면을 띄운다
                                 String EMAIL = mAuth.getCurrentUser().getEmail();
+                                String content =
+                                        "1," + EMAIL;
+                                lfc.WriteLogFile(getApplicationContext(), filename, content, 2);
 
                                 User temp_user = new User();
                                 temp_user.setId(EMAIL);
