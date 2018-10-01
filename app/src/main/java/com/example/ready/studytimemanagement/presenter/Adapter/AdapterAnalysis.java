@@ -28,6 +28,7 @@ public class AdapterAnalysis extends BaseAdapter{
     private HashMap<String, Long>[] analysisData = new HashMap[GRAPH_COUNT];
     private String[] weekdays = {"월", "화", "수", "목", "금", "토", "일"};
     private ArrayList<String>[] xaxis = new ArrayList[GRAPH_COUNT];
+    private String sns;
     private User user;
     private LogfileController lfc;
     private static final String filename = "userlog.txt";
@@ -39,14 +40,16 @@ public class AdapterAnalysis extends BaseAdapter{
         String line = lfc.ReadLogFile(this.context, filename);
         StringTokenizer tokens = new StringTokenizer(line, ",");
 
-        String sns = tokens.nextToken();
-        String id = tokens.nextToken();
-        String nick = tokens.nextToken();
-        int age = Integer.parseInt(tokens.nextToken());
-        String job = tokens.nextToken();
-        user = new User(id, nick, age, job);
-        for(int i = 0; i < GRAPH_COUNT; i++) {
-            setFormattedData(i);
+        this.sns = tokens.nextToken();
+        if(sns.equals("4") == false) {
+            String id = tokens.nextToken();
+            String nick = tokens.nextToken();
+            int age = Integer.parseInt(tokens.nextToken());
+            String job = tokens.nextToken();
+            user = new User(id, nick, age, job);
+            for (int i = 0; i < GRAPH_COUNT; i++) {
+                setFormattedData(i);
+            }
         }
     }
     public void addItem(ItemAnalysis item){
@@ -73,8 +76,8 @@ public class AdapterAnalysis extends BaseAdapter{
         ItemAnalysis item = items.get(i);
         v.setTitleText(item.getTitle());
         v.setSubText(item.getSubTitle());
-        //TODO if server operates, remove comments
-        v.setCombinedChart(i, analysisData[i], xaxis[i]);
+        if(this.sns.equals("4") == false)
+            v.setCombinedChart(i, analysisData[i], xaxis[i]);
         return v;
     }
 

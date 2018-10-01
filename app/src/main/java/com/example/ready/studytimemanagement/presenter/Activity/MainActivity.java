@@ -22,11 +22,11 @@ public class MainActivity extends AppCompatActivity {
     private Context cont;
     final String filename = "userlog.txt";
 
-    private String sns;
-    private String id;
-    private String nickname;
-    private int age;
-    private String job;
+    private String sns = "";
+    private String id = "";
+    private String nickname = "";
+    private int age = 0;
+    private String job = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +40,14 @@ public class MainActivity extends AppCompatActivity {
         StringTokenizer tokens = new StringTokenizer(line, ",");
 
         this.setSns(tokens.nextToken());
-        this.setId(tokens.nextToken());
+        Log.e("SNS in Login", this.getSns());
+        if(this.getSns().equals("4") == false) {
+            this.setId(tokens.nextToken());
 
-        this.setNickname(tokens.nextToken());
-        this.setAge(Integer.parseInt(tokens.nextToken()));
-        this.setJob(tokens.nextToken());
-
+            this.setNickname(tokens.nextToken());
+            this.setAge(Integer.parseInt(tokens.nextToken()));
+            this.setJob(tokens.nextToken());
+        }
         Log.e("logfile in mainactivity", this.getNickname()+this.getJob());
         final ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setOffscreenPageLimit(3);
