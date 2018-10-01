@@ -114,6 +114,9 @@ public class KakaoLoginActivity extends AppCompatActivity {
 
                         // 다음화면으로 이메일을 넘기고 화면을 띄운다
                         String EMAIL = userProfile.getEmail();
+                        String content =
+                                "3," + EMAIL;
+                        lfc.WriteLogFile(getApplicationContext(), filename, content, 2);
 
                         User temp_user = new User();
                         temp_user.setId(EMAIL);
