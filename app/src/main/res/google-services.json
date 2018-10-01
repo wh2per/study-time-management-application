@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "372313130294",
+    "firebase_url": "https://lockey-5c6e3.firebaseio.com",
+    "project_id": "lockey-5c6e3",
+    "storage_bucket": "lockey-5c6e3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:372313130294:android:eb693e7763f4ad35",
+        "android_client_info": {
+          "package_name": "com.example.ready.studytimemanagement"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "372313130294-a31usq8vapq70ig7thnfjvpufrod2a07.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.company.Lockey",
+            "certificate_hash": "e0375a972872d2429ece3b92d82b625259dd80d5"
+          }
+        },
+        {
+          "client_id": "372313130294-pcf4fgacuk9n36ot4lmj9dpv83l8b1fa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlAihq4yeu2hoIKTNPYwJzpHW9RR5pUp4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "372313130294-pcf4fgacuk9n36ot4lmj9dpv83l8b1fa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
