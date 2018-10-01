@@ -72,7 +72,7 @@ public class GoogleLoginActivity extends AppCompatActivity{
             signOut();
 
             Intent restart = getApplicationContext().getPackageManager().getLaunchIntentForPackage(getApplicationContext().getPackageName());
-            restart.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            restart.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             restart.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(restart);
         }
