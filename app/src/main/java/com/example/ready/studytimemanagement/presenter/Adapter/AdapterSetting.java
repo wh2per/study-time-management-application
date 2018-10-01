@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import com.example.ready.studytimemanagement.presenter.Activity.FacebookLoginActivity;
 import com.example.ready.studytimemanagement.presenter.Activity.GoogleLoginActivity;
 import com.example.ready.studytimemanagement.presenter.Activity.KakaoLoginActivity;
+import com.example.ready.studytimemanagement.presenter.Activity.LoginActivity;
 import com.example.ready.studytimemanagement.presenter.Activity.MainActivity;
 import com.example.ready.studytimemanagement.presenter.Controller.LogfileController;
 import com.example.ready.studytimemanagement.presenter.Item.ItemSetting;
@@ -73,6 +74,10 @@ public class AdapterSetting extends BaseAdapter{
                             mainActivity.startActivity(intent);
                         }else if(mainActivity.getSns().equals("3")){
                             Intent intent = new Intent(mainActivity, KakaoLoginActivity.class);
+                            intent.putExtra("InOut", 2);
+                            mainActivity.startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(mainActivity, LoginActivity.class);
                             intent.putExtra("InOut", 2);
                             mainActivity.startActivity(intent);
                         }
