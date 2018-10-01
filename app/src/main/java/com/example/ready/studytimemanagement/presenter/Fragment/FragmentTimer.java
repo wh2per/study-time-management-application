@@ -356,12 +356,17 @@ public class FragmentTimer extends Fragment{
                 try {
                     time_data.setCategory(String.valueOf(ed.getText()));
                     dialog.dismiss();
-                    String user_id = mainActivity.getId();
-                    User user = new User(user_id, null, 0, null);
-                    NetworkTask networkTask = new NetworkTask("/register-time", user, time_data);
-                    networkTask.execute().get(1000, TimeUnit.MILLISECONDS);
-                    String toastMsg = time_data.getCategory() + " " + time_data.getAmount() + " 저장됐습니다";
-                    Toast.makeText(getContext(), toastMsg, Toast.LENGTH_LONG).show();
+                    if(mainActivity.getSns().equals("4") == false) {
+                        String user_id = mainActivity.getId();
+                        User user = new User(user_id, null, 0, null);
+                        NetworkTask networkTask = new NetworkTask("/register-time", user, time_data);
+                        networkTask.execute().get(1000, TimeUnit.MILLISECONDS);
+                        String toastMsg = time_data.getCategory() + " " + time_data.getAmount() + " 저장됐습니다";
+                        Toast.makeText(getContext(), toastMsg, Toast.LENGTH_LONG).show();
+                    } else {
+                        String toastMsg = "비회원은 저장되지 않습니다";
+                        Toast.makeText(getContext(), toastMsg, Toast.LENGTH_LONG).show();
+                    }
                 } catch(Exception e) {
                     e.printStackTrace();
                 }

@@ -109,6 +109,8 @@ public class LoginActivity extends BaseActivity{
         noMemberBtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String content = "4,";
+                lfc.WriteLogFile(getApplicationContext(), filename, content, 2);
                 Intent intent = new Intent(cont, LoadActivity.class);
                 startActivity(intent);
                 finish();
