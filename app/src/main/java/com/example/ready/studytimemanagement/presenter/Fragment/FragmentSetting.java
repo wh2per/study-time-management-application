@@ -32,7 +32,7 @@ public class FragmentSetting extends Fragment{
 
         adapter.addItem(new ItemSetting("계정 관리"));
         adapter.addItem(new ItemSetting("결제 내역 보기"));
-        adapter.addItem(new ItemSetting("기기 설정"));
+        adapter.addItem(new ItemSetting("오픈소스 라이센스"));
         adapter.addItem(new ItemSetting("로그아웃"));
         listView.setAdapter(adapter);
 

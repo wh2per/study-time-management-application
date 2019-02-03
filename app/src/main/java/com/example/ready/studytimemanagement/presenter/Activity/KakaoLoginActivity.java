@@ -55,7 +55,7 @@ public class KakaoLoginActivity extends AppCompatActivity {
             Session.getCurrentSession().close();
 
             Intent restart = getApplicationContext().getPackageManager().getLaunchIntentForPackage(getApplicationContext().getPackageName());
-            restart.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            restart.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             restart.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(restart);
         }
@@ -95,22 +95,6 @@ public class KakaoLoginActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(UserProfile userProfile) {
                     try {
-                    /*
-                    Log.e("SessionCallback :: ", "onSuccess");
-                    String nickname = userProfile.getNickname();
-                    String email = userProfile.getEmail();
-                    String profileImagePath = userProfile.getProfileImagePath();
-                    String thumnailPath = userProfile.getThumbnailImagePath();
-                    String UUID = userProfile.getUUID();
-                    long id = userProfile.getId();
-
-                    Log.e("Profile : ", nickname + "");
-                    Log.e("Profile : ", email + "");
-                    Log.e("Profile : ", profileImagePath  + "");
-                    Log.e("Profile : ", thumnailPath + "");
-                    Log.e("Profile : ", UUID + "");
-                    Log.e("Profile : ", id + "");
-                    */
 
                         // 다음화면으로 이메일을 넘기고 화면을 띄운다
                         String EMAIL = userProfile.getEmail();
