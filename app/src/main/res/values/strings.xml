@@ -1,10 +1,19 @@
 <resources>
-    <string name="app_name">Lockey</string>
-    <string name="loading">loading</string>
-    <string name="signed_out">signed_out</string>
-    <string name="google_status_fmt">google_status_fmt</string>
-    <string name="firebase_status_fmt">firebase_status_fmt</string>
     <string name="facebook_app_id">223239194983409</string>
     <string name="fb_login_protocol_scheme">fb223239194983409</string>
     <string name="kakao_app_key">e2c42c5260e2ea517f07e5479e99f9d7</string>
+    <string name="google_status_fmt">google_status_fmt</string>
+    <string name="firebase_status_fmt">firebase_status_fmt</string>
+
+    <string name="app_name">Lockey</string>
+    <string name="loading">loading</string>
+    <string name="signed_out">signed_out</string>
+    <string name="tab_home">home</string>
+    <string name="tab_setting">setting</string>
+    <string name="tab_graph">graph</string>
+    <string name="tab_applist">app list</string>
+
+    <!--Timer Fragment-->
+    <string name="btwHourMin">:</string>
+    <string name="disableNotiSound">알람없음</string>
 </resources>

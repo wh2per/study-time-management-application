@@ -10,9 +10,11 @@ public class BasicTimer implements Parcelable{
 
     private long targetTime, totalTime, startTime =0, tempTarget = 0;
     private Boolean onoff = false;
-    private TextView targetView, totalView;
     final Handler handler = new Handler();
 
+    public BasicTimer(String hour, String min){
+        this.targetTime = Long.valueOf(hour)*(1000 * 60 * 60) + Long.valueOf(min)*(1000*60);
+    }
     public BasicTimer(long targetTime){
         this.targetTime = targetTime;
         this.totalTime = 0;
@@ -44,6 +46,16 @@ public class BasicTimer implements Parcelable{
      * convert the milli sec to the HH:MM:SS format
      * can show milli sec but unable now
      * */
+    public String makeToTimeFormat(){
+        long t = this.targetTime;
+        long millis = t % 1000;
+        long second = (t / 1000) % 60;
+        long minute = (t / (1000 * 60)) % 60;
+        long hour = (t / (1000 * 60 * 60)) % 24;
+
+        String time = String.format("%02d:%02d:%02d", hour, minute, second);
+        return time;
+    }
     public String makeToTimeFormat(long t){
         long millis = t % 1000;
         long second = (t / 1000) % 60;

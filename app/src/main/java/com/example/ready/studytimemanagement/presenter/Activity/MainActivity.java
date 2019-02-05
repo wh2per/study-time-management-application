@@ -2,15 +2,20 @@ package com.example.ready.studytimemanagement.presenter.Activity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.example.ready.studytimemanagement.R;
 import com.example.ready.studytimemanagement.presenter.Adapter.MainPagerAdapter;
 import com.example.ready.studytimemanagement.presenter.Controller.LogfileController;
 import com.example.ready.studytimemanagement.presenter.Fragment.FragmentAnalysis;
+import com.example.ready.studytimemanagement.presenter.Fragment.FragmentApplock;
 import com.example.ready.studytimemanagement.presenter.Fragment.FragmentSetting;
 import com.example.ready.studytimemanagement.presenter.Fragment.FragmentTimer;
 
@@ -33,14 +38,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /* variable for log files(login process)*/
         lfc = new LogfileController();
         cont = getApplicationContext();
-
         String line = lfc.ReadLogFile(cont, filename);
         StringTokenizer tokens = new StringTokenizer(line, ",");
 
         this.setSns(tokens.nextToken());
         Log.e("SNS in Login", this.getSns());
+
         if(this.getSns().equals("4") == false) {
             this.setId(tokens.nextToken());
 
@@ -49,80 +55,83 @@ public class MainActivity extends AppCompatActivity {
             this.setJob(tokens.nextToken());
         }
         Log.e("logfile in mainactivity", this.getNickname()+this.getJob());
+
+        /* bottom navigation*/
+        BottomNavigationView btmNav = (BottomNavigationView) findViewById(R.id.bottomMainNav);
         final ViewPager pager = (ViewPager) findViewById(R.id.pager);
-        pager.setOffscreenPageLimit(3);
+        pager.setOffscreenPageLimit(4);
 
         final MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager());
-        final FragmentAnalysis fragmentAnalysis = new FragmentAnalysis();
-        final FragmentTimer fragmentTimer = new FragmentTimer();
 
-//        final FragmentTimer fragmentTimer = new FragmentTimer(itemApplocks);
+        final FragmentTimer fragmentTimer = new FragmentTimer();
+        final FragmentApplock fragmentApplock = new FragmentApplock();
+        final FragmentAnalysis fragmentAnalysis = new FragmentAnalysis();
         final FragmentSetting fragmentSetting = new FragmentSetting();
 
-        adapter.addItem(fragmentAnalysis);
         adapter.addItem(fragmentTimer);
+        adapter.addItem(fragmentApplock);
+        adapter.addItem(fragmentAnalysis);
         adapter.addItem(fragmentSetting);
 
         pager.setAdapter(adapter);
+        pager.setCurrentItem(0);
+        //loadFragment(fragmentTimer);
 
-        final TabLayout tabs = findViewById(R.id.tabs);
-        tabs.setupWithViewPager(pager);
-        tabs.getTabAt(0).setIcon(R.drawable.tab_analy).setText("");
-        tabs.getTabAt(1).setIcon(R.drawable.tab_timer_select).setText("");
-        tabs.getTabAt(2).setIcon(R.drawable.tab_admin).setText("");
-
-        pager.setCurrentItem(1);
-
-        tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        btmNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                int pos = tab.getPosition();
-                if(pos == 0){
-                    tab.setIcon(R.drawable.tab_analy_select);
-                }else if(pos == 1){
-                    tab.setIcon(R.drawable.tab_timer_select);
-                }else if(pos == 2){
-                    tab.setIcon(R.drawable.tab_admin_select);
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment tempFrag = null;
+                switch (item.getItemId()) {
+                    case R.id.navigation_home:
+                        pager.setCurrentItem(0,false);
+                        break;//return loadFragment(fragmentTimer);
+                    case R.id.navigation_applist:
+                        pager.setCurrentItem(1,false);
+                        break;
+                        //return loadFragment(fragmentApplock);
+                    case R.id.navigation_graph:
+                        pager.setCurrentItem(2,false);
+                        break;//return loadFragment(fragmentAnalysis);
+                    case R.id.navigation_setting:
+                        pager.setCurrentItem(3,false);
+                        break;//return loadFragment(fragmentSetting);
                 }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                int pos = tab.getPosition();
-                if(pos == 0){
-                    tab.setIcon(R.drawable.tab_analy);
-                }else if(pos == 1){
-                    tab.setIcon(R.drawable.tab_timer);
-                }else if(pos == 2){
-                    tab.setIcon(R.drawable.tab_admin);
-                }
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
+                return true;
             }
         });
-    }
 
+    }
+    /*
+    private boolean loadFragment(Fragment fragment) {
+        //switching fragment
+        if (fragment != null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.mainFragContainer, fragment)
+                    .commit();
+            return true;
+        }
+        return false;
+    }*/
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         finishAffinity();
     }
 
+
+    /**
+     * @brief getter and setters
+     * **/
     public String getNickname() {
         return nickname;
     }
-
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
-
     public String getId() {
         return id;
     }
-
     public void setId(String id) {
         this.id = id;
     }

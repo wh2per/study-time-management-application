@@ -12,6 +12,7 @@ import com.example.ready.studytimemanagement.presenter.Activity.GoogleLoginActiv
 import com.example.ready.studytimemanagement.presenter.Activity.KakaoLoginActivity;
 import com.example.ready.studytimemanagement.presenter.Activity.LoginActivity;
 import com.example.ready.studytimemanagement.presenter.Activity.MainActivity;
+import com.example.ready.studytimemanagement.presenter.Activity.OpenSourceActivity;
 import com.example.ready.studytimemanagement.presenter.Controller.LogfileController;
 import com.example.ready.studytimemanagement.presenter.Item.ItemSetting;
 import com.example.ready.studytimemanagement.presenter.Itemview.ItemViewSetting;
@@ -59,6 +60,11 @@ public class AdapterSetting extends BaseAdapter{
             @Override
             public void onClick(View view) {
                 switch (mode){
+                    case 2:
+                        Intent intents = new Intent(mainActivity, OpenSourceActivity.class);
+                        intents.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        mainActivity.startActivity(intents);
+                        break;
                     case 3:
                         Log.e("deb/logout", "in");
                         lfc.WriteLogFile(context,filename,"",2);

@@ -62,7 +62,8 @@ public class AppLockController extends BaseActivity {
         }
         return false;
 
-        /*
+        /*   API 21 버전 미만
+
         ActivityManager am = (ActivityManager) act.getApplicationContext().getSystemService(ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> list = am.getRunningAppProcesses();
 
@@ -87,7 +88,8 @@ public class AppLockController extends BaseActivity {
         */
 
 
-        /*
+        /*      API 21 버전 이상 (topActivity를 호환으로 이용할 수 있지만 불안정)
+
         ActivityManager AM = (ActivityManager) act.getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> Info = AM.getRunningTasks(1);
         ComponentName topActivity = Info.get(0).topActivity;

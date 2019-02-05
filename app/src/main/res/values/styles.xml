@@ -14,6 +14,13 @@
     <style name="SwitchTheme" parent="Theme.AppCompat.Light">
         <item name="android:colorControlActivated">@color/colorPrimary</item>
     </style>
+    <style name="TimerNumberPickerText">
+        <item name="android:colorControlNormal">@color/transparent</item>
+        <item name="android:textSize">58sp</item>
+        <item name="android:textColorPrimary">@color/darkGrey</item>
+        <item name="android:textColorHighlight">@color/lightGrey</item>
+        <item name="android:descendantFocusability">blocksDescendants</item>
+    </style>
 
     <style name="TranslucentActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@android:color/transparent</item>

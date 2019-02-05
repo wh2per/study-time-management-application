@@ -24,8 +24,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.ready.studytimemanagement.R;
 import com.example.ready.studytimemanagement.model.Data;
@@ -44,6 +47,11 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class FragmentTimer extends Fragment{
+    private String[] hourPick = new String[]{"0","1","2","3","4","5","6","7","8","9","10","11","12"};
+    private String[] minPick = new String[]{"00","05","10","15","20","25","30","35","40","45","50","55"};
+
+    private NumberPicker hourPicker, minPicker;
+    private LinearLayout pickerContatiner, timerOnContainer;
     private TextView targetView, totalView;
     private Button appListBtn;
     private Button startBtn, plusMinBtn, minusMinBtn;
@@ -80,41 +88,42 @@ public class FragmentTimer extends Fragment{
 
         // View Set up
         final ViewGroup rootView =(ViewGroup) inflater.inflate(R.layout.fragment_timer, container,false);
+
+        pickerContatiner = rootView.findViewById(R.id.pickerContainer);
+        hourPicker = rootView.findViewById(R.id.hourPicker);
+        minPicker = rootView.findViewById(R.id.minPicker);
+        hourPicker.setMinValue(0);
+        hourPicker.setMaxValue(hourPick.length-1);
+        minPicker.setMinValue(0);
+        minPicker.setMaxValue(minPick.length-1);
+        hourPicker.setDisplayedValues(hourPick);
+        minPicker.setDisplayedValues(minPick);
+
+        startBtn = rootView.findViewById(R.id.timerStartBtn);
+
+        timerOnContainer = rootView.findViewById(R.id.timerOnContainer);
         targetView = (TextView)rootView.findViewById(R.id.TargetTimeText);
         totalView = (TextView)rootView.findViewById(R.id.TotalTimeText);
-        startBtn = rootView.findViewById(R.id.StartBtn);
-        seekBar = rootView.findViewById(R.id.seekArc);
-        appListBtn = rootView.findViewById(R.id.appListBtn);
-        plusMinBtn = rootView.findViewById(R.id.plusMinBtn);
-        minusMinBtn = rootView.findViewById(R.id.minusMinBtn);
+        timerOnContainer.setVisibility(View.INVISIBLE);
+
 
         // timer set up
-        bt = new BasicTimer(targetTime);
-        targetView.setText(bt.makeToTimeFormat(this.targetTime));
-        totalView.setText(bt.makeToTimeFormat(0));
+
         timerOn = false;
+
 
         tempData = new Data();
         mainActivity = (MainActivity) this.getActivity();
-
-        //start app lock list activity
-        lockIntent = new Intent(getActivity(),AppLockActivity.class);
-        lockIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivity(lockIntent);
 
         //for timer service
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("TIMER_BROAD_CAST_ACK");
         getActivity().registerReceiver(br,intentFilter);
         receiverRegied = true;
+
         final Intent sendIntent = new Intent("TIMER_BROAD_CAST_REQ");
         getActivity().sendBroadcast(sendIntent);
 
-        /*
-        //send timer object to
-        tService = new Intent(getActivity(), TimerService.class);
-        getActivity().bindService(tService, mConnection, Context.BIND_AUTO_CREATE);
-*/
 
         //Using the Gyroscope & Accelometer
         mSensorManager = (SensorManager) mainActivity.getSystemService(Context.SENSOR_SERVICE);
@@ -131,22 +140,18 @@ public class FragmentTimer extends Fragment{
          * timer started by button is just for a performance to make user think timer is working
          * but real timer service is not started yet, it only starts through Gyro sensor
          **/
-        startBtn.setOnClickListener(new Button.OnClickListener() {
+        startBtn.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View view){
-                if(timerOn){
-                    // timer stop!!
-                    mSensorManager.registerListener(mGyroLis, mGgyroSensor, SensorManager.SENSOR_DELAY_UI);
-                    startBtn.setBackgroundResource(R.drawable.lock_icon_grey);
-                    timerOn = false;
-                    bt.timerStop();
-                    /*
-                    //send broadcast msg
-                    getActivity().sendBroadcast(sendIntent);
 
-                    Intent timerService = new Intent(mainActivity,TimerService.class);
-                    mainActivity.stopService(timerService);
-*/
+                if(timerOn){
+                    timerOn = false;
+                    pickerContatiner.setVisibility(View.VISIBLE);
+                    timerOnContainer.setVisibility(View.INVISIBLE);
+                    startBtn.setBackgroundResource(R.drawable.lock_icon_grey);
+                    hourPicker.setValue(0);
+                    minPicker.setValue(0);
+                    bt.timerStop();
 
                     // need delay to get broadcast msg
                     new Handler().postDelayed(new Runnable() {
@@ -164,27 +169,15 @@ public class FragmentTimer extends Fragment{
                     SimpleDateFormat time = new SimpleDateFormat("hh:mm:ss");
                     tempData.setDate(time.format(currentTime));
 
-                    // reset the timer values
-                    setTargetTime(0);
-                    seekBar.setProgress(0);
-                    updateTextview();
-                    seekBar.setEnabled(true);
                 }else{
-                    /// timer start!
-                    mSensorManager.unregisterListener(mGyroLis);
-                    startBtn.setBackgroundResource(R.drawable.lock_icon_color);
                     timerOn = true;
+                    pickerContatiner.setVisibility(View.INVISIBLE);
+                    timerOnContainer.setVisibility(View.VISIBLE);
+                    startBtn.setBackgroundResource(R.drawable.lock_icon_color);
+                    bt = new BasicTimer(hourPick[hourPicker.getValue()],minPick[minPicker.getValue()]);
+                    targetView.setText(bt.makeToTimeFormat());
+                    totalView.setText(bt.makeToTimeFormat(0));
                     bt.timerStart();
-                    seekBar.setEnabled(false);
-
-                    /*
-                    Intent timerService = new Intent(mainActivity,TimerService.class);
-                    timerService.putExtra("timer",bt);
-                    mainActivity.startService(timerService);
-                    */
-
-                    //timerService.setTimer(bt);
-                    //mainActivity.startService(tService);
 
                     //timer text change
                     final Handler timerViewHandler = new Handler();
@@ -196,97 +189,12 @@ public class FragmentTimer extends Fragment{
                             timerViewHandler.postDelayed(this,1000);
                             if(!bt.getOnoff()){
                                 timerViewHandler.removeMessages(0);
-                                updateTextview();
                             }
                         }
                     });
                 }
             }
         });
-
-        seekBar.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
-            @Override
-            public void onProgressChanged(SeekArc seekArc, int i, boolean b) {
-                if(targetTime == 0){
-                    targetTime = 1;
-                }else{
-                    //Log.v("angle", String.valueOf(seekBar.getProgress()));
-                    int progress = seekBar.getProgress();
-                    targetTime = progress*10000;
-                    bt.setTargetTime(targetTime);
-                    updateTextview();
-                }
-
-                /*
-                if(progress < 25){
-                    targetTime = progress*60000;
-                }else if(progress >= 25 && progress<=50){
-                    targetTime = (progress/2)*1200000;
-                }else if(progress>50 && progress<=75){
-                    targetTime = (progress/2)*1800000;
-                }else{
-                    targetTime = (progress/2)*3200000;
-                }*/
-            }
-            @Override
-            public void onStartTrackingTouch(SeekArc seekArc) {
-            }
-            @Override
-            public void onStopTrackingTouch(SeekArc seekArc) {
-            }
-        });
-
-        appListBtn.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(lockIntent);
-
-                // GET_USAGE_STATS 권한 확인
-                boolean granted = false;
-                AppOpsManager appOps = (AppOpsManager) mainActivity.getSystemService(Context.APP_OPS_SERVICE);
-                int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,android.os.Process.myUid(), mainActivity.getPackageName());
-
-                if (mode == AppOpsManager.MODE_DEFAULT) {
-                    granted = (mainActivity.checkCallingOrSelfPermission(android.Manifest.permission.PACKAGE_USAGE_STATS) == PackageManager.PERMISSION_GRANTED);
-                } else {
-                    granted = (mode == AppOpsManager.MODE_ALLOWED);
-                }
-
-                Log.d("isRooting granted = " , String.valueOf(granted));
-
-                if (granted == false)
-                {
-                    // 권한이 없을 경우 권한 요구 페이지 이동
-                    Intent sintent = new Intent(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS);
-                    sintent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                    mainActivity.startActivity(sintent);
-                }
-            }
-        });
-
-
-        plusMinBtn.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                targetTime = targetTime + 300000;
-                bt.setTargetTime(targetTime);
-                updateTextview();
-            }
-        });
-        minusMinBtn.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(targetTime-300000<=0){
-                    targetTime = 0;
-                }else{
-                    targetTime = targetTime - 300000;
-                }
-                bt.setTargetTime(targetTime);
-                updateTextview();
-            }
-        });
-
-
         return rootView;
     }
 
@@ -325,7 +233,6 @@ public class FragmentTimer extends Fragment{
         this.targetTime = l;
     }
     private void updateTextview(){
-
         targetView.setText(bt.makeToTimeFormat(targetTime));
         totalView.setText(bt.makeToTimeFormat(0));
     }
