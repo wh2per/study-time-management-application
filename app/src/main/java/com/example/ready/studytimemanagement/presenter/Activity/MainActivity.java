@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private int age = 0;
     private String job = "";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
