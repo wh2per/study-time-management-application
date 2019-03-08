@@ -58,4 +58,4 @@
 + ### Video
   * [URL](https://www.youtube.com/watch?v=lm0zOXoS0Ig&feature=youtu.be)
   
-#### * 현재 라키는 버전 업을 통해 새로운 UI와 기능을 추가하여 출시하였습니다! 
+### * 현재 라키는 버전 업을 통해 새로운 UI와 기능을 추가하여 출시하였습니다! 
