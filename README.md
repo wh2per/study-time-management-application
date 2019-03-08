@@ -1,7 +1,7 @@
 # Study-Time-Management-Application : Lockey
 
 ## 1. Project Overview 
-+ ### Purpose 
++ ### Background 
   * 스마트폰 기술의 발전과 함께 스마트폰 보급률이 꾸준하게 증가하면서 어느덧 대한민국의 스마트폰 보급률은 약 90%에 육박하게 되었다. 
   스마트폰 사용이 생활의 일부분으로 자리 잡으면서 발생한 스마트폰 중독 문제는 어느덧 사회적 문제로 대두되었고, 
   이는 특히 학생 및 수험생 중 자기절제력이 부족한 이들에게 집중력 향상에 큰 장애요소로 작용하고 있다. 
@@ -11,7 +11,7 @@
   - 목표 시간 설정 후 스마트폰을 뒤집어서 사용하지 않을 때만 동작하는 타이머 제공
   - 앱 잠금 기능 제공하여 특정 서비스에 대한 접근 차단
   
-## 2. Development environmen
+## 2. Development environment
 + ### Server
   * Raspberry Pi 3 B+
   * Rasbian
@@ -51,7 +51,7 @@
   * 사용자는 그래프를 통해 간편하게 자신의 집중 시간을 일별, 주별, 월별, 집중 카테고리 별로 비교 분석 할 수 있습니다.
   * 기기가 바뀌더라도 정보는 서버에 저장되어 있기에 어디서든 연동 가능 합니다.
 
-## Docs & Video
+## 6. Docs & Video
 + ### Docs
   * [Report](docs/Report.hwp)
   * [PPT](docs/PPT.pdf)
