@@ -58,4 +58,14 @@
 + ### Video
   * [URL](https://www.youtube.com/watch?v=lm0zOXoS0Ig&feature=youtu.be)
   
-### * 현재 라키는 버전 업을 통해 새로운 UI와 기능을 추가하여 출시하였습니다! 
+## * 현재 라키는 버전 업을 통해 새로운 UI와 기능을 추가하여 출시하였습니다! 
+ + ### Differences from Previous Versions
+   * 최근 가장 많이 사용 앱 TOP5를 사용한 시간과 함께 보여줍니다.
+   * 네이버 계정 연동을 추가하였습니다.
+   * 타이머의 SeekBar를 없애고 새로운 UI와 함께 타이머를 설정할 수 있습니다.
+   * 회원 정보 변경 기능과 함께 설정 탭을 추가하였습니다.
+ + ### Design
+   <img src="pic/1.png" width="250" height="500"><img src="pic/2.png" width="250" height="500"><img src="pic/4.png" width="250" height="500"><img src="pic/5.png" width="250" height="500"><img src="pic/6.png" width="250" height="500"><img src="pic/7.png" width="250" height="500">
+ + ### Download URL
+   * [PlayStore URL](https://play.google.com/store/apps/details?id=com.deadlinestudio.lockey)
+
